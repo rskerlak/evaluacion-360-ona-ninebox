@@ -1,73 +1,73 @@
 name: Validate & Deploy
 
 on:
-push:
-pull_request:
-workflow_dispatch:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 concurrency:
-group: pages-${{ github.ref }}
-cancel-in-progress: true
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-validate:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout
-uses: actions/checkout@v4
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  - name: Ensure jq is available
-    run: |
-      if ! command -v jq >/dev/null 2>&1; then
-        sudo apt-get update -y
-        sudo apt-get install -y jq
-      fi
+      - name: Ensure jq is available
+        run: |
+          if ! command -v jq >/dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y jq
+          fi
 
-  - name: Check required files exist
-    run: |
-      set -e
-      for f in \
-        public/index.html \
-        public/paso-1.html \
-        public/paso-2.html \
-        public/paso-3.html \
-        public/paso-4.html \
-        public/sociograma.html \
-        src/data/sample-people.csv \
-        src/data/sample-edges.csv \
-        src/data/sample-responses.json ; do
-        [ -f "$f" ] || { echo "Missing $f"; exit 1; }
-      done
+      - name: Check required files exist
+        run: |
+          set -e
+          for f in \
+            public/index.html \
+            public/paso-1.html \
+            public/paso-2.html \
+            public/paso-3.html \
+            public/paso-4.html \
+            public/sociograma.html \
+            src/data/sample-people.csv \
+            src/data/sample-edges.csv \
+            src/data/sample-responses.json ; do
+            [ -f "$f" ] || { echo "Missing $f"; exit 1; }
+          done
 
-  - name: Validate JSON (syntax + required keys)
-    run: |
-      set -e
-      jq -e type src/data/sample-responses.json >/dev/null
-      jq -e 'all(.[]; has("id") and has("legajo") and has("edges"))' src/data/sample-responses.json >/dev/null
+      - name: Validate JSON (syntax + required keys)
+        run: |
+          set -e
+          jq -e type src/data/sample-responses.json >/dev/null
+          jq -e 'all(.[]; has("id") and has("legajo") and has("edges"))' src/data/sample-responses.json >/dev/null
 
-  - name: Validate CSV headers
-    shell: bash
-    run: |
-      set -e
-      H1=$(head -n1 src/data/sample-edges.csv   | sed 's/[[:space:]]//g')
-      H2=$(head -n1 src/data/sample-people.csv  | sed 's/[[:space:]]//g')
-      [ "$H1" = "pregunta,from_legajo,to_legajo,weight" ] || { echo "Bad header in sample-edges.csv: $H1"; exit 1; }
-      [ "$H2" = "legajo,nombre,apellido,area,sector,rol" ] || { echo "Bad header in sample-people.csv: $H2"; exit 1; }
+      - name: Validate CSV headers
+        shell: bash
+        run: |
+          set -e
+          H1=$(head -n1 src/data/sample-edges.csv   | sed 's/[[:space:]]//g')
+          H2=$(head -n1 src/data/sample-people.csv  | sed 's/[[:space:]]//g')
+          [ "$H1" = "pregunta,from_legajo,to_legajo,weight" ] || { echo "Bad header in sample-edges.csv: $H1"; exit 1; }
+          [ "$H2" = "legajo,nombre,apellido,area,sector,rol" ] || { echo "Bad header in sample-people.csv: $H2"; exit 1; }
 
-  - name: Prepare Pages artifact (public/)
-    uses: actions/upload-pages-artifact@v3
-    with:
-      path: public
+      - name: Prepare Pages artifact (public/)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
 
-deploy:
-needs: validate
-permissions:
-pages: write
-id-token: write
-environment:
-name: github-pages
-url: ${{ steps.deployment.outputs.page_url }}
-runs-on: ubuntu-latest
-steps:
-- id: deployment
-uses: actions/deploy-pages@v4
+  deploy:
+    needs: validate
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
