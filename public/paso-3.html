@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Evaluación de Desempeño - Feedback</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos para los botones de comportamiento (compatibles sin @apply) */
+        .behavior-btn, .training-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            background-color: white;
+            border: 1px solid #e5e7eb; /* gray-300 */
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            cursor: pointer;
+            user-select: none;
+            transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out, background-color 180ms ease-in-out, color 180ms ease-in-out;
+        }
+
+        .behavior-btn:hover, .training-btn:hover { transform: scale(1.03); box-shadow: 0 6px 18px rgba(15,23,42,0.08); }
+
+        /* estado seleccionado */
+        .behavior-btn.selected, .training-btn.selected {
+            background-color: #4f46e5; /* indigo-600 */
+            color: white;
+            border-color: #4f46e5;
+            box-shadow: 0 10px 30px rgba(79,70,229,0.18);
+        }
+
+        .behavior-text, .training-text { font-size: 12px !important; font-weight: 600; transition: color 180ms ease-in-out; color: #374151; } /* gray-700 */
+        .behavior-btn.selected .behavior-text, .training-btn.selected .training-text { color: white; }
+
+        /* chips */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            background: #eef2ff; /* indigo-100 */
+            color: #3730a3; /* indigo-900 */
+            font-weight: 600;
+            margin: 0.25rem;
+            border: 1px solid rgba(79,70,229,0.12);
+        }
+
+        .chip button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            color: inherit;
+            padding: 0 0.25rem;
+            line-height: 1;
+        }
+
+        /* mensaje temporal de error */
+        .temp-error {
+            color: #dc2626; /* red-600 */
+            font-weight: 700;
+        }
+    </style>
+<link rel="stylesheet" href="assets/apple.css">
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Contenedor principal -->
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-5xl border border-white/20 overflow-hidden">
+            <!-- Header Section -->
+            <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+                <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+                <div class="relative z-10">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center transition-colors group" style="color: white !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Volver al Menú Principal
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Encuesta de Retroalimentación del Empleado
+                        </h1>
+                        <p class="text-sm opacity-70">
+                            Tu opinión es clave para nuestro crecimiento
+                        </p>
+                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-sm font-medium">Paso 3 de 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Content -->
+            <div class="p-3 sm:p-4 space-y-4 bg-gray-800">
+        <form id="feedback-form" class="space-y-4">
+
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Información de la Evaluación</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <input id="notificacion-check" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="notificacion-check" class="ml-2 block text-sm text-gray-900">
+                            He sido notificado/a de mi evaluación.
+                        </label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="feedback-check" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="feedback-check" class="ml-2 block text-sm text-gray-900">
+                            He recibido feedback de mi líder sobre el proceso de revisión.
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Clima Laboral</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex flex-col">
+                        <label for="equipo-select" class="block text-sm font-medium text-gray-700 mb-1">
+                            ¿Cómo evalúas el trabajo en equipo?
+                        </label>
+                        <select id="equipo-select" name="equipo" class="w-full p-2 border rounded-md">
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option>Muy bueno</option>
+                            <option>Bueno</option>
+                            <option>Regular</option>
+                            <option>Malo</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="ambiente-select" class="block text-sm font-medium text-gray-700 mb-1">
+                            ¿Cómo evalúas el ambiente laboral?
+                        </label>
+                        <select id="ambiente-select" name="ambiente" class="w-full p-2 border rounded-md">
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option>Muy bueno</option>
+                            <option>Bueno</option>
+                            <option>Regular</option>
+                            <option>Malo</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== SOCIOGRAMA (modificado a datalist + intensidad) ==================== -->
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Red de trabajo (Sociograma)</h2>
+                <div class="space-y-3">
+                    <p class="text-sm text-gray-600">Seleccioná la persona desde el desplegable y registrá la intensidad del vínculo (1=Normal, 2=Fundamental).</p>
+
+                    <div class="flex flex-col">
+                        <label for="colaboracion-input" class="block text-sm font-medium text-gray-700 mb-2">
+                            1. ¿A quién acudís primero cuando necesitás apoyo o consejo en tu trabajo?
+                            <span class="text-xs text-gray-500 block">(Captura vínculos de trabajo/flujo de información)</span>
+                        </label>
+                        <div class="flex gap-3 items-center">
+                            <input id="colaboracion-input" list="person-list" type="text" placeholder="Ej: 1001 - García, Ana María" class="w-full md:w-1/2 p-2 border rounded-md">
+                            <select id="colaboracion-strength" class="p-2 border rounded-md w-44">
+                                <option value="1">1 - Normal</option>
+                                <option value="2">2 - Fundamental</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label for="consejo-input" class="block text-sm font-medium text-gray-700 mb-2">
+                            2. ¿A quién pedirías ayuda técnica si tuvieras un problema complejo?
+                            <span class="text-xs text-gray-500 block">(Captura vínculos de asesoramiento, mide prestigio)</span>
+                        </label>
+                        <div class="flex gap-3 items-center">
+                            <input id="consejo-input" list="person-list" type="text" placeholder="Ej: 1002 - López, Carlos Eduardo" class="w-full md:w-1/2 p-2 border rounded-md">
+                            <select id="consejo-strength" class="p-2 border rounded-md w-44">
+                                <option value="1">1 - Normal</option>
+                                <option value="2">2 - Fundamental</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label for="inspiracion-input" class="block text-sm font-medium text-gray-700 mb-2">
+                           3. ¿A quién reconocés como alguien que inspira o motiva dentro del equipo?
+                           <span class="text-xs text-gray-500 block">(Captura influencia/centralidad simbólica)</span>
+                        </label>
+                        <div class="flex gap-3 items-center">
+                            <input id="inspiracion-input" list="person-list" type="text" placeholder="Ej: 1003 - Martínez, Laura Sofía" class="w-full md:w-1/2 p-2 border rounded-md">
+                            <select id="inspiracion-strength" class="p-2 border rounded-md w-44">
+                                <option value="1">1 - Normal</option>
+                                <option value="2">2 - Fundamental</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gray-600 pt-2 border-t border-gray-200">
+                        <strong>Nota:</strong> Puedes nombrar a la misma persona en más de una pregunta o a personas diferentes en cada una.
+                    </p>
+
+                    <!-- DATALIST: poblado por JS -->
+                    <datalist id="person-list"></datalist>
+                </div>
+            </section>
+            <!-- ==================== FIN SOCIOGRAMA ==================== -->
+
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Liderazgo de mi Líder Evaluador/a</h2>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="flex flex-col">
+                            <label for="fortaleza-liderazgo-select" class="block text-sm font-medium text-gray-700 mb-1">
+                                Selecciona una competencia destacada (fortaleza):
+                            </label>
+                            <select id="fortaleza-liderazgo-select" name="fortaleza_liderazgo" class="w-full p-2 border rounded-md">
+                                <option value="" disabled selected>Seleccione una competencia</option>
+                                <option>ADAPTACIÓN AL CAMBIO</option>
+                                <option>COMPROMISO</option>
+                                <option>COMUNICACIÓN</option>
+                                <option>CULTURA INCLUSIVA</option>
+                                <option>DESARROLLO DE PERSONAS</option>
+                                <option>EMPATÍA</option>
+                                <option>GESTIÓN DE CONFLICTOS</option>
+                                <option>GESTIÓN INNOVADORA</option>
+                                <option>LIDERAZGO</option>
+                                <option>NEGOCIACIÓN ASERTIVA</option>
+                                <option>ORIENTACIÓN AL CLIENTE</option>
+                                <option>PENSAMIENTO ESTRATÉGICO</option>
+                                <option>PLANIFICACIÓN Y RESULTADOS</option>
+                                <option>PROACTIVIDAD</option>
+                                <option>RESPONSABILIDAD SOCIAL</option>
+                                <option>TOMA DE DECISIONES</option>
+                                <option>TRABAJO EN EQUIPO</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="desarrollo-liderazgo-select" class="block text-sm font-medium text-gray-700 mb-1">
+                                Selecciona una competencia a desarrollar:
+                            </label>
+                            <select id="desarrollo-liderazgo-select" name="desarrollo_liderazgo" class="w-full p-2 border rounded-md">
+                                <option value="" disabled selected>Seleccione una competencia</option>
+                                <option>ADAPTACIÓN AL CAMBIO</option>
+                                <option>COMPROMISO</option>
+                                <option>COMUNICACIÓN</option>
+                                <option>CULTURA INCLUSIVA</option>
+                                <option>DESARROLLO DE PERSONAS</option>
+                                <option>EMPATÍA</option>
+                                <option>GESTIÓN DE CONFLICTOS</option>
+                                <option>GESTIÓN INNOVADORA</option>
+                                <option>LIDERAZGO</option>
+                                <option>NEGOCIACIÓN ASERTIVA</option>
+                                <option>ORIENTACIÓN AL CLIENTE</option>
+                                <option>PENSAMIENTO ESTRATÉGICO</option>
+                                <option>PLANIFICACIÓN Y RESULTADOS</option>
+                                <option>PROACTIVIDAD</option>
+                                <option>RESPONSABILIDAD SOCIAL</option>
+                                <option>TOMA DE DECISIONES</option>
+                                <option>TRABAJO EN EQUIPO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p id="behavior-message" class="block text-sm font-medium text-gray-700">
+                            Selecciona hasta tres comportamientos que describan el liderazgo de tu evaluador/a:
+                        </p>
+
+                        <div id="selected-chips" class="mb-2" aria-live="polite" aria-atomic="true"></div>
+
+                        <div id="behavior-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <!-- BOTONES COMPORTAMIENTOS: ÍCONOS ELIMINADOS (solo texto) -->
+                            <button type="button" class="behavior-btn" data-behavior="Aumenta la confianza en mí mismo.">
+                                <span class="behavior-text">Aumenta la confianza en mí mismo.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Mantiene un seguimiento de todos los errores que se producen.">
+                                <span class="behavior-text">Mantiene un seguimiento de todos los errores que se producen.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Tengo confianza en sus juicios y sus decisiones.">
+                                <span class="behavior-text">Tengo confianza en sus juicios y sus decisiones.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Muestra con su conducta lo que expresa en palabras.">
+                                <span class="behavior-text">Muestra con su conducta lo que expresa en palabras.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Tiende a evitar involucrarse cuando surge alguna situación relevante.">
+                                <span class="behavior-text">Tiende a evitar involucrarse cuando surge alguna situación relevante.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Me motiva a dar más de mí.">
+                                <span class="behavior-text">Me motiva a dar más de mí.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Expresa que cada cual debe buscar su forma de hacer el trabajo.">
+                                <span class="behavior-text">Expresa que cada cual debe buscar su forma de hacer el trabajo.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Sugiere nuevas formas de trabajar.">
+                                <span class="behavior-text">Sugiere nuevas formas de trabajar.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Aclara lo que recibiré a cambio de mis esfuerzos.">
+                                <span class="behavior-text">Aclara lo que recibiré a cambio de mis esfuerzos.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Me estimula a expresar mis ideas y opiniones.">
+                                <span class="behavior-text">Me estimula a expresar mis ideas y opiniones.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Considera que tengo necesidades, habilidades y aspiraciones distintas a las de los demás.">
+                                <span class="behavior-text">Considera que tengo necesidades, habilidades y aspiraciones distintas a las de los demás.</span>
+                            </button>
+
+                            <button type="button" class="behavior-btn" data-behavior="Ninguna opción">
+                                <span class="behavior-text">Ninguna opción</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Necesidades de Capacitación (para mí)</h2>
+                <div class="space-y-3">
+                    <div class="flex flex-col">
+                        <label for="tipo-capacitacion" class="block text-sm font-medium text-gray-700 mb-1">
+                            Tipo de capacitación:
+                        </label>
+                        <select id="tipo-capacitacion" name="tipo_capacitacion" class="w-full p-2 border rounded-md">
+                            <option value="" disabled selected>Seleccione el tipo</option>
+                            <option value="interna">Interna</option>
+                            <option value="externa">Externa</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="detalle-capacitacion" class="block text-sm font-medium text-gray-700 mb-1">
+                            Detalle de la capacitación necesaria:
+                        </label>
+                        <textarea id="detalle-capacitacion" name="detalle_capacitacion" maxlength="180" rows="3" placeholder="Describe qué tipo de capacitación necesitas..." class="w-full p-2 border rounded-md resize-none"></textarea>
+                        <div class="text-xs text-gray-500 mt-1">
+                            <span id="char-count">0</span>/180 caracteres
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Disponibilidad para hacer carrera</h2>
+                <p class="text-sm text-gray-600 mb-3">¿Estás dispuesto/a a hacer carrera aunque implique moverte a otra área o zonal?</p>
+
+                <div class="flex items-center gap-6 mb-3">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="movilidad" value="si" class="form-radio h-4 w-4 text-indigo-600" />
+                        <span class="ml-2 text-gray-800 font-medium">Sí</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="movilidad" value="no" class="form-radio h-4 w-4 text-indigo-600" />
+                        <span class="ml-2 text-gray-800 font-medium">No</span>
+                    </label>
+                </div>
+
+                <label for="movilidad-comentario" class="block text-sm text-gray-700 mb-1">Si querés, podés agregar un comentario (opcional):</label>
+                <textarea id="movilidad-comentario" rows="3" placeholder="Ej.: Solo si es dentro de la misma ciudad / Disponible para reubicación nacional" class="w-full p-2 border rounded-md"></textarea>
+            </section>
+
+            <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Enviar Feedback
+                </button>
+            </div>
+        </form>
+
+        <div id="message-box" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-lg shadow-lg text-center space-y-4 max-w-md mx-4">
+                <p id="message-text" class="text-lg font-semibold text-gray-800"></p>
+                <button id="message-close-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* ============================
+           PEOPLE DATA PARA EL DATALIST
+           Reemplace/complete esta lista con la lista completa que use en Sociograma.html
+           Las opciones deben tener formato: "LEGJO - Apellido, Nombre"
+        ============================ */
+        const peopleData = [
+                { id: 1001, fullName: 'García, Ana María', group: 'DESEMPEÑO' },
+                { id: 1002, fullName: 'López, Carlos Eduardo', group: 'DESEMPEÑO' },
+                { id: 1003, fullName: 'Martínez, Laura Sofía', group: 'DESEMPEÑO' },
+                { id: 1004, fullName: 'Rodríguez, Miguel Ángel', group: 'DESEMPEÑO' },
+                { id: 1005, fullName: 'Fernández, Patricia Elena', group: 'GESTIÓN Y COORDINA' },
+                { id: 1006, fullName: 'González, Roberto José', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1007, fullName: 'Pérez, María Carmen', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1008, fullName: 'Sánchez, Diego Alejandro', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1009, fullName: 'Torres, Valeria Beatriz', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1010, fullName: 'Morales, Fernando Luis', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1011, fullName: 'Castro, Silvia Mónica', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1012, fullName: 'Herrera, Andrés Pablo', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1013, fullName: 'Vargas, Claudia Inés', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1014, fullName: 'Jiménez, Marcelo Daniel', group: 'GESTIÓN Y SELECCIÓN' },
+                { id: 1015, fullName: 'Romero, Gabriela Susana', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1016, fullName: 'Silva, Javier Ernesto', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1017, fullName: 'Mendoza, Natalia Rosa', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1018, fullName: 'Ortega, Sebastián Omar', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1019, fullName: 'Ruiz, Alejandra Noemí', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1020, fullName: 'Vega, Cristian Raúl', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1021, fullName: 'Campos, Lorena Beatriz', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+                { id: 1022, fullName: 'Navarro, Gustavo Adrián', group: 'GESTIÓN Y SELECCIÓN G SELI' },
+                { id: 1023, fullName: 'Ramos, Verónica Isabel', group: 'GESTIÓN Y SELECCIÓN G SELI' },
+                { id: 1024, fullName: 'Aguilar, Martín Federico', group: 'JEFE SELECCIÓN RRHH' },
+                { id: 1025, fullName: 'Delgado, Sandra Liliana', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1026, fullName: 'Cabrera, Nicolás Emilio', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1027, fullName: 'Medina, Carla Viviana', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1028, fullName: 'Guerrero, Damián Osvaldo', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1029, fullName: 'Flores, Mónica Graciela', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1030, fullName: 'Cortés, Ezequiel Matías', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1031, fullName: 'Ríos, Daniela Soledad', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1032, fullName: 'Moreno, Facundo Ignacio', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1033, fullName: 'Luna, Paola Andrea', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1034, fullName: 'Blanco, Maximiliano José', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1035, fullName: 'Cruz, Romina Solange', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1036, fullName: 'Espinoza, Leandro Gabriel', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1037, fullName: 'Peña, Marisa Alejandra', group: 'PROGRAMAS DE CAPACITACIÓN' },
+                { id: 1038, fullName: 'Domínguez, Rodrigo Esteban', group: 'SELECCIÓN EXTERNA' },
+                { id: 1039, fullName: 'Ibáñez, Lucía Fernanda', group: 'SELECCIÓN EXTERNA' },
+                { id: 1040, fullName: 'Paredes, Tomás Benjamín', group: 'SELECCIÓN EXTERNA' }
+        ];
+
+        /* ---------- POBLAR DATALIST ---------- */
+        (function populateDatalist() {
+            const dl = document.getElementById('person-list');
+            if (!dl) return;
+            dl.innerHTML = peopleData.map(p => `<option value="${p.id} - ${p.fullName}"></option>`).join('');
+        })();
+
+        /* ---------- LÓGICA PARA COMPORTAMIENTOS (máx 3) ---------- */
+        const behaviorContainer = document.getElementById('behavior-container');
+        const behaviorButtons = Array.from(behaviorContainer.querySelectorAll('.behavior-btn'));
+        const maxBehaviorSelections = 3;
+        const behaviorMessage = document.getElementById('behavior-message');
+        const chipsContainer = document.getElementById('selected-chips');
+
+        function updateBehaviorMessage() {
+            const selectedCount = behaviorContainer.querySelectorAll('.behavior-btn.selected').length;
+            const remaining = maxBehaviorSelections - selectedCount;
+            if (remaining > 0) {
+                behaviorMessage.textContent = `Selecciona hasta tres comportamientos que describan el liderazgo de tu evaluador/a: (Te quedan ${remaining} opciones)`;
+                behaviorMessage.classList.remove('temp-error');
+            } else {
+                behaviorMessage.textContent = 'Has seleccionado el máximo de 3 comportamientos.';
+                behaviorMessage.classList.remove('temp-error');
+            }
+        }
+
+        function renderSelectedChips() {
+            const selected = Array.from(behaviorContainer.querySelectorAll('.behavior-btn.selected'));
+            chipsContainer.innerHTML = '';
+            selected.forEach(btn => {
+                const txt = btn.dataset.behavior;
+                const chip = document.createElement('span');
+                chip.className = 'chip';
+                chip.setAttribute('data-behavior', txt);
+
+                const label = document.createElement('span');
+                label.textContent = txt;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.setAttribute('aria-label', `Eliminar ${txt}`);
+                removeBtn.innerHTML = '&times;';
+
+                removeBtn.addEventListener('click', () => {
+                    btn.classList.remove('selected');
+                    btn.setAttribute('aria-pressed', 'false');
+                    updateBehaviorMessage();
+                    renderSelectedChips();
+                });
+
+                chip.appendChild(label);
+                chip.appendChild(removeBtn);
+                chipsContainer.appendChild(chip);
+            });
+
+            if (selected.length === 0) {
+                chipsContainer.innerHTML = '<span class="text-sm text-gray-500">No hay comportamientos seleccionados.</span>';
+            }
+        }
+
+        function showTemporaryError(element, text, ms = 1800) {
+            const prev = element.textContent;
+            element.textContent = text;
+            element.classList.add('temp-error');
+            setTimeout(() => {
+                element.classList.remove('temp-error');
+                // restore appropriate message
+                updateBehaviorMessage();
+            }, ms);
+        }
+
+        behaviorButtons.forEach(button => {
+            button.setAttribute('role', 'button');
+            button.setAttribute('tabindex', '0');
+            button.setAttribute('aria-pressed', 'false');
+
+            button.addEventListener('click', () => handleBehaviorToggle(button));
+            button.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleBehaviorToggle(button);
+                }
+            });
+        });
+
+        function handleBehaviorToggle(button) {
+            const noOptionBtn = behaviorContainer.querySelector('[data-behavior="Ninguna opción"]');
+
+            if (button === noOptionBtn) {
+                const already = button.classList.contains('selected');
+                behaviorButtons.forEach(b => {
+                    b.classList.remove('selected');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                if (!already) {
+                    button.classList.add('selected');
+                    button.setAttribute('aria-pressed', 'true');
+                }
+                updateBehaviorMessage();
+                renderSelectedChips();
+                return;
+            }
+
+            if (noOptionBtn && noOptionBtn.classList.contains('selected')) {
+                noOptionBtn.classList.remove('selected');
+                noOptionBtn.setAttribute('aria-pressed', 'false');
+            }
+
+            if (button.classList.contains('selected')) {
+                button.classList.remove('selected');
+                button.setAttribute('aria-pressed', 'false');
+            } else {
+                const selectedCount = behaviorContainer.querySelectorAll('.behavior-btn.selected').length;
+                if (selectedCount >= maxBehaviorSelections) {
+                    showTemporaryError(behaviorMessage, `Atención: Solo puedes seleccionar un máximo de ${maxBehaviorSelections} opciones.`);
+                    return;
+                }
+                button.classList.add('selected');
+                button.setAttribute('aria-pressed', 'true');
+            }
+
+            updateBehaviorMessage();
+            renderSelectedChips();
+        }
+
+        updateBehaviorMessage();
+        renderSelectedChips();
+
+        /* ---------- CONTADOR DE CARACTERES PARA CAPACITACIÓN ---------- */
+        const detalleCapacitacion = document.getElementById('detalle-capacitacion');
+        const charCount = document.getElementById('char-count');
+
+        if (detalleCapacitacion && charCount) {
+            detalleCapacitacion.addEventListener('input', () => {
+                charCount.textContent = detalleCapacitacion.value.length;
+            });
+        }
+
+        /* ---------- UTILIDADES PARA SOCIOGRAMA: EXTRACCIÓN DE LEGAJO ---------- */
+        function extractLegajoFromDatalist(text) {
+            if (!text || typeof text !== 'string') return null;
+            const match = text.trim().match(/^(\d+)\s*-/);
+            return match ? parseInt(match[1], 10) : null;
+        }
+
+        /* ---------- LÓGICA DEL FORMULARIO Y VALIDACIONES (modificado para incluir legajo + peso ocultos) ---------- */
+        const form = document.getElementById('feedback-form');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const messageCloseBtn = document.getElementById('message-close-btn');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Validaciones originales
+            let allFieldsFilled = true;
+            const fields = form.querySelectorAll('select, input[type="text"]');
+
+            fields.forEach(field => {
+                if ((field.tagName === 'SELECT' || field.tagName === 'INPUT') && (field.value === null || (typeof field.value === 'string' && field.value.trim() === ''))) {
+                    allFieldsFilled = false;
+                }
+            });
+
+            // checkbox: al menos una debe estar marcada (notificación o feedback)
+            const checkBoxes = form.querySelectorAll('input[type="checkbox"]');
+            let checkBoxesFilled = false;
+            checkBoxes.forEach(box => {
+                if (box.checked) checkBoxesFilled = true;
+            });
+
+            // comportamientos: al menos 1 seleccionado
+            const selectedBehaviors = behaviorContainer.querySelectorAll('.behavior-btn.selected').length;
+            const behaviorsFilled = selectedBehaviors > 0;
+
+            // capacitación: tipo y detalle completados
+            const tipoCapacitacion = document.getElementById('tipo-capacitacion').value;
+            const detalleCapacitacion = document.getElementById('detalle-capacitacion').value.trim();
+            const trainingsFilled = tipoCapacitacion && detalleCapacitacion;
+
+            // movilidad: una radio seleccionada
+            const movilidadValue = form.querySelector('input[name="movilidad"]:checked');
+            const movilidadFilled = !!movilidadValue;
+
+            // Recolectar valores del sociograma: extraer legajo + peso
+            const colText = document.getElementById('colaboracion-input').value.trim();
+            const colLeg = extractLegajoFromDatalist(colText);
+            const colWeight = document.getElementById('colaboracion-strength').value;
+
+            const conText = document.getElementById('consejo-input').value.trim();
+            const conLeg = extractLegajoFromDatalist(conText);
+            const conWeight = document.getElementById('consejo-strength').value;
+
+            const insText = document.getElementById('inspiracion-input').value.trim();
+            const insLeg = extractLegajoFromDatalist(insText);
+            const insWeight = document.getElementById('inspiracion-strength').value;
+
+            // construir mensaje de error si aplica
+            if (allFieldsFilled && checkBoxesFilled && behaviorsFilled && trainingsFilled && movilidadFilled) {
+                // Crear o actualizar los campos ocultos que su backend espera: legajo + peso por pregunta
+                let hiddenContainer = document.getElementById('sociograma-hidden-fields');
+                if (!hiddenContainer) {
+                    hiddenContainer = document.createElement('div');
+                    hiddenContainer.id = 'sociograma-hidden-fields';
+                    hiddenContainer.style.display = 'none';
+                    form.appendChild(hiddenContainer);
+                }
+                hiddenContainer.innerHTML = `
+                    <input name="colaboracion_legajo" value="${colLeg || ''}">
+                    <input name="colaboracion_weight" value="${colWeight || ''}">
+                    <input name="consejo_legajo" value="${conLeg || ''}">
+                    <input name="consejo_weight" value="${conWeight || ''}">
+                    <input name="inspiracion_legajo" value="${insLeg || ''}">
+                    <input name="inspiracion_weight" value="${insWeight || ''}">
+                `;
+
+                // Aquí puede enviar el formulario tradicionalmente o por fetch.
+                // Por ahora mostramos mensaje de éxito y dejamos los campos ocultos listos.
+                messageText.textContent = '¡Gracias por tu feedback! Tu respuesta ha sido registrada exitosamente.';
+                messageBox.classList.remove('hidden');
+
+                // Para debug: muestro el payload en consola (quite en producción)
+                const payload = {
+                  notificado: document.getElementById('notificacion-check').checked,
+                  recibio_feedback: document.getElementById('feedback-check').checked,
+                  clima_equipo: document.getElementById('equipo-select').value,
+                  clima_ambiente: document.getElementById('ambiente-select').value,
+                  sociograma: {
+                    colaboracion: { legajo: colLeg, weight: colWeight ? parseInt(colWeight,10) : null, raw: colText },
+                    consejo: { legajo: conLeg, weight: conWeight ? parseInt(conWeight,10) : null, raw: conText },
+                    inspiracion: { legajo: insLeg, weight: insWeight ? parseInt(insWeight,10) : null, raw: insText }
+                  },
+                  fortaleza_liderazgo: document.getElementById('fortaleza-liderazgo-select').value,
+                  desarrollo_liderazgo: document.getElementById('desarrollo-liderazgo-select').value,
+                  comportamientos: Array.from(behaviorContainer.querySelectorAll('.behavior-btn.selected')).map(b => b.dataset.behavior),
+                  capacitacion: {
+                    tipo: document.getElementById('tipo-capacitacion').value,
+                    detalle: document.getElementById('detalle-capacitacion').value.trim()
+                  },
+                  movilidad: movilidadValue ? movilidadValue.value : null,
+                  movilidad_comentario: document.getElementById('movilidad-comentario').value.trim()
+                };
+                console.log('Payload (simulado) ->', payload);
+
+                // Si desea enviar por fetch, descomente y adapte:
+                /*
+                fetch('/ruta-de-envio-feedback', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload)
+                }).then(r => r.json()).then(resp => {
+                  // manejar respuesta del servidor
+                }).catch(err => {
+                  console.error(err);
+                });
+                */
+            } else {
+                let reasons = [];
+                if (!allFieldsFilled) reasons.push('completar todos los desplegables y campos de texto');
+                if (!checkBoxesFilled) reasons.push('marcar al menos una casilla de confirmación');
+                if (!behaviorsFilled) reasons.push('seleccionar al menos un comportamiento');
+                if (!trainingsFilled) reasons.push('completar el tipo y detalle de capacitación');
+                if (!movilidadFilled) reasons.push('indicar si estás dispuesto/a a hacer carrera con posible movilidad');
+
+                messageText.textContent = 'Por favor, asegurate de ' + reasons.join(', ') + '.';
+                messageBox.classList.remove('hidden');
+            }
+        });
+
+        messageCloseBtn.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+        });
+    </script>
+<script id="edges-export">
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('feedback-form');
+
+  // Intenta leer un legajo local (si en algún paso previo lo seteás).
+  const SELF_LEGAJO = Number(localStorage.getItem('current_user_legajo') || '999999'); // sintético si no existe
+
+  function extractLegajoFromDatalist(text) {
+    if (!text || typeof text !== 'string') return null;
+    const match = text.trim().match(/^(\d+)\s*-/);
+    return match ? parseInt(match[1], 10) : null;
+  }
+
+  function buildEdgesPayload() {
+    const map = [
+      { pregunta: 'colaboracion', input: 'colaboracion-input', weight: 'colaboracion-strength' },
+      { pregunta: 'consejo',      input: 'consejo-input',      weight: 'consejo-strength' },
+      { pregunta: 'inspiracion',  input: 'inspiracion-input',  weight: 'inspiracion-strength' },
+    ];
+    const edges = [];
+    map.forEach(({pregunta, input, weight}) => {
+      const txt = document.getElementById(input)?.value?.trim() || '';
+      const to  = extractLegajoFromDatalist(txt);
+      const w   = parseInt(document.getElementById(weight)?.value || '1', 10);
+      if (to) edges.push({ pregunta, from_legajo: SELF_LEGAJO, to_legajo: to, weight: w });
+    });
+    return edges;
+  }
+
+  function downloadJSON(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  // UI: barra de exportación/guardado (colapsible)
+  const exportBar = document.createElement('div');
+  exportBar.className = 'mt-6';
+  exportBar.innerHTML = `
+    <button id="toggle-export" class="text-xs text-gray-500 hover:text-gray-700 underline mb-2">⚙️ Opciones avanzadas</button>
+    <div id="export-content" class="hidden bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+      <div class="flex flex-wrap gap-3 items-center">
+        <strong class="text-indigo-800">Sociograma (Salida):</strong>
+        <button id="save-ls" class="px-3 py-2 bg-indigo-600 text-white rounded-md">Guardar en LocalStorage</button>
+        <button id="export-json" class="px-3 py-2 bg-gray-800 text-white rounded-md">Descargar edges.json</button>
+        <span class="text-sm text-gray-600">→ Luego cargalo en <em>Sociograma</em> o en el <em>Dashboard del Líder</em>.</span>
+      </div>
+    </div>`;
+  form.appendChild(exportBar);
+
+  document.getElementById('toggle-export').addEventListener('click', () => {
+    const content = document.getElementById('export-content');
+    content.classList.toggle('hidden');
+  });
+
+  document.getElementById('save-ls').addEventListener('click', () => {
+    const edges = buildEdgesPayload();
+    localStorage.setItem('edges', JSON.stringify(edges));
+    alert('Guardado en LocalStorage: edges');
+  });
+
+  document.getElementById('export-json').addEventListener('click', () => {
+    const edges = buildEdgesPayload();
+    downloadJSON(edges, 'edges.json');
+  });
+});
+</script>
+
+            </div>
+        </div>
+    </div>
+    <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+        <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
+    </div>
+</body>
+
+</html>
+

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sociograma de Influencia - Desarrollo y Capacitación (modificado)</title>
+
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SheetJS para exportar a Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif !important;
+            background-color: #f4f7f9 !important;
+        }
+        
+        /* Estilo para el contenedor del gráfico */
+        #network-graph {
+            width: 100%;
+            height: 72vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            position: relative;
+        }
+        #network-graph::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(79, 70, 229, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+            color: white !important;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            transform: translateY(-2px);
+            border-color: #6366f1 !important;
+        }
+        .filter-btn:hover:not(.active) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .chip { display:inline-flex; padding:.25rem .5rem; border-radius:9999px; background:#eef2ff; color:#3730a3; font-weight:600; margin:.15rem; }
+        .mini { font-size: .85rem; color: #4b5563; }
+        
+        /* Override apple.css */
+        select, textarea, input[type="text"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-7xl border border-white/20 overflow-hidden">
+            <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+                <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+                <div class="relative z-10">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center transition-colors group" style="color: white !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Volver al Menú Principal
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl mb-4">
+                            <span class="text-3xl text-white">Φ</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Análisis de Red Organizacional + Matriz Nine Box
+                        </h1>
+                        <p class="text-sm opacity-70">
+                            Mapeo de Influencia, Colaboración y Talento • People Analytics
+                        </p>
+                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-sm font-medium">Datos sintéticos para demostración</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 sm:p-4 space-y-4 bg-gray-800">
+
+                <section class="bg-gradient-to-br from-indigo-50 to-purple-50 p-3 rounded-lg border border-indigo-200 mb-4">
+                    <h2 class="text-base font-bold text-gray-800 mb-3 flex items-center">
+                        <span class="text-indigo-500 mr-3"></span> Tipo de Análisis
+                    </h2>
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <button id="btn-all" class="filter-btn bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl font-semibold transition-all duration-200 border-2 border-transparent text-sm">Vista General</button>
+                        <button id="btn-colaboracion" class="filter-btn active bg-blue-500 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-200 border-2 border-blue-600 shadow-lg text-sm" data-question="colaboracion">Colaboración</button>
+                        <button id="btn-consejo" class="filter-btn bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-4 py-2 rounded-xl font-semibold transition-all duration-200 border-2 border-transparent text-sm" data-question="consejo">Consultas Técnicas</button>
+                        <button id="btn-inspiracion" class="filter-btn bg-amber-100 hover:bg-amber-200 text-amber-700 px-4 py-2 rounded-xl font-semibold transition-all duration-200 border-2 border-transparent text-sm" data-question="inspiracion">Inspiración</button>
+                    </div>
+                    
+                    <div class="bg-white/70 p-3 rounded-lg border border-indigo-100 mb-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div><strong>Vista General:</strong> Todas las conexiones (colaboración + consultas + inspiración) en un solo grafo</div>
+                            <div><strong>Colaboración:</strong> Vínculos de trabajo directo para coordinar y entregar resultados</div>
+                            <div><strong>Consultas Técnicas:</strong> Vínculos de asesoramiento técnico y resolución de dudas</div>
+                            <div><strong>Inspiración:</strong> Vínculos de influencia motivacional y liderazgo informal</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-indigo-200">
+                        <button id="toggle-controls" class="text-xs text-gray-500 hover:text-gray-700 underline mb-2">Controles avanzados</button>
+                        <div id="controls-content" class="hidden">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <div class="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border">
+                                    <label class="text-xs font-medium text-gray-700">Distancia</label>
+                                    <input id="edge-scale" type="range" min="60" max="400" value="200" class="w-20">
+                                </div>
+                                
+                                <label for="import-file" class="inline-flex items-center px-3 py-2 bg-white hover:bg-gray-50 text-gray-700 rounded-lg cursor-pointer text-xs font-medium transition-colors border">
+                                    Importar
+                                    <input id="import-file" type="file" accept=".csv,.json" style="display:none;">
+                                </label>
+                                <button id="load-sample" class="px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg text-xs font-medium transition-colors">Ejemplo</button>
+                                <button id="calc-density-btn" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-medium transition-colors shadow-md">Métricas</button>
+                                <button id="export-excel" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-xs font-medium transition-colors shadow-md">Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                    <div class="lg:col-span-3">
+                        <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl p-4 border border-gray-200/50">
+                            <div class="mb-3">
+                                <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                                    <span class="text-indigo-500 mr-2"></span> Mapa de Red Organizacional
+                                </h3>
+                                <p id="network-legend" class="text-xs text-gray-600 mt-1">Red organizacional: conjunto de personas (nodos) y vínculos (aristas) que representan flujos de colaboración, consulta e inspiración.</p>
+                            </div>
+                            <div id="network-graph" class="border-2 border-gray-100 rounded-xl"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <div id="top-influencers-panel" class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl shadow-lg p-3 border border-yellow-200">
+                            <h3 class="text-sm font-bold text-gray-800 mb-2 flex items-center">
+                                <span class="text-yellow-500 mr-2"></span> Líderes de Influencia
+                            </h3>
+                            <div id="top-influencers-content"></div>
+                        </div>
+                        
+                        <div id="node-info-panel" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-3 border border-blue-200">
+                            <h3 class="text-sm font-bold text-gray-800 mb-2 flex items-center">
+                                <span class="text-blue-500 mr-2"></span> Información Detallada
+                            </h3>
+                            <div id="node-info-content" class="mb-2">
+                                <div class="bg-white/70 backdrop-blur-sm p-2 rounded-lg border border-blue-200">
+                                    <p class="text-gray-600 text-center text-xs">Selecciona una persona en el gráfico</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white/70 backdrop-blur-sm p-2 rounded-lg border border-blue-200">
+                                <h4 class="font-semibold text-gray-800 mb-1 text-xs">
+                                    <span class="text-indigo-500 mr-1"></span> Métricas de Red
+                                </h4>
+                                <div class="grid grid-cols-2 gap-1 text-xs">
+                                    <div class="bg-white p-1 rounded border">
+                                        <div class="text-gray-600">Densidad</div>
+                                        <div class="font-bold text-indigo-600" id="density-display">—</div>
+                                    </div>
+                                    <div class="bg-white p-1 rounded border">
+                                        <div class="text-gray-600">Dist. Media</div>
+                                        <div class="font-bold text-emerald-600" id="avgdist-display">—</div>
+                                    </div>
+                                    <div class="bg-white p-1 rounded border">
+                                        <div class="text-gray-600">Personas</div>
+                                        <div class="font-bold text-blue-600" id="nodecount-display">—</div>
+                                    </div>
+                                    <div class="bg-white p-1 rounded border">
+                                        <div class="text-gray-600">Conexiones</div>
+                                        <div class="font-bold text-purple-600" id="edgecount-display">—</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="legend" class="bg-gradient-to-r from-gray-50 to-gray-100 p-3 rounded-xl shadow-lg border border-gray-200">
+                             <h3 class="text-sm font-bold text-gray-800 mb-2 flex items-center">
+                                 <span class="text-indigo-500 mr-2"></span> Departamentos y Áreas
+                             </h3>
+                             <div id="legend-content" class="flex flex-wrap gap-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t-2 border-gray-300 my-6"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                    <div class="lg:col-span-3">
+                        <!-- Nine Box Grid -->
+                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl p-8 border border-gray-700">
+                            <div class="mb-4">
+                                <h3 class="text-lg font-bold text-white flex items-center">
+                                    <span class="text-purple-400 mr-2"></span> Nine Box - Potencial vs Desempeño
+                                </h3>
+                                <p class="text-xs text-gray-300 mt-1">Matriz de evaluación que cruza potencial (eje Y) con desempeño (eje X) para identificar talento clave.</p>
+                            </div>
+                            <div id="nine-box-container" class="relative bg-gray-900 border-2 border-gray-600 rounded-xl mx-8 mb-8" style="height: 450px;">
+                                <!-- Eje Y (Potencial) -->
+                                <div class="absolute -left-16 top-1/2 transform -rotate-90 text-sm font-semibold text-white">POTENCIAL</div>
+                                <!-- Eje X (Desempeño) -->
+                                <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-sm font-semibold text-white">DESEMPEÑO</div>
+                                
+                                <!-- Grid with different gray backgrounds -->
+                                <div class="absolute inset-0 grid grid-cols-3 grid-rows-3">
+                                    <div class="bg-gray-600 border-r border-b border-gray-400"></div>
+                                    <div class="bg-gray-500 border-r border-b border-gray-400"></div>
+                                    <div class="bg-gray-400 border-b border-gray-400"></div>
+                                    <div class="bg-gray-700 border-r border-b border-gray-400"></div>
+                                    <div class="bg-gray-600 border-r border-b border-gray-400"></div>
+                                    <div class="bg-gray-500 border-b border-gray-400"></div>
+                                    <div class="bg-gray-800 border-r border-gray-400"></div>
+                                    <div class="bg-gray-700 border-r border-gray-400"></div>
+                                    <div class="bg-gray-600"></div>
+                                </div>
+                                
+                                <!-- Labels -->
+                                <div class="absolute top-3 left-3 text-xs text-white font-semibold">Bajo Desempeño<br>Alto Potencial</div>
+                                <div class="absolute top-3 right-3 text-xs text-white font-semibold">Alto Desempeño<br>Alto Potencial</div>
+                                <div class="absolute bottom-3 left-3 text-xs text-white font-semibold">Bajo Desempeño<br>Bajo Potencial</div>
+                                <div class="absolute bottom-3 right-3 text-xs text-white font-semibold">Alto Desempeño<br>Bajo Potencial</div>
+                                
+                                <!-- Nodes container -->
+                                <div id="nine-box-nodes" class="absolute inset-0"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <!-- Person Details Card -->
+                        <div id="person-details-panel" class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg p-3 border border-gray-700">
+                            <h3 class="text-sm font-bold text-white mb-2 flex items-center">
+                                <span class="text-blue-400 mr-2"></span> Perfil del Colaborador
+                            </h3>
+                            <div id="person-details" class="text-white">
+                                <div class="text-center text-gray-400 py-4">
+                                    <p class="text-xs">Selecciona un punto en el Nine Box</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer>
+                    <button id="toggle-info" class="text-xs text-gray-500 hover:text-gray-700 underline mb-2">Información de integración</button>
+                    <div id="info-content" class="hidden bg-white p-4 rounded-2xl shadow-lg border border-gray-100">
+                        <div class="flex items-start space-x-3">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                                    <span class="text-white text-sm"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2 text-sm">Integración con Evaluación 360°</h4>
+                                <p class="text-xs text-gray-600 leading-relaxed">
+                                    Para visualizar datos reales, exporte desde el <strong>Paso 3</strong> un archivo CSV con columnas 
+                                    <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">pregunta,from_legajo,to_legajo,weight</code> 
+                                    o JSON equivalente.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- 1. DATOS (mantuve su peopleData original y añadí initials como label) ---
+        function getInitials(name) {
+            const parts = name.split(',');
+            const lastNameInitial = parts[0] ? parts[0].trim().charAt(0) : '';
+            const firstNameInitial = parts[1] ? parts[1].trim().charAt(0) : '';
+            return `${lastNameInitial}${firstNameInitial}`.toUpperCase();
+        }
+
+        const peopleData = [
+            { id: 1001, fullName: 'Martínez, Ana', group: 'DESEMPEÑO' },
+            { id: 1002, fullName: 'Rodríguez, Carlos', group: 'DESEMPEÑO' },
+            { id: 1003, fullName: 'López, Sofía', group: 'DESEMPEÑO' },
+            { id: 1004, fullName: 'Pérez, Diego', group: 'DESEMPEÑO' },
+            { id: 1005, fullName: 'García, Laura', group: 'GESTIÓN Y COORDINA' },
+            { id: 1006, fullName: 'Sánchez, María', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1007, fullName: 'Morales, Luis', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1008, fullName: 'Torres, Roberto', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1009, fullName: 'Herrera, Carmen', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1010, fullName: 'Jiménez, Pablo', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1011, fullName: 'Vargas, Elena', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1012, fullName: 'Castro, Miguel', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1013, fullName: 'Mendoza, Patricia', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1014, fullName: 'Silva, Alejandro', group: 'GESTIÓN Y SELECCIÓN' },
+            { id: 1015, fullName: 'Ramos, Valeria', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1016, fullName: 'Ortega, Fernando', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1017, fullName: 'Cruz, Daniela', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1018, fullName: 'Flores, Andrés', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1019, fullName: 'Reyes, Natalia', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1020, fullName: 'Vega, Javier', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1021, fullName: 'Romero, Claudia', group: 'GESTIÓN Y SELECCIÓN INTERNA II' },
+            { id: 1022, fullName: 'Aguilar, Ricardo', group: 'GESTIÓN Y SELECCIÓN G SELI' },
+            { id: 1023, fullName: 'Medina, Gabriela', group: 'GESTIÓN Y SELECCIÓN G SELI' },
+            { id: 1024, fullName: 'Guerrero, Sergio', group: 'JEFE SELECCIÓN RRHH' },
+            { id: 1025, fullName: 'Moreno, Isabel', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1026, fullName: 'Ruiz, Martín', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1027, fullName: 'Delgado, Cristina', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1028, fullName: 'Peña, Eduardo', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1029, fullName: 'Campos, Adriana', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1030, fullName: 'Navarro, Raúl', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1031, fullName: 'Paredes, Lucía', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1032, fullName: 'Salinas, Emilio', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1033, fullName: 'Cabrera, Rosa', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1034, fullName: 'Lara, Gonzalo', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1035, fullName: 'Soto, Verónica', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1036, fullName: 'Ponce, Iván', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1037, fullName: 'Espinoza, Silvia', group: 'PROGRAMAS DE CAPACITACIÓN' },
+            { id: 1038, fullName: 'Contreras, Omar', group: 'SELECCIÓN EXTERNA' },
+            { id: 1039, fullName: 'Maldonado, Teresa', group: 'SELECCIÓN EXTERNA' },
+            { id: 1040, fullName: 'Sandoval, Esteban', group: 'SELECCIÓN EXTERNA' }
+        ].map(p => ({ ...p, label: getInitials(p.fullName) }));
+
+        // --- 2. RESPUESTAS / ARISTAS INICIALES ---
+        // allEdges es usado para mostrar un ejemplo si no importa nada.
+        // Cada arista aquí es {from, to, arrows:'to'}; peso = 1 por defecto.
+        function generateVotes(people) {
+            const edges = [];
+            people.forEach(voter => {
+                const numberOfVotes = Math.random() > 0.6 ? 2 : 1;
+                for (let i = 0; i < numberOfVotes; i++) {
+                    let candidatePool;
+                    if (Math.random() < 0.7) {
+                        candidatePool = people.filter(p => p.group === voter.group && p.id !== voter.id);
+                    } else {
+                        candidatePool = people.filter(p => p.group !== voter.group);
+                    }
+                    if(candidatePool.length === 0) {
+                        candidatePool = people.filter(p => p.id !== voter.id);
+                    }
+                    const votedFor = candidatePool[Math.floor(Math.random() * candidatePool.length)];
+                    if (votedFor) {
+                        edges.push({ from: voter.id, to: votedFor.id, arrows: 'to', weight: 1 });
+                    }
+                }
+            });
+            return edges;
+        }
+
+        // Datos iniciales de ejemplo (se pueden sobreescribir con import)
+        let sampleEdgesCol = generateVotes(peopleData);
+        let sampleEdgesCons = generateVotes(peopleData);
+        let sampleEdgesInsp = generateVotes(peopleData);
+
+        // responses: estructura esperada desde Paso 3 o import CSV/JSON
+        // respuesta: {pregunta: 'colaboracion'|'consejo'|'inspiracion', from: legajo, to: legajo, weight: 1|2|3}
+        let importedResponses = null; // si se importa, llenamos esto
+
+        const allEdges = {
+            colaboracion: sampleEdgesCol,
+            consejo: sampleEdgesCons,
+            inspiracion: sampleEdgesInsp
+        };
+
+        // --- 3. VISUALIZACIÓN: nodos y opciones ---
+        const container = document.getElementById('network-graph');
+
+        // nodos: usar peopleData pero convertir a formato vis-friendly
+        const nodes = new vis.DataSet(peopleData.map(p => ({
+            id: p.id,
+            label: p.label,
+            title: `${p.fullName} — ${p.group}`,
+            fullName: p.fullName,
+            group: p.group,
+            size: 28,
+            font: { size: 15, color: 'white', face: 'arial' },
+            borderWidth: 3
+        })));
+
+        const uniqueGroups = [...new Set(peopleData.map(p => p.group))];
+        const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1'];
+        const groupOptions = {};
+        const legendContent = document.getElementById('legend-content');
+
+        uniqueGroups.forEach((group, index) => {
+            const color = colors[index % colors.length];
+            groupOptions[group] = {
+                color: { background: color, border: color },
+                font: { color: 'white' }
+            };
+            legendContent.innerHTML += `
+                <div class="flex items-center bg-white px-2 py-1 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                    <span class="h-2 w-2 rounded-full mr-1 shadow-sm" style="background-color: ${color};"></span>
+                    <span class="text-xs font-medium text-gray-700">${group}</span>
+                </div>`;
+        });
+
+        const options = {
+            nodes: {
+                shape: 'circle',
+                size: 28,
+                font: { size: 15, color: 'white', face: 'arial' },
+                borderWidth: 3
+            },
+            edges: {
+                width: 1.5,
+                color: { color: '#a1a1aa', highlight: '#4f46e5', hover: '#a5b4fc' },
+                arrows: { to: { enabled: true, scaleFactor: 0.8 } }
+            },
+            physics: {
+                solver: 'barnesHut',
+                barnesHut: { gravitationalConstant: -20000, centralGravity: 0.1, springLength: 200 }
+            },
+            interaction: { hover: true, tooltipDelay: 200 },
+            groups: groupOptions
+        };
+
+        let network = null;
+
+        // ---------- FUNCIONES NUEVAS: agregación por peso, métricas y export ----------
+
+        // Agrega/combina aristas por pair y mapea peso a length & width
+        function aggregateEdgesWithWeights(edgeList, edgeScale) {
+            const map = {};
+            (edgeList || []).forEach(e => {
+                if (!e.from || !e.to) return;
+                const key = `${e.from}-${e.to}`;
+                if (!map[key]) map[key] = { from: e.from, to: e.to, weight: 0, count: 0 };
+                // si la arista tiene weight, sumarlo; si no, sumar 1
+                const w = (typeof e.weight === 'number') ? e.weight : 1;
+                map[key].weight += w;
+                map[key].count += 1;
+            });
+            const arr = Object.values(map).map(item => {
+                const w = item.weight;
+                const base = edgeScale || 200;
+                const length = Math.max(60, base - (w - 1) * 40); // mayor peso -> menor length (acercar)
+                const width = Math.min(10, 1 + Math.sqrt(w)); // grosor proporcional
+                return { id: `${item.from}_${item.to}`, from: item.from, to: item.to, arrows: 'to', weight: w, length, width, title: `peso=${w} (votos:${item.count})` };
+            });
+            return arr;
+        }
+
+        // Density: dirigido por defecto
+        function computeDensity(edgesArr, nodeCount, directed = true) {
+            const E = edgesArr.length;
+            const possible = directed ? nodeCount * (nodeCount - 1) : nodeCount * (nodeCount - 1) / 2;
+            return possible === 0 ? 0 : E / possible;
+        }
+
+        // Degrees ponderados
+        function computeDegrees(nodesArr, edgesArr) {
+            const deg = {};
+            nodesArr.forEach(n => deg[n.id] = { in:0, out:0, total:0 });
+            edgesArr.forEach(e => {
+                const w = e.weight || 1;
+                if (deg[e.from]) { deg[e.from].out += w; deg[e.from].total += w; }
+                if (deg[e.to])   { deg[e.to].in += w; deg[e.to].total += w; }
+            });
+            return deg;
+        }
+
+        // Actualiza apariencia de nodos según degree total
+        function updateNodeVisualsByDegree(nodesDS, degMap) {
+            const values = Object.values(degMap).map(d => d.total || 0);
+            const maxDeg = Math.max(...values, 1);
+            const updates = [];
+            Object.entries(degMap).forEach(([id, d]) => {
+                const norm = (d.total || 0) / maxDeg;
+                const size = 28 + Math.round(26 * norm); // rango 28..54
+                const colorIntensity = Math.round(150 + 105 * norm);
+                const bg = `rgb(${255 - Math.round(80 * norm)}, ${colorIntensity}, ${120})`;
+                updates.push({ id: parseInt(id,10), size: size, color: { background: bg, border: '#1f2937' }, font: { color: 'white' } });
+            });
+            nodesDS.update(updates);
+        }
+
+        // Average shortest path length (BFS, trata la red como no dirigida)
+        function averageShortestPathLength(nodesArr, edgesArr) {
+            const adj = {};
+            nodesArr.forEach(n => adj[n.id] = new Set());
+            edgesArr.forEach(e => {
+                adj[e.from].add(e.to);
+                adj[e.to].add(e.from);
+            });
+            const ids = nodesArr.map(n => n.id);
+            let totalDist = 0, pairs = 0;
+            for (const src of ids) {
+                const dist = {}; dist[src] = 0;
+                const q = [src]; let qi = 0;
+                while (qi < q.length) {
+                    const u = q[qi++];
+                    adj[u].forEach(v => { if (dist[v] === undefined) { dist[v] = dist[u] + 1; q.push(v); } });
+                }
+                ids.forEach(t => { if (t !== src && dist[t] !== undefined) { totalDist += dist[t]; pairs++; } });
+            }
+            return pairs === 0 ? null : totalDist / pairs;
+        }
+
+        // Update legend based on selected filter
+        function updateNetworkLegend(question) {
+            const legendEl = document.getElementById('network-legend');
+            const legends = {
+                null: 'Red organizacional: conjunto de personas (nodos) y vínculos (aristas) que representan flujos de colaboración, consulta e inspiración. Las flechas indican dirección y la intensidad se clasifica como Normal o Fundamental.',
+                colaboracion: 'Colaboración: relación de trabajo directa para coordinar, co-crear y entregar resultados. Escala: Normal (interacción habitual) o Fundamental (dependencia clave).',
+                consejo: 'Consulta técnica (consejo): a quién recurro para resolver dudas técnicas o decidir con mejor información. Escala: Normal (apoyo eventual) o Fundamental (referente indispensable).',
+                inspiracion: 'Inspiración: persona cuya conducta/visión motiva y eleva el estándar del equipo. Escala: Normal (influencia ocasional) o Fundamental (influencia sostenida).'
+            };
+            legendEl.textContent = legends[question] || legends[null];
+        }
+
+        // Render de la red con filtro por pregunta (null = todas)
+        function renderNetwork(question = null) {
+            // Elegir fuente: si hay importedResponses usamos eso, sino usamos allEdges
+            const edgeScale = parseInt(document.getElementById('edge-scale').value, 10) || 200;
+            let edgeSource = [];
+            if (importedResponses && Array.isArray(importedResponses)) {
+                // filtrar por pregunta si se especifica
+                const filt = question ? importedResponses.filter(r => r.pregunta === question) : importedResponses;
+                edgeSource = filt.map(r => ({ from: r.from, to: r.to, weight: r.weight || 1 }));
+            } else {
+                // tomar del allEdges y transforar (si no tienen weight, ponemos 1)
+                const raw = question ? allEdges[question] : [].concat(allEdges.colaboracion, allEdges.consejo, allEdges.inspiracion);
+                edgeSource = (raw || []).map(e => ({ from: e.from, to: e.to, weight: e.weight || 1 }));
+            }
+
+            const aggregated = aggregateEdgesWithWeights(edgeSource, edgeScale);
+            const edgesDS = new vis.DataSet(aggregated);
+            const data = { nodes: nodes, edges: edgesDS };
+
+            if (network) network.destroy();
+            network = new vis.Network(container, data, options);
+            setupEventListeners();
+            clearNodeInfo();
+
+            // métricas
+            const nodesArr = nodes.get();
+            const densityVal = computeDensity(aggregated, nodesArr.length, true);
+            const degMap = computeDegrees(nodesArr, aggregated);
+            updateNodeVisualsByDegree(nodes, degMap);
+            const avgDist = averageShortestPathLength(nodesArr, aggregated);
+
+            // UI métricas
+            document.getElementById('density-display').textContent = densityVal.toFixed(4);
+            document.getElementById('avgdist-display').textContent = avgDist === null ? 'N/A' : avgDist.toFixed(2);
+            document.getElementById('nodecount-display').textContent = nodesArr.length;
+            document.getElementById('edgecount-display').textContent = aggregated.length;
+
+            calculateAndHighlightTop3(aggregated, degMap);
+            updateNetworkLegend(question);
+        }
+
+        // Modificada: ahora acepta edges agregados con peso y degMap opcional
+        function calculateAndHighlightTop3(currentEdges, degCalculated) {
+            // Si currentEdges es el agregado, use 'to' y peso para contar
+            const scores = {};
+            peopleData.forEach(p => scores[p.id] = 0);
+            currentEdges.forEach(edge => {
+                if (scores[edge.to] !== undefined) scores[edge.to] += (edge.weight || 1);
+            });
+
+            const sortedInfluencers = Object.entries(scores)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 3);
+
+            const top3Ids = sortedInfluencers.map(item => parseInt(item[0],10));
+
+            // reset nodos al tamaño base
+            const nodesToUpdate = peopleData.map(p => ({
+                id: p.id,
+                size: 28,
+                borderWidth: options.nodes.borderWidth,
+                shadow: false
+            }));
+            nodes.update(nodesToUpdate);
+
+            // destacar top3
+            const topNodesToUpdate = top3Ids.map(id => ({
+                id: id,
+                size: 42,
+                borderWidth: 4,
+                shadow: {
+                    enabled: true,
+                    color: 'rgba(79, 70, 229, 0.5)',
+                    size: 15,
+                    x: 0,
+                    y: 0
+                }
+            }));
+            if(topNodesToUpdate.length > 0) nodes.update(topNodesToUpdate);
+
+            // listar top 3 en panel
+            const topInfluencersContent = document.getElementById('top-influencers-content');
+            let content = '<ol class="list-decimal list-inside space-y-1">';
+            sortedInfluencers.forEach(([id, score]) => {
+                const person = peopleData.find(p => p.id === parseInt(id));
+                if (person) {
+                    const medals = ['I', 'II', 'III'];
+            content += `
+                        <div data-id="${id}" class="flex items-center justify-between bg-white/80 backdrop-blur-sm p-2 rounded-lg cursor-pointer hover:bg-white hover:shadow-lg transition-all duration-200 border border-yellow-200 mb-1">
+                            <div class="flex items-center">
+                                <span class="text-sm mr-2 font-bold">${medals[sortedInfluencers.findIndex(([itemId]) => itemId === id)] || 'IV'}</span>
+                                <div>
+                                    <div class="font-bold text-gray-800 text-xs">${person.fullName.split(',')[0]}</div>
+                                    <div class="text-xs text-gray-500">${person.group}</div>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-2 py-1 rounded-full font-bold text-xs shadow-md">
+                                ${score}
+                            </div>
+                        </div>`;
+                }
+            });
+            content += '</ol>';
+            topInfluencersContent.innerHTML = content;
+        }
+
+        // eventos click en top3
+        function setupTop3ClickListener() {
+            const topInfluencersContent = document.getElementById('top-influencers-content');
+            topInfluencersContent.addEventListener('click', function(event) {
+                const listItem = event.target.closest('li');
+                if (listItem && listItem.dataset.id) {
+                    const nodeId = parseInt(listItem.dataset.id, 10);
+                    updateNodeInfo(nodeId);
+                    network.focus(nodeId, { scale: 1.25, animation: { duration: 800, easingFunction: 'easeInOutQuad' }});
+                    network.selectNodes([nodeId]);
+                }
+            });
+        }
+
+        function clearNodeInfo() {
+            document.getElementById('node-info-content').innerHTML = `<div class="bg-white/70 backdrop-blur-sm p-2 rounded-lg border border-blue-200"><p class="text-gray-600 text-center text-xs">Selecciona una persona en el gráfico</p></div>`;
+        }
+
+        function updateNodeInfo(nodeId) {
+            const person = peopleData.find(p => p.id === nodeId);
+            if (!person) return;
+            const content = `
+                <h4 class="text-xs font-bold text-indigo-600">${person.fullName}</h4>
+                <p class="text-gray-600 font-medium text-xs">${person.group}</p>
+                <p class="text-xs text-gray-500 mt-1">Legajo: <strong>${person.id}</strong></p>
+            `;
+            document.getElementById('node-info-content').innerHTML = content;
+        }
+
+        function setupEventListeners() {
+            network.on('click', function (params) {
+                if (params.nodes && params.nodes.length > 0) {
+                    const nodeId = params.nodes[0];
+                    updateNodeInfo(nodeId);
+                    network.selectNodes([nodeId]);
+                } else {
+                    clearNodeInfo();
+                }
+            });
+        }
+
+        // ---------- IMPORT CSV/JSON (espera columnas pregunta,from_legajo,to_legajo,weight) ----------
+        function parseCSV(text) {
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length);
+            if (lines.length === 0) return [];
+            const header = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const getIndex = name => header.indexOf(name);
+            const idxPreg = getIndex('pregunta');
+            const idxFrom = getIndex('from_legajo') >= 0 ? getIndex('from_legajo') : getIndex('from');
+            const idxTo = getIndex('to_legajo') >= 0 ? getIndex('to_legajo') : getIndex('to');
+            const idxW = getIndex('weight');
+
+            const out = [];
+            for (let i=1; i<lines.length; i++) {
+                const row = lines[i].split(',').map(c => c.trim());
+                const r = {
+                    pregunta: idxPreg >= 0 ? row[idxPreg] : 'colaboracion',
+                    from: idxFrom >= 0 ? parseInt(row[idxFrom],10) : null,
+                    to: idxTo >= 0 ? parseInt(row[idxTo],10) : null,
+                    weight: idxW >= 0 ? parseInt(row[idxW],10) : 1
+                };
+                out.push(r);
+            }
+            return out;
+        }
+
+        document.getElementById('import-file').addEventListener('change', function(e) {
+            const f = e.target.files[0];
+            if (!f) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const txt = ev.target.result;
+                try {
+                    if (f.name.toLowerCase().endsWith('.json')) {
+                        const parsed = JSON.parse(txt);
+                        if (!Array.isArray(parsed)) throw new Error('JSON debe ser un array de respuestas');
+                        importedResponses = parsed.map(r => ({ pregunta: r.pregunta, from: r.from, to: r.to, weight: r.weight || 1 }));
+                    } else {
+                        // CSV
+                        const parsed = parseCSV(txt);
+                        importedResponses = parsed;
+                    }
+                    // render con filtro activo
+                    const activeBtn = document.querySelector('.filter-btn.active');
+                    const q = activeBtn && activeBtn.dataset ? activeBtn.dataset.question : null;
+                    renderNetwork(q);
+                    alert('Importación correcta. Red renderizada con datos importados.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al parsear archivo. Asegure formato CSV/JSON correcto (pregunta,from_legajo,to_legajo,weight).');
+                }
+            };
+            reader.readAsText(f);
+        });
+
+        // ---------- EXPORT a Excel (nodos y aristas agregadas) ----------
+        function exportToExcel() {
+            if (!network) { alert('Renderice la red primero.'); return; }
+            const nds = network.body.data.nodes.get();
+            const eds = network.body.data.edges.get();
+            const nodesSheet = nds.map(n => ({ id: n.id, fullName: n.fullName || '', group: n.group || '', size: n.size || '' }));
+            const edgesSheet = eds.map(e => ({ from: e.from, to: e.to, weight: e.weight || '', length: e.length || '', width: e.width || '' }));
+            const wb = XLSX.utils.book_new();
+            const ws1 = XLSX.utils.json_to_sheet(nodesSheet);
+            const ws2 = XLSX.utils.json_to_sheet(edgesSheet);
+            XLSX.utils.book_append_sheet(wb, ws1, 'Nodos');
+            XLSX.utils.book_append_sheet(wb, ws2, 'Aristas');
+            XLSX.writeFile(wb, 'sociograma_red.xlsx');
+        }
+
+        // ---------- BOTONES UI ----------
+        document.getElementById('btn-all').addEventListener('click', () => { setActiveBtn(null); renderNetwork(null); });
+        document.getElementById('btn-colaboracion').addEventListener('click', (e) => { setActiveBtn(e.target); renderNetwork('colaboracion'); });
+        document.getElementById('btn-consejo').addEventListener('click', (e) => { setActiveBtn(e.target); renderNetwork('consejo'); });
+        document.getElementById('btn-inspiracion').addEventListener('click', (e) => { setActiveBtn(e.target); renderNetwork('inspiracion'); });
+        document.getElementById('calc-density-btn').addEventListener('click', () => {
+            const active = document.querySelector('.filter-btn.active');
+            const q = active ? active.dataset.question : null;
+            renderNetwork(q);
+            alert('Métricas actualizadas.');
+        });
+        document.getElementById('export-excel').addEventListener('click', exportToExcel);
+        document.getElementById('load-sample').addEventListener('click', () => {
+            // si usa import, respetar import; sino recargar los sample generados
+            importedResponses = null;
+            sampleEdgesCol = generateVotes(peopleData);
+            sampleEdgesCons = generateVotes(peopleData);
+            sampleEdgesInsp = generateVotes(peopleData);
+            allEdges.colaboracion = sampleEdgesCol;
+            allEdges.consejo = sampleEdgesCons;
+            allEdges.inspiracion = sampleEdgesInsp;
+            const active = document.querySelector('.filter-btn.active');
+            const q = active ? active.dataset.question : 'colaboracion';
+            renderNetwork(q);
+            alert('Ejemplo cargado y renderizado.');
+        });
+
+        document.getElementById('edge-scale').addEventListener('input', () => {
+            const active = document.querySelector('.filter-btn.active');
+            const q = active ? active.dataset.question : null;
+            renderNetwork(q);
+        });
+
+        function setActiveBtn(btnEl) {
+            // limpiar clases
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (!btnEl) { document.getElementById('btn-all').classList.add('active'); return; }
+            btnEl.classList.add('active');
+        }
+
+        // Toggle buttons functionality
+        document.getElementById('toggle-controls').addEventListener('click', () => {
+            const content = document.getElementById('controls-content');
+            content.classList.toggle('hidden');
+        });
+        
+        document.getElementById('toggle-info').addEventListener('click', () => {
+            const content = document.getElementById('info-content');
+            content.classList.toggle('hidden');
+        });
+
+        // Nine Box functionality
+        function renderNineBox() {
+            const container = document.getElementById('nine-box-nodes');
+            container.innerHTML = '';
+            
+            peopleData.forEach(person => {
+                // Generate random performance (1-10) and potential (1-10)
+                const performance = Math.random() * 8 + 1; // 1-9
+                const potential = Math.random() * 8 + 1; // 1-9
+                
+                // Convert to percentage position
+                const x = (performance / 9) * 100;
+                const y = 100 - (potential / 9) * 100; // Invert Y axis
+                
+                const node = document.createElement('div');
+                node.className = 'absolute w-6 h-6 rounded-full border-2 border-black shadow-lg cursor-pointer transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center text-xs font-bold text-white hover:scale-110 transition-transform';
+                node.style.left = `${x}%`;
+                node.style.top = `${y}%`;
+                node.style.backgroundColor = getPersonColor(person.group);
+                node.textContent = person.label;
+                node.title = `${person.fullName} - Desempeño: ${performance.toFixed(1)}, Potencial: ${potential.toFixed(1)}`;
+                
+                // Add click event to show person details
+                node.addEventListener('click', () => showPersonDetails(person));
+                
+                container.appendChild(node);
+            });
+        }
+        
+        function showPersonDetails(person) {
+            const detailsContainer = document.getElementById('person-details');
+            
+            // Generate random evaluation data based on step 2 criteria
+            const competencias = ['ADAPTACIÓN AL CAMBIO', 'COMPROMISO', 'COMUNICACIÓN', 'CULTURA INCLUSIVA', 'DESARROLLO DE PERSONAS', 'EMPATÍA', 'GESTIÓN DE CONFLICTOS', 'GESTIÓN INNOVADORA', 'LIDERAZGO', 'NEGOCIACIÓN ASERTIVA', 'ORIENTACIÓN AL CLIENTE', 'PENSAMIENTO ESTRATÉGICO', 'PLANIFICACIÓN Y RESULTADOS', 'PROACTIVIDAD', 'RESPONSABILIDAD SOCIAL', 'TOMA DE DECISIONES', 'TRABAJO EN EQUIPO'];
+            const rendimientoLabels = ['no cumple las expectativas', 'cumple algunas expectativas', 'cumple las expectativas', 'supera las expectativas', 'excepcional'];
+            const potencialLabels = ['Potencial en desarrollo', 'Potencial conforme a su puesto', 'Promoción'];
+            
+            const evaluationData = {
+                // Competencias FODA
+                fortaleza: competencias[Math.floor(Math.random() * competencias.length)],
+                desarrollo: competencias[Math.floor(Math.random() * competencias.length)],
+                oportunidad: competencias[Math.floor(Math.random() * competencias.length)],
+                reto: competencias[Math.floor(Math.random() * competencias.length)],
+                
+                // Rendimiento laboral (1-5)
+                rendimientoCalidad: Math.floor(Math.random() * 5) + 1,
+                rendimientoCantidad: Math.floor(Math.random() * 5) + 1,
+                compromisoJornada: Math.floor(Math.random() * 5) + 1,
+                rendimientoTiempo: Math.floor(Math.random() * 5) + 1,
+                
+                // Valoración de potencial
+                conocimiento: potencialLabels[Math.floor(Math.random() * potencialLabels.length)],
+                flexibilidad: potencialLabels[Math.floor(Math.random() * potencialLabels.length)],
+                interes: potencialLabels[Math.floor(Math.random() * potencialLabels.length)],
+                compromiso: potencialLabels[Math.floor(Math.random() * potencialLabels.length)],
+                transmision: potencialLabels[Math.floor(Math.random() * potencialLabels.length)]
+            };
+            
+            detailsContainer.innerHTML = `
+                <div class="space-y-2 text-xs">
+                    <div class="bg-gray-800 rounded p-2 border border-gray-600">
+                        <h4 class="text-sm font-bold text-blue-400 mb-1">${person.fullName}</h4>
+                        <p class="text-gray-300 text-xs">${person.group}</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded p-2 border border-gray-600">
+                        <h5 class="text-xs font-semibold text-green-400 mb-1">Competencias (FODA)</h5>
+                        <div class="space-y-1">
+                            <div><span class="text-gray-400">Fortaleza:</span> <span class="text-white text-xs">${evaluationData.fortaleza}</span></div>
+                            <div><span class="text-gray-400">Desarrollo:</span> <span class="text-white text-xs">${evaluationData.desarrollo}</span></div>
+                            <div><span class="text-gray-400">Oportunidad:</span> <span class="text-white text-xs">${evaluationData.oportunidad}</span></div>
+                            <div><span class="text-gray-400">Reto:</span> <span class="text-white text-xs">${evaluationData.reto}</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded p-2 border border-gray-600">
+                        <h5 class="text-xs font-semibold text-yellow-400 mb-1">Rendimiento Laboral</h5>
+                        <div class="space-y-1">
+                            <div><span class="text-gray-400">Calidad:</span> <span class="text-white text-xs">${evaluationData.rendimientoCalidad}/5</span></div>
+                            <div><span class="text-gray-400">Cantidad:</span> <span class="text-white text-xs">${evaluationData.rendimientoCantidad}/5</span></div>
+                            <div><span class="text-gray-400">Jornada:</span> <span class="text-white text-xs">${evaluationData.compromisoJornada}/5</span></div>
+                            <div><span class="text-gray-400">Tiempo:</span> <span class="text-white text-xs">${evaluationData.rendimientoTiempo}/5</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded p-2 border border-gray-600">
+                        <h5 class="text-xs font-semibold text-purple-400 mb-1">Valoración de Potencial</h5>
+                        <div class="space-y-1">
+                            <div><span class="text-gray-400">Conocimiento:</span> <span class="text-white text-xs">${evaluationData.conocimiento}</span></div>
+                            <div><span class="text-gray-400">Flexibilidad:</span> <span class="text-white text-xs">${evaluationData.flexibilidad}</span></div>
+                            <div><span class="text-gray-400">Interés:</span> <span class="text-white text-xs">${evaluationData.interes}</span></div>
+                            <div><span class="text-gray-400">Compromiso:</span> <span class="text-white text-xs">${evaluationData.compromiso}</span></div>
+                            <div><span class="text-gray-400">Transmisión:</span> <span class="text-white text-xs">${evaluationData.transmision}</span></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function getPersonColor(group) {
+            const groupIndex = uniqueGroups.indexOf(group);
+            return colors[groupIndex % colors.length];
+        }
+
+        // init
+        setupTop3ClickListener();
+        renderNetwork('colaboracion'); // dibujar inicialmente
+        renderNineBox(); // dibujar nine box
+
+        // aviso en consola
+        console.log('Sociograma (modificado) listo. Para integrar con Paso 3: exporte filas (pregunta, from_legajo, to_legajo, weight) y súbalas aquí.');
+    });
+    </script>
+
+<script id="json-export-import">
+document.addEventListener('DOMContentLoaded', () => {
+  // Inserta dos botones en la barra de controles
+  const controlsBar = document.querySelector('.bg-white.p-4.rounded-xl.shadow-md.mb-6.flex');
+  if (controlsBar) {
+    const importLS = document.createElement('button');
+    importLS.id = 'import-localstorage';
+    importLS.className = 'px-3 py-2 border rounded text-sm';
+    importLS.textContent = 'Cargar LocalStorage';
+    controlsBar.appendChild(importLS);
+
+    const exportJSON = document.createElement('button');
+    exportJSON.id = 'export-json';
+    exportJSON.className = 'px-3 py-2 bg-gray-800 text-white rounded text-sm ml-2';
+    exportJSON.textContent = 'Exportar .json';
+    controlsBar.appendChild(exportJSON);
+  }
+
+  // Asegurá un nodo SELF si viene un from_legajo sintético
+  function ensureSelfNode(peopleData) {
+    const exists = peopleData.some(p => String(p.id) === '999999');
+    if (!exists) peopleData.push({ id: 999999, fullName: 'Yo (encuestado/a)', group: 'SELF' });
+  }
+  if (typeof peopleData !== 'undefined') ensureSelfNode(peopleData);
+
+  function setEdgesFromFlatJSON(flat) {
+    // flat = [{pregunta, from_legajo, to_legajo, weight}]
+    const byQ = { colaboracion: [], consejo: [], inspiracion: [] };
+    flat.forEach(e => {
+      const rec = { from: e.from_legajo, to: e.to_legajo, weight: Number(e.weight||1) };
+      if (byQ[e.pregunta]) byQ[e.pregunta].push(rec);
+    });
+    // Usa variables globales existentes
+    if (typeof allEdges !== 'undefined') {
+      allEdges.colaboracion = byQ.colaboracion;
+      allEdges.consejo      = byQ.consejo;
+      allEdges.inspiracion  = byQ.inspiracion;
+    }
+  }
+
+  document.getElementById('import-localstorage')?.addEventListener('click', () => {
+    const raw = localStorage.getItem('edges');
+    if (!raw) { alert('No hay "edges" en LocalStorage. Exportá desde Paso 3.'); return; }
+    try {
+      const flat = JSON.parse(raw);
+      setEdgesFromFlatJSON(flat);
+      const active = document.querySelector('.filter-btn.active');
+      const q = active ? active.dataset.question : 'colaboracion';
+      renderNetwork(q);
+      alert('Cargado desde LocalStorage.');
+    } catch (e) {
+      console.error(e);
+      alert('Error al leer edges desde LocalStorage.');
+    }
+  });
+
+  document.getElementById('export-json')?.addEventListener('click', () => {
+    // Junta todo en un arreglo plano
+    const flat = ['colaboracion','consejo','inspiracion'].flatMap(q =>
+      (allEdges[q] || []).map(e => ({ pregunta: q, from_legajo: e.from, to_legajo: e.to, weight: e.weight }))
+    );
+    const blob = new Blob([JSON.stringify(flat, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'edges.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+});
+</script>
+
+<script id="json-export-import"> document.addEventListener('DOMContentLoaded', () => { const controlsBar = document.querySelector('.bg-white.p-4.rounded-xl.shadow-md.mb-6.flex'); if (controlsBar) { const importLS = document.createElement('button'); importLS.id = 'import-localstorage'; importLS.className = 'px-3 py-2 border rounded text-sm'; importLS.textContent = 'Cargar LocalStorage'; controlsBar.appendChild(importLS); const exportJSON = document.createElement('button'); exportJSON.id = 'export-json'; exportJSON.className = 'px-3 py-2 bg-gray-800 text-white rounded text-sm ml-2'; exportJSON.textContent = 'Exportar .json'; controlsBar.appendChild(exportJSON); } function ensureSelfNode(peopleData) { const exists = peopleData?.some?.(p => String(p.id) === '999999'); if (!exists) peopleData?.push?.({ id: 999999, fullName: 'Yo (encuestado/a)', group: 'SELF' }); } if (typeof peopleData !== 'undefined') ensureSelfNode(peopleData); function setEdgesFromFlatJSON(flat) { const byQ = { colaboracion: [], consejo: [], inspiracion: [] }; flat.forEach(e => { const rec = { from: e.from_legajo, to: e.to_legajo, weight: Number(e.weight||1) }; if (byQ[e.pregunta]) byQ[e.pregunta].push(rec); }); if (typeof allEdges !== 'undefined') { allEdges.colaboracion = byQ.colaboracion; allEdges.consejo = byQ.consejo; allEdges.inspiracion = byQ.inspiracion; } } document.getElementById('import-localstorage')?.addEventListener('click', () => { const raw = localStorage.getItem('edges'); if (!raw) { alert('No hay "edges" en LocalStorage'); return; } try { const flat = JSON.parse(raw); setEdgesFromFlatJSON(flat); const active = document.querySelector('.filter-btn.active'); const q = active ? active.dataset.question : 'colaboracion'; renderNetwork(q); alert('Cargado desde LocalStorage.'); } catch (e) { console.error(e); alert('Error al leer edges desde LocalStorage.'); } }); document.getElementById('export-json')?.addEventListener('click', () => { const flat = ['colaboracion','consejo','inspiracion'].flatMap(q => (allEdges[q] || []).map(e => ({ pregunta: q, from_legajo: e.from, to_legajo: e.to, weight: e.weight })) ); const blob = new Blob([JSON.stringify(flat, null, 2)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'edges.json'; a.click(); URL.revokeObjectURL(a.href); }); }); </script>
+    <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+        <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
+    </div>
+</body>
+</html>

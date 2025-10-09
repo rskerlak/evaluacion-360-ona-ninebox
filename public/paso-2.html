@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Desempeño - Segunda Revisión</title>
+    <!-- Include Tailwind CSS for modern and responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+        }
+
+        /* Style for dropdowns and textareas */
+        select,
+        textarea,
+        input[type="text"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Tailwind @apply not usable inside plain CSS here — keep basic styles */
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            transition: box-shadow .2s, border-color .2s;
+        }
+
+        select:focus,
+        textarea:focus,
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12); /* indigo-500 ring */
+            border-color: #6366f1; /* indigo-500 */
+        }
+
+        /* Small helper for the potential table */
+        .potential-table th, .potential-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        .potential-desc {
+            white-space: pre-wrap;
+        }
+    </style>
+<link rel="stylesheet" href="assets/apple.css">
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Contenedor principal -->
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-5xl border border-white/20 overflow-hidden">
+            <!-- Header Section -->
+            <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+                <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+                <div class="relative z-10">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center transition-colors group" style="color: white !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Volver al Menú Principal
+                        </a>
+                    </div>
+                    <div class="text-center">
+
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Evaluación de Desempeño
+                        </h1>
+                        <p class="text-sm opacity-70">
+                            Segunda Revisión Semestral
+                        </p>
+                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-sm font-medium">Paso 2 de 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Content -->
+            <div class="p-3 sm:p-4 space-y-4 bg-gray-800">
+
+        <!-- Evaluation Form -->
+        <form id="evaluation-form" class="space-y-4">
+
+            <!-- Unified Objectives Section -->
+            <section class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-1">Pilar I: Gestión por Objetivos (MBO-OKR)</h2>
+                <p class="text-xs text-gray-600 mb-3">Los objetivos mostrados corresponden a los definidos al inicio del semestre. Puede editarlos si es necesario, pero cualquier modificación quedará registrada en el sistema.</p>
+                
+                <!-- Employee Selection -->
+                <div class="mb-4">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Empleado</label>
+                    <select id="employee-select" class="w-full p-2 border border-gray-300 rounded-md text-xs">
+                        <option value="" disabled selected>Seleccione un empleado</option>
+                        <option value="12345|Martínez, Ana|Analista de Desempeño|Analista SR">Martínez, Ana - Analista de Desempeño</option>
+                        <option value="12346|Rodríguez, Carlos|Especialista en RRHH|Especialista SR">Rodríguez, Carlos - Especialista en RRHH</option>
+                        <option value="12347|López, Sofía|Coordinadora de Talento|Coordinadora">López, Sofía - Coordinadora de Talento</option>
+                        <option value="12348|Pérez, Diego|Analista de Compensaciones|Analista JR">Pérez, Diego - Analista de Compensaciones</option>
+                        <option value="12349|García, Laura|Gerente de Desarrollo|Gerente">García, Laura - Gerente de Desarrollo</option>
+                    </select>
+                </div>
+
+                <!-- Employee Info -->
+                <div id="employee-info" class="hidden mb-4 p-2 bg-gray-50 rounded border">
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <div><span class="font-semibold">Legajo:</span> <span id="employee-legajo">-</span></div>
+                        <div><span class="font-semibold">Nombre:</span> <span id="employee-nombre">-</span></div>
+                        <div><span class="font-semibold">Cargo:</span> <span id="employee-cargo">-</span></div>
+                        <div><span class="font-semibold">Posición:</span> <span id="employee-posicion">-</span></div>
+                    </div>
+                </div>
+
+                <!-- Objectives Container -->
+                <div class="space-y-3">
+                    <!-- Objective 1 -->
+                    <div class="border border-gray-200 rounded p-3">
+                        <div class="grid grid-cols-2 gap-3 mb-2">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <select name="nodo_1" class="w-full p-1 text-xs border rounded">
+                                    <option value="procesos">Procesos</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <select name="cumplimiento_1" class="w-full p-1 text-xs border rounded">
+                                    <option value="" disabled selected>Seleccione</option>
+                                    <option value="1">1 - No cumple</option>
+                                    <option value="2">2 - Parcial</option>
+                                    <option value="3">3 - Cumple</option>
+                                    <option value="4">4 - Supera</option>
+                                    <option value="5">5 - Excepcional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="objectives-placeholder-1" class="text-center text-gray-500 text-xs py-4">
+                            Seleccione un empleado para ver sus objetivos
+                        </div>
+                        <div id="objectives-content-1" class="hidden">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-medium text-gray-700">Objetivo 1</label>
+                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(1)">seleccione para editar</button>
+                            </div>
+                            <p id="objective-1-text" class="text-xs p-2 bg-gray-100 rounded border">Generar reportes estadísticos semanales de los procesos de evaluación para identificar tendencias y áreas de mejora.</p>
+                            <div id="objective-1-edit" class="hidden mt-2">
+                                <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
+                                <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(1)">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Objective 2 -->
+                    <div class="border border-gray-200 rounded p-3">
+                        <div class="grid grid-cols-2 gap-3 mb-2">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <select name="nodo_2" class="w-full p-1 text-xs border rounded">
+                                    <option value="equipo">Equipo</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <select name="cumplimiento_2" class="w-full p-1 text-xs border rounded">
+                                    <option value="" disabled selected>Seleccione</option>
+                                    <option value="1">1 - No cumple</option>
+                                    <option value="2">2 - Parcial</option>
+                                    <option value="3">3 - Cumple</option>
+                                    <option value="4">4 - Supera</option>
+                                    <option value="5">5 - Excepcional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="objectives-placeholder-2" class="text-center text-gray-500 text-xs py-4">
+                            Seleccione un empleado para ver sus objetivos
+                        </div>
+                        <div id="objectives-content-2" class="hidden">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-medium text-gray-700">Objetivo 2</label>
+                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(2)">seleccione para editar</button>
+                            </div>
+                            <p id="objective-2-text" class="text-xs p-2 bg-gray-100 rounded border">Completar al menos una certificación en análisis de datos o plataformas de gestión de talento.</p>
+                            <div id="objective-2-edit" class="hidden mt-2">
+                                <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
+                                <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(2)">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Objective 3 -->
+                    <div class="border border-gray-200 rounded p-3">
+                        <div class="grid grid-cols-2 gap-3 mb-2">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <select name="nodo_3" class="w-full p-1 text-xs border rounded">
+                                    <option value="cliente">Cliente</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <select name="cumplimiento_3" class="w-full p-1 text-xs border rounded">
+                                    <option value="" disabled selected>Seleccione</option>
+                                    <option value="1">1 - No cumple</option>
+                                    <option value="2">2 - Parcial</option>
+                                    <option value="3">3 - Cumple</option>
+                                    <option value="4">4 - Supera</option>
+                                    <option value="5">5 - Excepcional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="objectives-placeholder-3" class="text-center text-gray-500 text-xs py-4">
+                            Seleccione un empleado para ver sus objetivos
+                        </div>
+                        <div id="objectives-content-3" class="hidden">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-medium text-gray-700">Objetivo 3</label>
+                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(3)">seleccione para editar</button>
+                            </div>
+                            <p id="objective-3-text" class="text-xs p-2 bg-gray-100 rounded border">Colaborar activamente en el diseño e implementación de un nuevo sistema de reconocimiento.</p>
+                            <div id="objective-3-edit" class="hidden mt-2">
+                                <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
+                                <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(3)">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Objective 4 -->
+                    <div class="border border-gray-200 rounded p-3">
+                        <div class="grid grid-cols-2 gap-3 mb-2">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <select name="nodo_4" class="w-full p-1 text-xs border rounded">
+                                    <option value="autosuperacion">Autosuperación</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <select name="cumplimiento_4" class="w-full p-1 text-xs border rounded">
+                                    <option value="" disabled selected>Seleccione</option>
+                                    <option value="1">1 - No cumple</option>
+                                    <option value="2">2 - Parcial</option>
+                                    <option value="3">3 - Cumple</option>
+                                    <option value="4">4 - Supera</option>
+                                    <option value="5">5 - Excepcional</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="objectives-placeholder-4" class="text-center text-gray-500 text-xs py-4">
+                            Seleccione un empleado para ver sus objetivos
+                        </div>
+                        <div id="objectives-content-4" class="hidden">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-medium text-gray-700">Objetivo 4</label>
+                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(4)">seleccione para editar</button>
+                            </div>
+                            <p id="objective-4-text" class="text-xs p-2 bg-gray-100 rounded border">Brindar soporte y capacitación a los líderes de equipo sobre herramientas de evaluación.</p>
+                            <div id="objective-4-edit" class="hidden mt-2">
+                                <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
+                                <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(4)">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pillar II: Competencies and Performance Evaluation Section -->
+            <section class="space-y-4">
+                <h2 class="text-sm font-bold text-white">Pilar II: Evaluación de Competencias y Rendimiento</h2>
+
+                <!-- Competencies Sub-section -->
+                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2">Competencias (FODA)</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Área de desarrollo:</label>
+                            <select name="area_desarrollo" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una competencia</option>
+                                <option>ADAPTACIÓN AL CAMBIO</option>
+                                <option>COMPROMISO</option>
+                                <option>COMUNICACIÓN</option>
+                                <option>CULTURA INCLUSIVA</option>
+                                <option>DESARROLLO DE PERSONAS</option>
+                                <option>EMPATÍA</option>
+                                <option>GESTIÓN DE CONFLICTOS</option>
+                                <option>GESTIÓN INNOVADORA</option>
+                                <option>LIDERAZGO</option>
+                                <option>NEGOCIACIÓN ASERTIVA</option>
+                                <option>ORIENTACIÓN AL CLIENTE</option>
+                                <option>PENSAMIENTO ESTRATÉGICO</option>
+                                <option>PLANIFICACIÓN Y RESULTADOS</option>
+                                <option>PROACTIVIDAD</option>
+                                <option>RESPONSABILIDAD SOCIAL</option>
+                                <option>TOMA DE DECISIONES</option>
+                                <option>TRABAJO EN EQUIPO</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fortaleza:</label>
+                            <select name="fortaleza" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una competencia</option>
+                                <option>ADAPTACIÓN AL CAMBIO</option>
+                                <option>COMPROMISO</option>
+                                <option>COMUNICACIÓN</option>
+                                <option>CULTURA INCLUSIVA</option>
+                                <option>DESARROLLO DE PERSONAS</option>
+                                <option>EMPATÍA</option>
+                                <option>GESTIÓN DE CONFLICTOS</option>
+                                <option>GESTIÓN INNOVADORA</option>
+                                <option>LIDERAZGO</option>
+                                <option>NEGOCIACIÓN ASERTIVA</option>
+                                <option>ORIENTACIÓN AL CLIENTE</option>
+                                <option>PENSAMIENTO ESTRATÉGICO</option>
+                                <option>PLANIFICACIÓN Y RESULTADOS</option>
+                                <option>PROACTIVIDAD</option>
+                                <option>RESPONSABILIDAD SOCIAL</option>
+                                <option>TOMA DE DECISIONES</option>
+                                <option>TRABAJO EN EQUIPO</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Oportunidad de crecimiento:</label>
+                            <select name="oportunidad" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una competencia</option>
+                                <option>ADAPTACIÓN AL CAMBIO</option>
+                                <option>COMPROMISO</option>
+                                <option>COMUNICACIÓN</option>
+                                <option>CULTURA INCLUSIVA</option>
+                                <option>DESARROLLO DE PERSONAS</option>
+                                <option>EMPATÍA</option>
+                                <option>GESTIÓN DE CONFLICTOS</option>
+                                <option>GESTIÓN INNOVADORA</option>
+                                <option>LIDERAZGO</option>
+                                <option>NEGOCIACIÓN ASERTIVA</option>
+                                <option>ORIENTACIÓN AL CLIENTE</option>
+                                <option>PENSAMIENTO ESTRATÉGICO</option>
+                                <option>PLANIFICACIÓN Y RESULTADOS</option>
+                                <option>PROACTIVIDAD</option>
+                                <option>RESPONSABILIDAD SOCIAL</option>
+                                <option>TOMA DE DECISIONES</option>
+                                <option>TRABAJO EN EQUIPO</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Reto futuro:</label>
+                            <select name="reto_futuro" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una competencia</option>
+                                <option>ADAPTACIÓN AL CAMBIO</option>
+                                <option>COMPROMISO</option>
+                                <option>COMUNICACIÓN</option>
+                                <option>CULTURA INCLUSIVA</option>
+                                <option>DESARROLLO DE PERSONAS</option>
+                                <option>EMPATÍA</option>
+                                <option>GESTIÓN DE CONFLICTOS</option>
+                                <option>GESTIÓN INNOVADORA</option>
+                                <option>LIDERAZGO</option>
+                                <option>NEGOCIACIÓN ASERTIVA</option>
+                                <option>ORIENTACIÓN AL CLIENTE</option>
+                                <option>PENSAMIENTO ESTRATÉGICO</option>
+                                <option>PLANIFICACIÓN Y RESULTADOS</option>
+                                <option>PROACTIVIDAD</option>
+                                <option>RESPONSABILIDAD SOCIAL</option>
+                                <option>TOMA DE DECISIONES</option>
+                                <option>TRABAJO EN EQUIPO</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Performance Sub-section (Rendimiento con nueva escala solicitada) -->
+                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2">Rendimiento laboral</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RENDIMIENTO EN CALIDAD:</label>
+                            <select name="rendimiento_calidad" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="1">no cumple las expectativas</option>
+                                <option value="2">cumple algunas expectativas</option>
+                                <option value="3">cumple las expectativas</option>
+                                <option value="4">supera las expectativas</option>
+                                <option value="5">excepcional</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RENDIMIENTO EN CANTIDAD:</label>
+                            <select name="rendimiento_cantidad" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="1">no cumple las expectativas</option>
+                                <option value="2">cumple algunas expectativas</option>
+                                <option value="3">cumple las expectativas</option>
+                                <option value="4">supera las expectativas</option>
+                                <option value="5">excepcional</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">COMPROMISO CON LA JORNADA LABORAL:</label>
+                            <select name="compromiso_jornada" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="1">no cumple las expectativas</option>
+                                <option value="2">cumple algunas expectativas</option>
+                                <option value="3">cumple las expectativas</option>
+                                <option value="4">supera las expectativas</option>
+                                <option value="5">excepcional</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RENDIMIENTO EN TIEMPO:</label>
+                            <select name="rendimiento_tiempo" class="w-full p-2">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="1">no cumple las expectativas</option>
+                                <option value="2">cumple algunas expectativas</option>
+                                <option value="3">cumple las expectativas</option>
+                                <option value="4">supera las expectativas</option>
+                                <option value="5">excepcional</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Pillar III: Potential Assessment Section -->
+            <section class="section">
+                <h2 class="text-sm font-bold text-white">Pilar III: Valoración de Potencial</h2>
+                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2">Valoración de potencial</h3>
+
+                    <p class="text-sm text-gray-600 mb-4">Complete la valoración (instancia evaluadora) para cada descripción.</p>
+
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Instancia evaluadora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- CONOCIMIENTO Y EXPERTIZ -->
+                                <tr>
+                                    <td class="text-xs">
+<strong>CONOCIMIENTO Y EXPERTIZ:</strong> Señala el grado de conocimientos que la persona ha adquirido respecto a las tareas que realiza incluyendo las actualizaciones normativas.
+                                    </td>
+                                    <td>
+                                        <select name="conocimiento" class="select text-xs">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option>Potencial en desarrollo</option>
+                                            <option>Potencial conforme a su puesto</option>
+                                            <option>Promoción</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <!-- FLEXIBILIDAD PARA ENFRENTAR NUEVOS DESAFÍOS -->
+                                <tr>
+                                    <td class="text-xs">
+<strong>FLEXIBILIDAD PARA ENFRENTAR NUEVOS DESAFÍOS:</strong> Valora la capacidad de la persona para adaptarse a cambios y situaciones imprevistas, mostrando versatilidad y apertura para abordar y superar nuevos desafíos.
+                                    </td>
+                                    <td>
+                                        <select name="flexibilidad" class="select text-xs">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option>Potencial en desarrollo</option>
+                                            <option>Potencial conforme a su puesto</option>
+                                            <option>Promoción</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <!-- INTERÉS EN DESARROLLO DE CARRERA -->
+                                <tr>
+                                    <td class="text-xs">
+<strong>INTERÉS EN DESARROLLO DE CARRERA:</strong> Mide la motivación y el entusiasmo de las personas por avanzar y crecer profesionalmente dentro de la organización, así como su disposición para adquirir nuevas habilidades y conocimientos que contribuyan a su desarrollo de carrera.
+                                    </td>
+                                    <td>
+                                        <select name="interes" class="select text-xs">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option>Potencial en desarrollo</option>
+                                            <option>Potencial conforme a su puesto</option>
+                                            <option>Promoción</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <!-- COMPROMISO Y RESPONSABILIDAD -->
+                                <tr>
+                                    <td class="text-xs">
+<strong>COMPROMISO Y RESPONSABILIDAD:</strong> Determina el grado de dedicación de la persona hacia sus tareas y objetivos laborales, así como su disposición para asumir responsabilidades.
+                                    </td>
+                                    <td>
+                                        <select name="compromiso" class="select text-xs">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option>Potencial en desarrollo</option>
+                                            <option>Potencial conforme a su puesto</option>
+                                            <option>Promoción</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <!-- TRANSMISIÓN DE CONOCIMIENTO A OTROS/AS -->
+                                <tr>
+                                    <td class="text-xs">
+<strong>TRANSMISIÓN DE CONOCIMIENTO A OTROS/AS:</strong> Mide la efectividad con la que la persona comparte su experiencia y conocimientos con sus colegas, contribuyendo al aprendizaje colectivo y al fortalecimiento de las competencias del equipo.
+                                    </td>
+                                    <td>
+                                        <select name="transmision" class="select text-xs">
+                                            <option value="" disabled selected>Seleccione</option>
+                                            <option>Potencial en desarrollo</option>
+                                            <option>Potencial conforme a su puesto</option>
+                                            <option>Promoción</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Evaluator Data Section -->
+            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <h2 class="text-sm font-bold text-gray-800 mb-2">Datos de los Evaluadores</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-semibold text-gray-600">Legajo:</span>
+                        <p class="text-base text-gray-800">________</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-semibold text-gray-600">Apellido y Nombre:</span>
+                        <p class="text-base text-gray-800">________</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-semibold text-gray-600">ID de Documento:</span>
+                        <p class="text-base text-gray-800">________</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Button -->
+            <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Confirmar Revisión
+                </button>
+            </div>
+        </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success or error message box (hidden by default) -->
+    <div id="message-box" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center space-y-4">
+            <p id="message-text" class="text-sm font-semibold text-gray-800"></p>
+            <button id="message-close-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript logic to handle the form and interactivity
+        const form = document.getElementById('evaluation-form');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const messageCloseBtn = document.getElementById('message-close-btn');
+        const employeeSelect = document.getElementById('employee-select');
+        const employeeInfo = document.getElementById('employee-info');
+        
+        // Lógica para manejar la selección de empleado
+        employeeSelect.addEventListener('change', function() {
+            if (this.value) {
+                const [legajo, nombre, cargo, posicion] = this.value.split('|');
+                
+                document.getElementById('employee-legajo').textContent = legajo;
+                document.getElementById('employee-nombre').textContent = nombre;
+                document.getElementById('employee-cargo').textContent = cargo;
+                document.getElementById('employee-posicion').textContent = posicion;
+                
+                employeeInfo.classList.remove('hidden');
+                
+                // Show objective content for each objective
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`objectives-placeholder-${i}`).classList.add('hidden');
+                    document.getElementById(`objectives-content-${i}`).classList.remove('hidden');
+                }
+            } else {
+                employeeInfo.classList.add('hidden');
+                
+                // Hide objective content for each objective
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`objectives-placeholder-${i}`).classList.remove('hidden');
+                    document.getElementById(`objectives-content-${i}`).classList.add('hidden');
+                }
+            }
+        });
+
+        // Handles the "Editar" and "Guardar" buttons for each objective
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                // Find the parent container
+                const parentDiv = event.target.closest('.p-5');
+                const editSection = parentDiv.querySelector('div[id$="-edit"]');
+
+                // Show the edit section and hide the edit button
+                editSection.classList.remove('hidden');
+                event.target.classList.add('hidden');
+            });
+        });
+
+        document.querySelectorAll('.save-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                // Find the parent container and elements
+                const parentDiv = event.target.closest('.p-5');
+                const editSection = parentDiv.querySelector('div[id$="-edit"]');
+                const textArea = editSection.querySelector('textarea');
+                const objectiveTextP = parentDiv.querySelector('p[id$="-text"]');
+                const editBtn = parentDiv.querySelector('.edit-btn');
+
+                // Update the original objective text with the new value
+                if (textArea.value.trim() !== '') {
+                    objectiveTextP.textContent = textArea.value;
+                }
+
+                // Hide the edit section and show the edit button again
+                editSection.classList.add('hidden');
+                editBtn.classList.remove('hidden');
+            });
+        });
+
+        // Form validation logic on submit
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Verificar que se haya seleccionado un empleado
+            if (!employeeSelect.value) {
+                messageText.textContent = 'Por favor, seleccione un empleado antes de continuar.';
+                messageBox.classList.remove('hidden');
+                return;
+            }
+
+            let allFieldsFilled = true;
+            const fields = form.querySelectorAll('select:not(#employee-select), input[type="text"]');
+
+            fields.forEach(field => {
+                // Check if the field is a select and has a valid value
+                if (field.tagName === 'SELECT') {
+                    if (field.value === '' || field.value === null) {
+                        allFieldsFilled = false;
+                    }
+                }
+                // Check if the field is a text input and has a non-empty value
+                else if (field.tagName === 'INPUT') {
+                    if (field.value.trim() === '') {
+                        allFieldsFilled = false;
+                    }
+                }
+            });
+
+            if (allFieldsFilled) {
+                // Guardar el legajo del empleado seleccionado en localStorage
+                const selectedLegajo = employeeSelect.value.split('|')[0];
+                localStorage.setItem('current_user_legajo', selectedLegajo);
+                messageText.textContent = '¡Evaluación completada con éxito! La revisión ha sido enviada para su aprobación.';
+                messageBox.classList.remove('hidden');
+            } else {
+                messageText.textContent = 'Por favor, complete todos los campos obligatorios antes de confirmar.';
+                messageBox.classList.remove('hidden');
+            }
+        });
+
+        // Logic to close the confirmation message
+        messageCloseBtn.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+        });
+
+        // Edit objective functions
+        window.toggleEdit = function(num) {
+            const textEl = document.getElementById(`objective-${num}-text`);
+            const editEl = document.getElementById(`objective-${num}-edit`);
+            const textarea = editEl.querySelector('textarea');
+            
+            textarea.value = textEl.textContent;
+            textEl.classList.add('hidden');
+            editEl.classList.remove('hidden');
+        };
+
+        window.saveEdit = function(num) {
+            const textEl = document.getElementById(`objective-${num}-text`);
+            const editEl = document.getElementById(`objective-${num}-edit`);
+            const textarea = editEl.querySelector('textarea');
+            
+            if (textarea.value.trim()) {
+                textEl.textContent = textarea.value;
+            }
+            textEl.classList.remove('hidden');
+            editEl.classList.add('hidden');
+        };
+    </script>
+  </div>
+    <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+        <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
+    </div>
+</body>
+
+</html>
+
+
+

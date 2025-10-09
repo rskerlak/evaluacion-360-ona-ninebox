@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard Líder - Resultados de Feedback</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:#f4f7f9}
+        .card{background:white;border:1px solid #e6e9ee;border-radius:12px;padding:16px}
+        .small{font-size:0.875rem}
+        .muted{color:#6b7280}
+        .json-input{width:100%;min-height:120px;border:1px dashed #cbd5e1;padding:12px;border-radius:8px;background:#fbfdff}
+        .leader-col{border-radius:10px;padding:12px;text-align:center}
+        .leader-winner{background:linear-gradient(135deg, #4f46e5, #7c3aed) !important;color:white !important;border:2px solid #6366f1 !important}
+        .leader-winner .text-orange-700, .leader-winner .text-emerald-700, .leader-winner .text-blue-700{color:white !important}
+        .leader-winner .text-orange-800, .leader-winner .text-emerald-800, .leader-winner .text-blue-800{color:white !important}
+        .leader-winner .bg-orange-200, .leader-winner .bg-emerald-200, .leader-winner .bg-blue-200{background:rgba(255,255,255,0.3) !important;color:white !important}
+    </style>
+<link rel="stylesheet" href="assets/apple.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Contenedor principal -->
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-7xl border border-white/20 overflow-hidden">
+            <!-- Header Section -->
+            <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+                <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+                <div class="relative z-10">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center transition-colors group" style="color: white !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Volver al Menú Principal
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Vista del Líder — Resultados del Relevamiento
+                        </h1>
+                        <div class="mt-4">
+                            <button id="toggle-instructions" class="text-xs text-white/70 hover:text-white underline">ℹ️ Instrucciones</button>
+                            <p id="instructions-content" class="hidden text-sm text-white/80 mt-2">Panel final: pega el JSON con las respuestas y presiona <strong>Actualizar vista</strong>. (Diseño listo para uso).</p>
+                        </div>
+                        <p class="text-sm text-white/80 mt-3 max-w-3xl mx-auto">
+                            Los resultados mostrados se basan en el relevamiento de evaluación que cada persona de su equipo completó en el paso anterior, reflejando su percepción sobre su liderazgo y cómo es su red de colaboración. Esta información le permitirá ajustar su estilo de liderazgo y comprender mejor las dinámicas de su equipo para optimizar la gestión.
+                        </p>
+                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-sm font-medium">Paso 4 de 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="p-6 bg-gray-800">
+        <div class="grid gap-6 lg:grid-cols-3">
+            <div class="lg:col-span-2 space-y-6">
+
+                <div class="card mb-6">
+                    <h3 class="font-semibold mb-4 text-gray-800 flex items-center">
+                        <span class="text-indigo-500 mr-2">👑</span> Perfil de Liderazgo Predominante
+                    </h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div id="col-transaccional" class="leader-col bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-4 text-center transition-all duration-300">
+                            <div class="text-sm font-medium text-orange-700 mb-1">🎯 Transaccional</div>
+                            <div id="transaccional-count" class="text-3xl font-bold text-orange-800 mb-1">0</div>
+                            <div id="transaccional-pct" class="text-xs text-orange-600 bg-orange-200 px-2 py-1 rounded-full">0%</div>
+                        </div>
+                        <div id="col-transformacional" class="leader-col bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 rounded-xl p-4 text-center transition-all duration-300">
+                            <div class="text-sm font-medium text-emerald-700 mb-1">🚀 Transformacional</div>
+                            <div id="transformacional-count" class="text-3xl font-bold text-emerald-800 mb-1">0</div>
+                            <div id="transformacional-pct" class="text-xs text-emerald-600 bg-emerald-200 px-2 py-1 rounded-full">0%</div>
+                        </div>
+                        <div id="col-delegador" class="leader-col bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-4 text-center transition-all duration-300">
+                            <div class="text-sm font-medium text-blue-700 mb-1">🤝 Delegador</div>
+                            <div id="delegador-count" class="text-3xl font-bold text-blue-800 mb-1">0</div>
+                            <div id="delegador-pct" class="text-xs text-blue-600 bg-blue-200 px-2 py-1 rounded-full">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-white/20">
+                    <h3 class="font-semibold mb-4 text-gray-800 flex items-center">
+                        <span class="text-purple-500 mr-2">📊</span> Comportamientos Más Valorados
+                    </h3>
+                    <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 mb-4 shadow-inner border border-gray-100">
+                        <div style="height:340px;">
+                            <canvas id="behaviorsChart" height="300"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-600 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-100">
+                        <span class="text-blue-500 mr-2">💡</span>
+                        <span>Frecuencia de menciones por comportamiento de liderazgo observado</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-green-200">
+                        <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
+                            <span class="text-green-500 mr-2">⭐</span> Fortalezas Identificadas
+                        </h4>
+                        <div id="top-fortalezas" class="space-y-1"></div>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-amber-200">
+                        <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
+                            <span class="text-amber-500 mr-2">🎯</span> Áreas de Desarrollo
+                        </h4>
+                        <div id="top-desarrollos" class="space-y-1"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="space-y-4">
+                <div class="card">
+                    <h4 class="font-semibold mb-3">📊 Indicadores rápidos</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>Total encuestados:</span>
+                            <strong id="total-survey" class="text-gray-800">0</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Sin feedback:</span>
+                            <strong id="count-no-feedback" class="text-red-600">0</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Interés en carrera:</span>
+                            <strong id="count-movilidad" class="text-green-600">0</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Promedio comportamientos:</span>
+                            <strong id="avg-behaviors" class="text-blue-600">0</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="mb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800">🌐 Análisis de Red Organizacional</h2>
+                            <p id="ona-legend" class="text-xs text-gray-600 mt-1">Conjunto de personas y vínculos que representan flujos de colaboración, consulta e inspiración.</p>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Métricas principales -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-3 rounded-lg">
+                            <div class="text-xs text-blue-600 font-medium">DENSIDAD DE RED</div>
+                            <div class="text-lg font-bold text-blue-800" id="ona-density">—</div>
+                            <div class="text-xs text-blue-600">Conectividad general</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 p-3 rounded-lg">
+                            <div class="text-xs text-green-600 font-medium">COLABORADORES</div>
+                            <div class="text-lg font-bold text-green-800">
+                                <span id="ona-nodes">—</span> personas
+                            </div>
+                            <div class="text-xs text-green-600"><span id="ona-edges">—</span> conexiones</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Influencers -->
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2 text-sm text-gray-800 flex items-center">
+                            <span class="text-yellow-500 mr-1">👑</span> Líderes de Influencia
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-2">Personas más consultadas y referenciadas por el equipo para consejos e inspiración</p>
+                        <div id="ona-top" class="space-y-1"></div>
+                    </div>
+                    
+                    <!-- Conectores clave -->
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-2 text-sm text-gray-800 flex items-center">
+                            <span class="text-purple-500 mr-1">🔗</span> Conectores Estratégicos
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-2">Personas que vinculan diferentes grupos y facilitan el flujo de información entre áreas</p>
+                        <div id="ona-bridges" class="flex flex-wrap gap-1"></div>
+                    </div>
+                    
+                    <!-- Insights -->
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <h3 class="font-semibold mb-2 text-sm text-gray-800 flex items-center">
+                            <span class="text-orange-500 mr-1">💡</span> Insights Clave
+                        </h3>
+                        <div id="ona-insights" class="text-xs text-gray-600 space-y-1"></div>
+                    </div>
+                    
+                    <!-- Opciones avanzadas -->
+                    <div class="mt-3">
+                        <button id="toggle-ona-advanced" class="text-xs text-gray-400 hover:text-gray-600 underline">⚙️ Opciones avanzadas</button>
+                        <div id="ona-advanced-content" class="hidden mt-2 flex gap-1">
+                            <input id="edges-file" type="file" accept=".json" class="text-xs" style="display:none" />
+                            <button onclick="document.getElementById('edges-file').click()" class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200">📁</button>
+                            <button id="load-edges-ls" class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200">💾</button>
+                            <button id="load-sample-ona" class="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">🎯 Demo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <footer class="mt-6 text-sm text-gray-400">Dashboard final — listo para integrar con el backend que entregue el JSON de respuestas.</footer>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mapping of behaviors to leadership types
+        const behaviorToType = {
+            'Aumenta la confianza en mí mismo.': 'Transformacional',
+            'Me motiva a dar más de mí.': 'Transformacional',
+            'Me estimula a expresar mis ideas y opiniones.': 'Transformacional',
+            'Tengo confianza en sus juicios y sus decisiones.': 'Transformacional',
+            'Muestra con su conducta lo que expresa en palabras.': 'Transformacional',
+            'Sugiere nuevas formas de trabajar.': 'Transformacional',
+            'Considera que tengo necesidades, habilidades y aspiraciones distintas a las de los demás.': 'Transformacional',
+
+            'Aclara lo que recibiré a cambio de mis esfuerzos.': 'Transaccional',
+            'Mantiene un seguimiento de todos los errores que se producen.': 'Transaccional',
+
+            'Expresa que cada cual debe buscar su forma de hacer el trabajo.': 'Delegador',
+            'Tiende a evitar involucrarse cuando surge alguna situación relevante.': 'Delegador'
+        };
+
+        // Charts store
+        const charts = {};
+
+        // ----------------- Ejemplo de datos JSON (Actualizado) -----------------
+        const sampleData = [
+            {
+                "id": 1,
+                "legajo": "LEG-101",
+                "notificado": true,
+                "recibioFeedback": true,
+                "behaviors": ["Aumenta la confianza en mí mismo.", "Me motiva a dar más de mí."],
+                "fortaleza": "COMUNICACIÓN",
+                "desarrollo": "NEGOCIACIÓN ASERTIVA",
+                "trainings": ["Liderazgo en equipos ágiles", "Comunicación asertiva"],
+                "movilidad": "si"
+            },
+            {
+                "id": 2,
+                "legajo": "LEG-102",
+                "notificado": true,
+                "recibioFeedback": false,
+                "behaviors": ["Mantiene un seguimiento de todos los errores que se producen.", "Aclara lo que recibiré a cambio de mis esfuerzos."],
+                "fortaleza": "COMPROMISO",
+                "desarrollo": "COMUNICACIÓN",
+                "trainings": ["Oratoria y presentaciones"],
+                "movilidad": "no"
+            },
+            {
+                "id": 3,
+                "legajo": "LEG-103",
+                "notificado": true,
+                "recibioFeedback": true,
+                "behaviors": ["Me estimula a expresar mis ideas y opiniones.", "Sugiere nuevas formas de trabajar."],
+                "fortaleza": "PROACTIVIDAD",
+                "desarrollo": "GESTIÓN DE CONFLICTOS",
+                "trainings": ["Gestión de proyectos"],
+                "movilidad": "si"
+            },
+            {
+                "id": 4,
+                "legajo": "LEG-104",
+                "notificado": false,
+                "recibioFeedback": true,
+                "behaviors": ["Expresa que cada cual debe buscar su forma de hacer el trabajo.", "Tiende a evitar involucrarse cuando surge alguna situación relevante."],
+                "fortaleza": "TRABAJO EN EQUIPO",
+                "desarrollo": "PLANIFICACIÓN Y RESULTADOS",
+                "trainings": ["Comunicación asertiva"],
+                "movilidad": "no"
+            },
+            {
+                "id": 5,
+                "legajo": "LEG-105",
+                "notificado": true,
+                "recibioFeedback": true,
+                "behaviors": ["Aumenta la confianza en mí mismo.", "Tengo confianza en sus juicios y sus decisiones.", "Muestra con su conducta lo que expresa en palabras."],
+                "fortaleza": "LIDERAZGO",
+                "desarrollo": "DESARROLLO DE PERSONAS",
+                "trainings": ["Liderazgo en equipos ágiles"],
+                "movilidad": "si"
+            },
+            {
+                "id": 6,
+                "legajo": "LEG-106",
+                "notificado": true,
+                "recibioFeedback": false,
+                "behaviors": ["Aumenta la confianza en mí mismo.", "Mantiene un seguimiento de todos los errores que se producen."],
+                "fortaleza": "ADAPTACIÓN AL CAMBIO",
+                "desarrollo": "PENSAMIENTO ESTRATÉGICO",
+                "trainings": ["Oratoria y presentaciones", "Liderazgo en equipos ágiles"],
+                "movilidad": "si"
+            },
+            {
+                "id": 7,
+                "legajo": "LEG-107",
+                "notificado": true,
+                "recibioFeedback": true,
+                "behaviors": ["Me motiva a dar más de mí."],
+                "fortaleza": "COMUNICACIÓN",
+                "desarrollo": "EMPATÍA",
+                "trainings": ["Liderazgo en equipos ágiles"],
+                "movilidad": "si"
+            }
+        ];
+        // ----------------- Fin de ejemplo de datos -----------------
+
+        function parseInput() {
+            const raw = document.getElementById('json-input').value.trim();
+            if (!raw) return null;
+            try {
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) throw new Error('Se esperaba un array de respuestas');
+                return parsed;
+            } catch (e) {
+                alert('JSON inválido: ' + e.message);
+                return null;
+            }
+        }
+
+        function clearView() {
+            document.getElementById('total-survey').textContent = '0';
+            document.getElementById('count-no-feedback').textContent = '0';
+            document.getElementById('count-movilidad').textContent = '0';
+            document.getElementById('avg-behaviors').textContent = '0';
+            document.getElementById('top-fortalezas').innerHTML = '<li class="muted">Sin datos</li>';
+            document.getElementById('top-desarrollos').innerHTML = '<li class="muted">Sin datos</li>';
+            // reset leadership cols styling
+            ['transaccional','transformacional','delegador'].forEach(function(key){
+                const col = document.getElementById('col-'+key);
+                col.classList.remove('leader-winner', 'ring-4', 'ring-indigo-200', 'shadow-lg', 'scale-105');
+                document.getElementById(key+'-count').textContent = '0';
+                document.getElementById(key+'-pct').textContent = '0%';
+            });
+            // destroy chart
+            if (charts['behaviorsChart']) { charts['behaviorsChart'].destroy(); charts['behaviorsChart'] = null; }
+        }
+
+        function aggregateAndRender(data) {
+            if (!data || data.length === 0) { clearView(); return; }
+
+            const total = data.length;
+            document.getElementById('total-survey').textContent = total;
+
+            // count no-feedback
+            const noFeedback = data.filter(d => !d.recibioFeedback).length;
+            document.getElementById('count-no-feedback').textContent = noFeedback;
+
+            // mobility yes count
+            const movSi = data.filter(d => String(d.movilidad).toLowerCase() === 'si').length;
+            document.getElementById('count-movilidad').textContent = movSi + ' (' + Math.round((movSi/total)*100) + '%)';
+
+            // behaviors: flatten and count
+            const behaviorCounts = {};
+            data.forEach(d => {
+                if (!Array.isArray(d.behaviors)) return;
+                d.behaviors.forEach(b => {
+                    behaviorCounts[b] = (behaviorCounts[b] || 0) + 1;
+                });
+            });
+
+            const behaviorLabels = Object.keys(behaviorCounts).sort((a,b)=>behaviorCounts[b]-behaviorCounts[a]);
+            const behaviorValues = behaviorLabels.map(l => behaviorCounts[l]);
+
+            // render behaviors chart (horizontal bars)
+            renderHorizontalBarChart('behaviorsChart', behaviorLabels, behaviorValues, 'Votos');
+
+            // leadership type counts (map behaviors to types)
+            const typeCounts = { 'Transaccional':0, 'Transformacional':0, 'Delegador':0 };
+            let totalBehaviorVotes = 0;
+            Object.entries(behaviorCounts).forEach(function(pair){
+                const behavior = pair[0];
+                const cnt = pair[1];
+                totalBehaviorVotes += cnt;
+                const t = behaviorToType[behavior] || 'Transformacional'; // default
+                typeCounts[t] = (typeCounts[t]||0) + cnt;
+            });
+
+            // compute percentages and highlight winner
+            const types = ['Transaccional','Transformacional','Delegador'];
+            let winner = types[0];
+            types.forEach(function(t){ if (typeCounts[t] > typeCounts[winner]) winner = t; });
+
+            types.forEach(function(t){
+                const key = t.toLowerCase();
+                const count = typeCounts[t] || 0;
+                const pct = totalBehaviorVotes>0 ? Math.round((count/totalBehaviorVotes)*100) : 0;
+                document.getElementById(key+'-count').textContent = count;
+                document.getElementById(key+'-pct').textContent = pct + '%';
+                // styling winner
+                const col = document.getElementById('col-'+key);
+                col.classList.remove('leader-winner', 'ring-4', 'ring-indigo-200', 'shadow-lg', 'scale-105');
+                if (t === winner) {
+                    col.classList.add('leader-winner', 'ring-4', 'ring-indigo-200', 'shadow-lg', 'scale-105', 'transform');
+                }
+            });
+
+            // competencies: fortalezas and desarrollos
+            const fortMap = {};
+            const devMap = {};
+            data.forEach(d => {
+                if (d.fortaleza) fortMap[d.fortaleza] = (fortMap[d.fortaleza]||0)+1;
+                if (d.desarrollo) devMap[d.desarrollo] = (devMap[d.desarrollo]||0)+1;
+            });
+
+            const topFort = Object.entries(fortMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+            const topDev = Object.entries(devMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+
+            const fortList = document.getElementById('top-fortalezas');
+            fortList.innerHTML = '';
+            if (topFort.length===0) {
+                fortList.innerHTML = '<div class="text-gray-500 text-center py-4 text-sm">Sin datos disponibles</div>';
+            } else {
+                topFort.forEach(function(item, index){
+                    var pct = Math.round((item[1]/total)*100);
+                    var div = document.createElement('div');
+                    div.className = 'flex items-center justify-between bg-white p-3 rounded-lg border border-green-200 hover:shadow-sm transition-shadow';
+                    div.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">${index + 1}</span>
+                            <span class="font-medium text-gray-800">${item[0]}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">${item[1]} votos</span>
+                            <span class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">${pct}%</span>
+                        </div>
+                    `;
+                    fortList.appendChild(div);
+                });
+            }
+
+            const devList = document.getElementById('top-desarrollos');
+            devList.innerHTML = '';
+            if (topDev.length===0) {
+                devList.innerHTML = '<div class="text-gray-500 text-center py-4 text-sm">Sin datos disponibles</div>';
+            } else {
+                topDev.forEach(function(item, index){
+                    var pct = Math.round((item[1]/total)*100);
+                    var div = document.createElement('div');
+                    div.className = 'flex items-center justify-between bg-white p-3 rounded-lg border border-amber-200 hover:shadow-sm transition-shadow';
+                    div.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">${index + 1}</span>
+                            <span class="font-medium text-gray-800">${item[0]}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded-full text-xs font-semibold">${item[1]} votos</span>
+                            <span class="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-bold">${pct}%</span>
+                        </div>
+                    `;
+                    devList.appendChild(div);
+                });
+            }
+
+            // avg behaviors per person
+            var totalBehVotes = 0;
+            Object.values(behaviorCounts).forEach(function(v){ totalBehVotes += v; });
+            const avgBeh = total>0 ? (totalBehVotes/total).toFixed(2) : 0;
+            document.getElementById('avg-behaviors').textContent = avgBeh;
+        }
+
+        // render a simple bar chart using Chart.js (horizontal bars)
+        function renderHorizontalBarChart(domId, labels, values, labelX) {
+            const ctx = document.getElementById(domId).getContext('2d');
+            if (charts[domId]) charts[domId].destroy();
+            charts[domId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: labelX, data: values, backgroundColor: 'rgba(79,70,229,0.85)' }]
+                },
+                options: {
+                    indexAxis: 'y', // horizontal bars
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { ticks: { autoSkip:false, maxRotation:0, minRotation:0 }, grid: { display:false } },
+                        x: { beginAtZero:true, grid:{color:'rgba(0,0,0,0.04)'} }
+                    }
+                }
+            });
+        }
+
+        // ----------------- Se cambió la lógica inicial -----------------
+        // Ahora, al cargar la página, se inicializa la vista con los datos de ejemplo.
+        // El event listener del botón simplemente procesa lo que haya en el textarea.
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle instructions
+            document.getElementById('toggle-instructions')?.addEventListener('click', () => {
+                const content = document.getElementById('instructions-content');
+                content.classList.toggle('hidden');
+            });
+            
+            // Renderiza la vista con los datos de ejemplo
+            aggregateAndRender(sampleData);
+        });
+    </script>
+<script>
+// ONA Panel Logic
+document.addEventListener('DOMContentLoaded', () => {
+  // Sample ONA data - Realistic organizational network
+  const sampleONAData = [
+    // Ana Martínez - Líder natural, muy consultada
+    {"pregunta": "consejo", "from_legajo": "Carlos.R", "to_legajo": "Ana.Martinez", "weight": 3},
+    {"pregunta": "colaboracion", "from_legajo": "Sofia.L", "to_legajo": "Ana.Martinez", "weight": 3},
+    {"pregunta": "inspiracion", "from_legajo": "Diego.P", "to_legajo": "Ana.Martinez", "weight": 2},
+    {"pregunta": "consejo", "from_legajo": "Laura.G", "to_legajo": "Ana.Martinez", "weight": 3},
+    
+    // Carlos Rodríguez - Conector entre equipos
+    {"pregunta": "colaboracion", "from_legajo": "Ana.Martinez", "to_legajo": "Carlos.R", "weight": 2},
+    {"pregunta": "consejo", "from_legajo": "Sofia.L", "to_legajo": "Carlos.R", "weight": 2},
+    {"pregunta": "colaboracion", "from_legajo": "Carlos.R", "to_legajo": "Diego.P", "weight": 3},
+    {"pregunta": "colaboracion", "from_legajo": "Carlos.R", "to_legajo": "Maria.S", "weight": 2},
+    
+    // Sofia López - Especialista técnica
+    {"pregunta": "consejo", "from_legajo": "Diego.P", "to_legajo": "Sofia.L", "weight": 3},
+    {"pregunta": "colaboracion", "from_legajo": "Maria.S", "to_legajo": "Sofia.L", "weight": 2},
+    {"pregunta": "inspiracion", "from_legajo": "Luis.M", "to_legajo": "Sofia.L", "weight": 2},
+    
+    // Conexiones adicionales para crear una red rica
+    {"pregunta": "colaboracion", "from_legajo": "Diego.P", "to_legajo": "Laura.G", "weight": 2},
+    {"pregunta": "consejo", "from_legajo": "Maria.S", "to_legajo": "Laura.G", "weight": 1},
+    {"pregunta": "inspiracion", "from_legajo": "Laura.G", "to_legajo": "Luis.M", "weight": 2},
+    
+    // Roberto.T como nodo menos conectado
+    {"pregunta": "colaboracion", "from_legajo": "Roberto.T", "to_legajo": "Carlos.R", "weight": 1}
+  ];
+  
+  // Mapping names for better display
+  const nameMap = {
+    'Ana.Martinez': 'Ana Martínez',
+    'Carlos.R': 'Carlos Rodríguez', 
+    'Sofia.L': 'Sofía López',
+    'Diego.P': 'Diego Pérez',
+    'Laura.G': 'Laura García',
+    'Maria.S': 'María Sánchez',
+    'Luis.M': 'Luis Morales',
+    'Roberto.T': 'Roberto Torres'
+  };
+
+  function computeONA(flatEdges) {
+    const nodes = new Set();
+    const inW = new Map();
+    const outW = new Map();
+    const deg = new Map();
+    const betweenness = new Map();
+    let m = 0;
+    
+    flatEdges.forEach(e => {
+      const u = String(e.from_legajo), v = String(e.to_legajo), w = Number(e.weight || 1);
+      if (!u || !v) return;
+      nodes.add(u); nodes.add(v);
+      inW.set(v, (inW.get(v)||0) + w);
+      outW.set(u, (outW.get(u)||0) + w);
+      deg.set(u, (deg.get(u)||0) + 1);
+      deg.set(v, (deg.get(v)||0) + 1);
+      m++;
+    });
+    
+    const n = nodes.size;
+    const density = (n > 1) ? (m / (n * (n - 1))) : 0;
+    const top = [...inW.entries()].sort((a,b) => b[1]-a[1]).slice(0,3).map(([id,score]) => ({ id, score }));
+    const bridges = [...outW.entries()].filter(([id,score]) => score >= 2).sort((a,b) => b[1]-a[1]).slice(0,4).map(([id,score]) => ({ id, score }));
+    const isolates = [...nodes].filter(id => (deg.get(id)||0) <= 1);
+    const components = Math.max(1, Math.ceil(n / 4)); // Simplified component calculation
+    
+    return { n, m, density, top, bridges, isolates, components };
+  }
+  
+  function renderONA(stats) {
+    // Density with interpretation
+    const densityPct = (stats.density * 100).toFixed(1);
+    document.getElementById('ona-density').textContent = `${densityPct}%`;
+    document.getElementById('ona-nodes').textContent = stats.n;
+    document.getElementById('ona-edges').textContent = stats.m;
+    
+    // Top influencers with visual ranking
+    const topDiv = document.getElementById('ona-top');
+    const medals = ['🥇', '🥈', '🥉'];
+    topDiv.innerHTML = stats.top.map((t, i) => {
+      const name = nameMap[t.id] || t.id;
+      const medal = medals[i] || '🏅';
+      return `
+        <div class="flex items-center justify-between bg-gradient-to-r from-yellow-50 to-orange-50 p-2 rounded border-l-4 border-yellow-400">
+          <div class="flex items-center">
+            <span class="mr-2">${medal}</span>
+            <span class="font-semibold text-gray-800">${name}</span>
+          </div>
+          <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-bold">${t.score} pts</span>
+        </div>
+      `;
+    }).join('') || '<div class="text-gray-500 text-center py-2">Sin datos disponibles</div>';
+    
+    // Strategic connectors
+    const bridgesDiv = document.getElementById('ona-bridges');
+    bridgesDiv.innerHTML = stats.bridges.map(b => {
+      const name = nameMap[b.id] || b.id;
+      return `<span class="inline-flex items-center bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium mr-1 mb-1">
+        <span class="w-2 h-2 bg-purple-400 rounded-full mr-1"></span>
+        ${name}
+      </span>`;
+    }).join('') || '<span class="text-gray-500 text-xs">Red bien distribuida</span>';
+    
+    // Generate insights
+    const insights = [];
+    if (stats.density > 0.3) insights.push('🟢 Red altamente conectada - excelente flujo de información');
+    else if (stats.density > 0.15) insights.push('🟡 Red moderadamente conectada - oportunidades de mejora');
+    else insights.push('🔴 Red poco conectada - considerar iniciativas de integración');
+    
+    if (stats.top.length > 0) {
+      const topName = nameMap[stats.top[0].id] || stats.top[0].id;
+      insights.push(`⭐ ${topName} es el líder de influencia principal`);
+    }
+    
+    if (stats.bridges.length > 2) insights.push('🔗 Múltiples conectores estratégicos identificados');
+    if (stats.isolates.length === 0) insights.push('✅ Todos los miembros están integrados en la red');
+    
+    const insightsDiv = document.getElementById('ona-insights');
+    insightsDiv.innerHTML = insights.map(insight => `<div>${insight}</div>`).join('');
+  }
+  
+  function loadFromLS() {
+    const raw = localStorage.getItem('edges');
+    if (!raw) { alert('No hay edges en LocalStorage'); return; }
+    try {
+      const flat = JSON.parse(raw);
+      renderONA(computeONA(flat));
+    } catch (e) { console.error(e); alert('Error leyendo edges de LS'); }
+  }
+  
+  function loadSampleONA() {
+    renderONA(computeONA(sampleONAData));
+  }
+  
+  // Event listeners
+  document.getElementById('load-edges-ls')?.addEventListener('click', loadFromLS);
+  document.getElementById('load-sample-ona')?.addEventListener('click', loadSampleONA);
+  document.getElementById('edges-file')?.addEventListener('change', (e) => {
+    const f = e.target.files?.[0]; if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const flat = JSON.parse(String(reader.result||'[]'));
+        renderONA(computeONA(flat));
+      } catch (err) { console.error(err); alert('JSON inválido'); }
+    };
+    reader.readAsText(f);
+  });
+  
+  // Toggle advanced options
+  document.getElementById('toggle-ona-advanced')?.addEventListener('click', () => {
+    const content = document.getElementById('ona-advanced-content');
+    content.classList.toggle('hidden');
+  });
+  
+  // Load sample ONA data on page load
+  loadSampleONA();
+});
+</script>     <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+        <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
+    </div>
+</body>
+</html>

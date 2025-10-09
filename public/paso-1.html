@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definición de Objetivos - Banco Nación</title>
+    <!-- Incluye el CDN de Tailwind CSS para un estilo moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+        }
+
+        /* Estilo de los dropdowns */
+        select,
+        textarea {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+<link rel="stylesheet" href="assets/apple.css">
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Contenedor principal -->
+        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-5xl border border-white/20 overflow-hidden">
+            <!-- Header Section -->
+            <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+                <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+                <div class="relative z-10">
+                    <div class="mb-6">
+                        <a href="index.html" class="inline-flex items-center transition-colors group" style="color: white !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            Volver al Menú Principal
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl mb-4">
+                            <span class="text-3xl">🎯</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Definición de Objetivos
+                        </h1>
+                        <p class="text-sm opacity-70">
+                            Primer Semestre • Evaluación por Objetivos
+                        </p>
+                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-sm font-medium">📊 Paso 1 de 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Content -->
+            <div class="p-3 sm:p-4 space-y-4 bg-gray-800">
+
+        <!-- Formulario de definición de objetivos -->
+        <form id="objetivos-form" class="space-y-4">
+
+                <!-- Sección de Selección de Empleado -->
+                <section class="bg-gradient-to-br from-indigo-50 to-purple-50 p-3 rounded-lg border border-indigo-200">
+                    <h2 class="text-base font-bold text-gray-800 mb-3 flex items-center">
+                        <span class="text-indigo-500 mr-3">🔍</span> Seleccionar Empleado a Evaluar
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-gray-700 flex items-center">
+                                <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                                Empleado
+                            </label>
+                            <select id="employee-select" class="w-full p-4 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                                <option value="" disabled selected>Seleccione un empleado</option>
+                                <option value="12345|Martínez, Ana|Analista de Desempeño|Analista SR">👩‍💼 Martínez, Ana - Analista de Desempeño</option>
+                                <option value="12346|Rodríguez, Carlos|Especialista en RRHH|Especialista SR">👨‍💼 Rodríguez, Carlos - Especialista en RRHH</option>
+                                <option value="12347|López, Sofía|Coordinadora de Talento|Coordinadora">👩‍💼 López, Sofía - Coordinadora de Talento</option>
+                                <option value="12348|Pérez, Diego|Analista de Compensaciones|Analista JR">👨‍💼 Pérez, Diego - Analista de Compensaciones</option>
+                                <option value="12349|García, Laura|Gerente de Desarrollo|Gerente">👩‍💼 García, Laura - Gerente de Desarrollo</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección de Datos del Evaluado -->
+                <section id="employee-info" class="bg-gradient-to-br from-gray-50 to-gray-100 p-3 rounded-lg border border-gray-200/50 hidden">
+                    <h2 class="text-base font-bold text-gray-800 mb-3 flex items-center">
+                        <span class="text-emerald-500 mr-3">👤</span> Información del Evaluado
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-white p-4 rounded-xl border border-gray-200">
+                            <span class="text-sm font-semibold text-gray-600 flex items-center mb-2">
+                                <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                                Legajo
+                            </span>
+                            <p id="employee-legajo" class="text-lg font-bold text-gray-800">-</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200">
+                            <span class="text-sm font-semibold text-gray-600 flex items-center mb-2">
+                                <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                                Cargo
+                            </span>
+                            <p id="employee-cargo" class="text-lg font-bold text-gray-800">-</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200">
+                            <span class="text-sm font-semibold text-gray-600 flex items-center mb-2">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                Apellido y Nombre
+                            </span>
+                            <p id="employee-nombre" class="text-lg font-bold text-gray-800">-</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200">
+                            <span class="text-sm font-semibold text-gray-600 flex items-center mb-2">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
+                                Posición
+                            </span>
+                            <p id="employee-posicion" class="text-lg font-bold text-gray-800">-</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección Pilar I: Gestión por Objetivos -->
+                <section class="space-y-4">
+                    <div class="text-center">
+                        <h2 class="text-base font-bold text-white mb-2 flex items-center justify-center">
+                            <span class="text-amber-500 mr-3">🎯</span> Definición de Objetivos SMART
+                        </h2>
+                        <p class="text-white max-w-3xl mx-auto">
+                            Define tus objetivos siguiendo la metodología SMART para asegurar claridad y medibilidad en tus metas profesionales.
+                        </p>
+                    </div>
+
+                    <!-- Instrucciones del Proceso -->
+                    <div class="bg-gray-300 p-2 rounded-lg border border-gray-400">
+                        <h3 class="text-xs font-bold text-black mb-1 flex items-center">
+                            <span class="text-amber-500 mr-2">📋</span> Instrucciones para el Evaluador
+                        </h3>
+                        <div class="text-xs text-black space-y-1">
+                            <p class="font-medium">Esta es la primera etapa del proceso de evaluación 360°:</p>
+                            <div class="space-y-1">
+                                <div class="flex items-start">
+                                    <span class="w-1 h-1 bg-black rounded-full mt-1 mr-2 flex-shrink-0"></span>
+                                    <span><strong>Seleccione</strong> al empleado que va a evaluar del listado disponible</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="w-1 h-1 bg-black rounded-full mt-1 mr-2 flex-shrink-0"></span>
+                                    <span><strong>Defina 4 objetivos SMART</strong> alineados con las metas organizacionales</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="w-1 h-1 bg-black rounded-full mt-1 mr-2 flex-shrink-0"></span>
+                                    <span><strong>Asigne cada objetivo</strong> a un nodo de la matriz de aportes (Procesos, Equipo, Cliente, Autosuperación)</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="w-1 h-1 bg-black rounded-full mt-1 mr-2 flex-shrink-0"></span>
+                                    <span><strong>Confirme</strong> los objetivos para continuar con el proceso de evaluación</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de 4 objetivos fijos -->
+                    <div class="space-y-4" id="objetivos-container">
+                        <!-- Objetivo 1 -->
+                        <div class="bg-gradient-to-br from-white to-gray-50 p-2 rounded-lg shadow border border-gray-200/50 hover:shadow-lg transition-all duration-300">
+                            <div class="flex items-center mb-2">
+                                <div class="w-5 h-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded flex items-center justify-center text-white font-bold text-xs mr-2">
+                                    1
+                                </div>
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-800">Objetivo Principal</h3>
+                                    <p class="text-xs text-gray-600">Primer objetivo estratégico</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-blue-500 rounded-full mr-1"></span>
+                                        Nodo (Matriz de Aportes)
+                                    </label>
+                                    <select name="nodo_1" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-xs">
+                                        <option value="" disabled selected>Seleccione un nodo</option>
+                                        <option value="procesos">🔄 Procesos</option>
+                                        <option value="equipo">👥 Equipo</option>
+                                        <option value="cliente">🎯 Cliente</option>
+                                        <option value="autosuperacion">📈 Autosuperación</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-emerald-500 rounded-full mr-1"></span>
+                                        Definición del Objetivo (SMART)
+                                    </label>
+                                    <textarea name="objetivo_1" rows="3" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-xs" placeholder="Escriba aquí su objetivo siguiendo la metodología SMART (Específico, Medible, Alcanzable, Relevante, Temporal)"></textarea>
+                                    <div class="flex items-center text-xs text-gray-500 mt-1">
+                                        <span class="bg-gray-100 px-1 py-0.5 rounded mr-1 text-xs">💡 Tip:</span>
+                                        <span>Use verbos de acción y métricas específicas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Objetivo 2 -->
+                        <div class="bg-gradient-to-br from-white to-gray-50 p-2 rounded-lg shadow border border-gray-200/50 hover:shadow-lg transition-all duration-300">
+                            <div class="flex items-center mb-2">
+                                <div class="w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-600 rounded flex items-center justify-center text-white font-bold text-xs mr-2">
+                                    2
+                                </div>
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-800">Objetivo Secundario</h3>
+                                    <p class="text-xs text-gray-600">Segundo objetivo estratégico</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-purple-500 rounded-full mr-1"></span>
+                                        Nodo (Matriz de Aportes)
+                                    </label>
+                                    <select name="nodo_2" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-xs">
+                                        <option value="" disabled selected>Seleccione un nodo</option>
+                                        <option value="procesos">🔄 Procesos</option>
+                                        <option value="equipo">👥 Equipo</option>
+                                        <option value="cliente">🎯 Cliente</option>
+                                        <option value="autosuperacion">📈 Autosuperación</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-emerald-500 rounded-full mr-1"></span>
+                                        Definición del Objetivo (SMART)
+                                    </label>
+                                    <textarea name="objetivo_2" rows="3" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-xs" placeholder="Escriba aquí su objetivo siguiendo la metodología SMART"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Objetivo 3 -->
+                        <div class="bg-gradient-to-br from-white to-gray-50 p-2 rounded-lg shadow border border-gray-200/50 hover:shadow-lg transition-all duration-300">
+                            <div class="flex items-center mb-2">
+                                <div class="w-5 h-5 bg-gradient-to-br from-emerald-500 to-teal-600 rounded flex items-center justify-center text-white font-bold text-xs mr-2">
+                                    3
+                                </div>
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-800">Objetivo de Desarrollo</h3>
+                                    <p class="text-xs text-gray-600">Tercer objetivo estratégico</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-emerald-500 rounded-full mr-1"></span>
+                                        Nodo (Matriz de Aportes)
+                                    </label>
+                                    <select name="nodo_3" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all text-xs">
+                                        <option value="" disabled selected>Seleccione un nodo</option>
+                                        <option value="procesos">🔄 Procesos</option>
+                                        <option value="equipo">👥 Equipo</option>
+                                        <option value="cliente">🎯 Cliente</option>
+                                        <option value="autosuperacion">📈 Autosuperación</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-emerald-500 rounded-full mr-1"></span>
+                                        Definición del Objetivo (SMART)
+                                    </label>
+                                    <textarea name="objetivo_3" rows="3" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-xs" placeholder="Escriba aquí su objetivo siguiendo la metodología SMART"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Objetivo 4 -->
+                        <div class="bg-gradient-to-br from-white to-gray-50 p-2 rounded-lg shadow border border-gray-200/50 hover:shadow-lg transition-all duration-300">
+                            <div class="flex items-center mb-2">
+                                <div class="w-5 h-5 bg-gradient-to-br from-amber-500 to-orange-600 rounded flex items-center justify-center text-white font-bold text-xs mr-2">
+                                    4
+                                </div>
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-800">Objetivo de Innovación</h3>
+                                    <p class="text-xs text-gray-600">Cuarto objetivo estratégico</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-amber-500 rounded-full mr-1"></span>
+                                        Nodo (Matriz de Aportes)
+                                    </label>
+                                    <select name="nodo_4" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-xs">
+                                        <option value="" disabled selected>Seleccione un nodo</option>
+                                        <option value="procesos">🔄 Procesos</option>
+                                        <option value="equipo">👥 Equipo</option>
+                                        <option value="cliente">🎯 Cliente</option>
+                                        <option value="autosuperacion">📈 Autosuperación</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-gray-700 flex items-center">
+                                        <span class="w-1 h-1 bg-emerald-500 rounded-full mr-1"></span>
+                                        Definición del Objetivo (SMART)
+                                    </label>
+                                    <textarea name="objetivo_4" rows="3" class="w-full p-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none text-xs" placeholder="Escriba aquí su objetivo siguiendo la metodología SMART"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botón de acción -->
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12">
+                        <button type="submit" class="group relative px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-2xl hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            <span class="flex items-center justify-center">
+                                <span class="mr-2">💾</span>
+                                Confirmar Objetivos
+                                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </section>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje de éxito o error (oculto por defecto) -->
+    <div id="message-box" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-white/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl text-center space-y-6 border border-white/20 max-w-md mx-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto">
+                <span class="text-3xl text-white">✅</span>
+            </div>
+            <p id="message-text" class="text-lg font-semibold text-gray-800"></p>
+            <button id="message-close-btn" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg">Continuar</button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de JavaScript para manejar el formulario y la interactividad
+
+        const form = document.getElementById('objetivos-form');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const messageCloseBtn = document.getElementById('message-close-btn');
+
+        // Lógica para manejar la selección de empleado
+        const employeeSelect = document.getElementById('employee-select');
+        const employeeInfo = document.getElementById('employee-info');
+        
+        employeeSelect.addEventListener('change', function() {
+            if (this.value) {
+                const [legajo, nombre, cargo, posicion] = this.value.split('|');
+                
+                document.getElementById('employee-legajo').textContent = legajo;
+                document.getElementById('employee-nombre').textContent = nombre;
+                document.getElementById('employee-cargo').textContent = cargo;
+                document.getElementById('employee-posicion').textContent = posicion;
+                
+                employeeInfo.classList.remove('hidden');
+            } else {
+                employeeInfo.classList.add('hidden');
+            }
+        });
+
+        // Lógica de validación del formulario al enviarlo
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Verificar que se haya seleccionado un empleado
+            if (!employeeSelect.value) {
+                messageText.textContent = 'Por favor, seleccione un empleado antes de continuar.';
+                messageBox.classList.remove('hidden');
+                return;
+            }
+
+            let allFieldsFilled = true;
+            const fields = form.querySelectorAll('select, textarea');
+
+            fields.forEach(field => {
+                if (field.value.trim() === '' || field.value === null) {
+                    allFieldsFilled = false;
+                }
+            });
+
+            if (allFieldsFilled) {
+                // Guardar el legajo del empleado seleccionado en localStorage
+                const selectedLegajo = employeeSelect.value.split('|')[0];
+                localStorage.setItem('current_user_legajo', selectedLegajo);
+                messageText.textContent = '¡Objetivos confirmados con éxito! Ahora puede continuar con la siguiente etapa del proceso.';
+                messageBox.classList.remove('hidden');
+            } else {
+                messageText.textContent = 'Por favor, complete todos los campos obligatorios antes de confirmar.';
+                messageBox.classList.remove('hidden');
+            }
+        });
+
+        // Lógica para cerrar el mensaje de confirmación
+        messageCloseBtn.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+        });
+    </script>
+    <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+        <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
+    </div>
+</body>
+
+</html>
