@@ -82,30 +82,31 @@
                     </div>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-white/20">
-                    <h3 class="font-semibold mb-4 text-gray-800 flex items-center">
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-3 sm:p-6 mb-4 sm:mb-6 border border-white/20">
+                    <h3 class="font-semibold mb-3 sm:mb-4 text-gray-800 flex items-center text-sm sm:text-base">
                         <span class="text-purple-500 mr-2">📊</span> Comportamientos Más Valorados
                     </h3>
-                    <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 mb-4 shadow-inner border border-gray-100">
-                        <div style="height:340px;">
-                            <canvas id="behaviorsChart" height="300"></canvas>
+                    <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-3 sm:p-6 mb-3 sm:mb-4 shadow-inner border border-gray-100">
+                        <div class="h-48 sm:h-80">
+                            <canvas id="behaviorsChart"></canvas>
                         </div>
                     </div>
-                    <div class="flex items-center text-sm text-gray-600 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-100">
+                    <div class="flex items-center text-xs sm:text-sm text-gray-600 bg-gradient-to-r from-blue-50 to-indigo-50 p-2 sm:p-3 rounded-xl border border-blue-100">
                         <span class="text-blue-500 mr-2">💡</span>
-                        <span>Frecuencia de menciones por comportamiento de liderazgo observado</span>
+                        <span class="hidden sm:inline">Frecuencia de menciones por comportamiento de liderazgo observado</span>
+                        <span class="sm:hidden">Frecuencia de menciones</span>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-green-200">
-                        <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-3 sm:p-4 border border-green-200">
+                        <h4 class="text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 flex items-center">
                             <span class="text-green-500 mr-2">⭐</span> Fortalezas Identificadas
                         </h4>
                         <div id="top-fortalezas" class="space-y-1"></div>
                     </div>
-                    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-amber-200">
-                        <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-3 sm:p-4 border border-amber-200">
+                        <h4 class="text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 flex items-center">
                             <span class="text-amber-500 mr-2">🎯</span> Áreas de Desarrollo
                         </h4>
                         <div id="top-desarrollos" class="space-y-1"></div>
@@ -138,64 +139,64 @@
                 </div>
 
                 <div class="card">
-                    <div class="mb-4">
+                    <div class="mb-3 sm:mb-4">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-800">🌐 Análisis de Red Organizacional</h2>
-                            <p id="ona-legend" class="text-xs text-gray-600 mt-1">Conjunto de personas y vínculos que representan flujos de colaboración, consulta e inspiración.</p>
+                            <h2 class="text-sm sm:text-lg font-bold text-gray-800">🌐 Análisis de Red Organizacional</h2>
+                            <p id="ona-legend" class="text-xs text-gray-600 mt-1 hidden sm:block">Conjunto de personas y vínculos que representan flujos de colaboración, consulta e inspiración.</p>
                         </div>
 
                     </div>
                     
                     <!-- Métricas principales -->
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-3 rounded-lg">
-                            <div class="text-xs text-blue-600 font-medium">DENSIDAD DE RED</div>
-                            <div class="text-lg font-bold text-blue-800" id="ona-density">—</div>
-                            <div class="text-xs text-blue-600">Conectividad general</div>
+                    <div class="grid grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-2 sm:p-3 rounded-lg">
+                            <div class="text-xs text-blue-600 font-medium">DENSIDAD</div>
+                            <div class="text-sm sm:text-lg font-bold text-blue-800" id="ona-density">—</div>
+                            <div class="text-xs text-blue-600 hidden sm:block">Conectividad general</div>
                         </div>
-                        <div class="bg-gradient-to-r from-green-50 to-green-100 p-3 rounded-lg">
-                            <div class="text-xs text-green-600 font-medium">COLABORADORES</div>
-                            <div class="text-lg font-bold text-green-800">
-                                <span id="ona-nodes">—</span> personas
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 p-2 sm:p-3 rounded-lg">
+                            <div class="text-xs text-green-600 font-medium">PERSONAS</div>
+                            <div class="text-sm sm:text-lg font-bold text-green-800">
+                                <span id="ona-nodes">—</span><span class="hidden sm:inline"> personas</span>
                             </div>
                             <div class="text-xs text-green-600"><span id="ona-edges">—</span> conexiones</div>
                         </div>
                     </div>
                     
                     <!-- Top Influencers -->
-                    <div class="mb-4">
-                        <h3 class="font-semibold mb-2 text-sm text-gray-800 flex items-center">
+                    <div class="mb-3 sm:mb-4">
+                        <h3 class="font-semibold mb-1 sm:mb-2 text-xs sm:text-sm text-gray-800 flex items-center">
                             <span class="text-yellow-500 mr-1">👑</span> Líderes de Influencia
                         </h3>
-                        <p class="text-xs text-gray-500 mb-2">Personas más consultadas y referenciadas por el equipo para consejos e inspiración</p>
+                        <p class="text-xs text-gray-500 mb-2 hidden sm:block">Personas más consultadas y referenciadas por el equipo para consejos e inspiración</p>
                         <div id="ona-top" class="space-y-1"></div>
                     </div>
                     
                     <!-- Conectores clave -->
-                    <div class="mb-4">
-                        <h3 class="font-semibold mb-2 text-sm text-gray-800 flex items-center">
+                    <div class="mb-3 sm:mb-4">
+                        <h3 class="font-semibold mb-1 sm:mb-2 text-xs sm:text-sm text-gray-800 flex items-center">
                             <span class="text-purple-500 mr-1">🔗</span> Conectores Estratégicos
                         </h3>
-                        <p class="text-xs text-gray-500 mb-2">Personas que vinculan diferentes grupos y facilitan el flujo de información entre áreas</p>
+                        <p class="text-xs text-gray-500 mb-2 hidden sm:block">Personas que vinculan diferentes grupos y facilitan el flujo de información entre áreas</p>
                         <div id="ona-bridges" class="flex flex-wrap gap-1"></div>
                     </div>
                     
                     <!-- Insights -->
-                    <div class="bg-gray-50 p-3 rounded-lg">
-                        <h3 class="font-semibold mb-2 text-sm text-gray-800 flex items-center">
+                    <div class="bg-gray-50 p-2 sm:p-3 rounded-lg">
+                        <h3 class="font-semibold mb-1 sm:mb-2 text-xs sm:text-sm text-gray-800 flex items-center">
                             <span class="text-orange-500 mr-1">💡</span> Insights Clave
                         </h3>
                         <div id="ona-insights" class="text-xs text-gray-600 space-y-1"></div>
                     </div>
                     
                     <!-- Opciones avanzadas -->
-                    <div class="mt-3">
-                        <button id="toggle-ona-advanced" class="text-xs text-gray-400 hover:text-gray-600 underline">⚙️ Opciones avanzadas</button>
+                    <div class="mt-2 sm:mt-3">
+                        <button id="toggle-ona-advanced" class="text-xs text-gray-400 hover:text-gray-600 underline">⚙️ Opciones</button>
                         <div id="ona-advanced-content" class="hidden mt-2 flex gap-1">
                             <input id="edges-file" type="file" accept=".json" class="text-xs" style="display:none" />
-                            <button onclick="document.getElementById('edges-file').click()" class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200">📁</button>
-                            <button id="load-edges-ls" class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200">💾</button>
-                            <button id="load-sample-ona" class="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">🎯 Demo</button>
+                            <button onclick="document.getElementById('edges-file').click()" class="px-1 sm:px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200">📁</button>
+                            <button id="load-edges-ls" class="px-1 sm:px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200">💾</button>
+                            <button id="load-sample-ona" class="px-1 sm:px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">🎯 Demo</button>
                         </div>
                     </div>
                 </div>
@@ -367,8 +368,12 @@
             const behaviorLabels = Object.keys(behaviorCounts).sort((a,b)=>behaviorCounts[b]-behaviorCounts[a]);
             const behaviorValues = behaviorLabels.map(l => behaviorCounts[l]);
 
-            // render behaviors chart (horizontal bars)
-            renderHorizontalBarChart('behaviorsChart', behaviorLabels, behaviorValues, 'Votos');
+            // render behaviors chart (horizontal bars) - limit items on mobile
+            const isMobile = window.innerWidth < 640;
+            const maxItems = isMobile ? 5 : behaviorLabels.length;
+            const displayLabels = behaviorLabels.slice(0, maxItems);
+            const displayValues = behaviorValues.slice(0, maxItems);
+            renderHorizontalBarChart('behaviorsChart', displayLabels, displayValues, 'Votos');
 
             // leadership type counts (map behaviors to types)
             const typeCounts = { 'Transaccional':0, 'Transformacional':0, 'Delegador':0 };
@@ -468,20 +473,42 @@
         function renderHorizontalBarChart(domId, labels, values, labelX) {
             const ctx = document.getElementById(domId).getContext('2d');
             if (charts[domId]) charts[domId].destroy();
+            const isMobile = window.innerWidth < 640;
             charts[domId] = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
+                    labels: labels.map(l => isMobile ? l.substring(0, 30) + '...' : l),
                     datasets: [{ label: labelX, data: values, backgroundColor: 'rgba(79,70,229,0.85)' }]
                 },
                 options: {
-                    indexAxis: 'y', // horizontal bars
+                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { 
+                            callbacks: {
+                                title: function(context) {
+                                    return labels[context[0].dataIndex];
+                                }
+                            }
+                        }
+                    },
                     scales: {
-                        y: { ticks: { autoSkip:false, maxRotation:0, minRotation:0 }, grid: { display:false } },
-                        x: { beginAtZero:true, grid:{color:'rgba(0,0,0,0.04)'} }
+                        y: { 
+                            ticks: { 
+                                autoSkip: false, 
+                                maxRotation: 0, 
+                                minRotation: 0,
+                                font: { size: isMobile ? 10 : 12 }
+                            }, 
+                            grid: { display: false } 
+                        },
+                        x: { 
+                            beginAtZero: true, 
+                            grid: { color: 'rgba(0,0,0,0.04)' },
+                            ticks: { font: { size: isMobile ? 10 : 12 } }
+                        }
                     }
                 }
             });
