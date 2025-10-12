@@ -21,49 +21,49 @@
 <link rel="stylesheet" href="assets/apple.css">
 </head>
 <body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
-    <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="min-h-screen p-2 sm:flex sm:items-center sm:justify-center sm:p-4">
         <!-- Contenedor principal -->
-        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-7xl border border-white/20 overflow-hidden">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-7xl border border-white/20 overflow-hidden">
             <!-- Header Section -->
-            <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+            <div class="p-4 sm:p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
                 <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
                 <div class="relative z-10">
-                    <div class="mb-6">
+                    <div class="mb-4 sm:mb-6">
                         <a href="index.html" class="inline-flex items-center transition-colors group" style="color: white !important;">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:-translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                             </svg>
-                            Volver al Menú Principal
+                            <span class="text-sm sm:text-base">Volver al Menú Principal</span>
                         </a>
                     </div>
                     <div class="text-center">
-                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        <h1 class="text-lg sm:text-xl md:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                             Vista del Líder — Resultados del Relevamiento
                         </h1>
-                        <div class="mt-4">
+                        <div class="mt-3 sm:mt-4">
                             <button id="toggle-instructions" class="text-xs text-white/70 hover:text-white underline">ℹ️ Instrucciones</button>
-                            <p id="instructions-content" class="hidden text-sm text-white/80 mt-2">Panel final: pega el JSON con las respuestas y presiona <strong>Actualizar vista</strong>. (Diseño listo para uso).</p>
+                            <p id="instructions-content" class="hidden text-xs sm:text-sm text-white/80 mt-2">Panel final: pega el JSON con las respuestas y presiona <strong>Actualizar vista</strong>. (Diseño listo para uso).</p>
                         </div>
-                        <p class="text-sm text-white/80 mt-3 max-w-3xl mx-auto">
-                            Los resultados mostrados se basan en el relevamiento de evaluación que cada persona de su equipo completó en el paso anterior, reflejando su percepción sobre su liderazgo y cómo es su red de colaboración. Esta información le permitirá ajustar su estilo de liderazgo y comprender mejor las dinámicas de su equipo para optimizar la gestión.
+                        <p class="text-xs sm:text-sm text-white/80 mt-2 sm:mt-3 max-w-3xl mx-auto px-2 sm:px-0">
+                            Los resultados mostrados se basan en el relevamiento de evaluación que cada persona de su equipo completó en el paso anterior, reflejando su percepción sobre su liderazgo y cómo es su red de colaboración.
                         </p>
-                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                            <span class="text-sm font-medium">Paso 4 de 4</span>
+                        <div class="mt-3 sm:mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1 sm:py-2 rounded-full">
+                            <span class="text-xs sm:text-sm font-medium">Paso 4 de 4</span>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Content -->
-            <div class="p-6 bg-gray-800">
-        <div class="grid gap-6 lg:grid-cols-3">
-            <div class="lg:col-span-2 space-y-6">
+            <div class="p-3 sm:p-6 bg-gray-800">
+        <div class="grid gap-4 sm:gap-6 lg:grid-cols-3">
+            <div class="lg:col-span-2 space-y-4 sm:space-y-6">
 
-                <div class="card mb-6">
+                <div class="card mb-4 sm:mb-6">
                     <h3 class="font-semibold mb-4 text-gray-800 flex items-center">
                         <span class="text-indigo-500 mr-2">👑</span> Perfil de Liderazgo Predominante
                     </h3>
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                         <div id="col-transaccional" class="leader-col bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-4 text-center transition-all duration-300">
                             <div class="text-sm font-medium text-orange-700 mb-1">🎯 Transaccional</div>
                             <div id="transaccional-count" class="text-3xl font-bold text-orange-800 mb-1">0</div>
@@ -662,9 +662,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load sample ONA data on page load
   loadSampleONA();
 });
-</script>     <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+</script>     <div class="text-center text-xs text-gray-400 mt-4 p-2">
         <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
-        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
+        <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics</span>
     </div>
 </body>
 </html>
