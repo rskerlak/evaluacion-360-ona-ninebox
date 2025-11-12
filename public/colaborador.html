@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Evaluación - Colaborador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/apple.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <!-- Header -->
+    <div class="p-4 sm:p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+        <div class="relative z-10">
+
+            <div class="text-center">
+                <h1 class="text-lg sm:text-xl md:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Mi Evaluación y Desarrollo
+                </h1>
+                <p class="text-xs sm:text-sm text-white/80 mt-2 max-w-3xl mx-auto px-2 sm:px-0">
+                    Resumen de tu última evaluación, feedback recibido y plan de desarrollo personal
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto p-4 sm:p-6">
+        <div id="hasEvaluation" class="hidden">
+            <!-- Featured Feedback Card -->
+            <div class="mb-8">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl shadow-2xl border border-blue-200 overflow-hidden">
+                    <div class="p-6 sm:p-8 text-white">
+                        <div class="flex flex-col lg:flex-row items-center justify-between">
+                            <div class="text-center lg:text-left mb-6 lg:mb-0">
+                                <div class="flex items-center justify-center lg:justify-start mb-4">
+                                    <span class="text-4xl mr-3">💬</span>
+                                    <h2 class="text-2xl sm:text-3xl font-bold">Relevar Feedback 360°</h2>
+                                </div>
+                                <p class="text-blue-100 text-lg mb-4">
+                                    Comparte tu perspectiva sobre colaboración y relaciones organizacionales
+                                </p>
+                                <div class="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
+                                    <div class="flex items-center">
+                                        <span class="text-blue-200 mr-2">✓</span>
+                                        <span>Evaluación 360°</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-blue-200 mr-2">✓</span>
+                                        <span>Mapeo de relaciones</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-blue-200 mr-2">✓</span>
+                                        <span>Feedback estructurado</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <a href="paso-3.html" 
+                                   class="bg-white text-blue-600 hover:bg-blue-50 font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center text-lg">
+                                    <span class="text-2xl mr-3">💬</span>
+                                    Completar Feedback
+                                    <span class="ml-3">→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluation Summary -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-blue-500 mr-2">📊</span> Resumen de mi Última Evaluación
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
+                        <div class="text-3xl font-bold text-blue-600" id="avgScore">3.6</div>
+                        <div class="text-sm text-blue-700 font-medium">Puntaje Promedio</div>
+                        <div class="text-xs text-blue-600 mt-1">sobre 5.0</div>
+                    </div>
+                    <div class="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
+                        <div class="text-lg font-bold text-green-600" id="potentialLevel">En desarrollo</div>
+                        <div class="text-sm text-green-700 font-medium">Nivel de Potencial</div>
+                        <div class="text-xs text-green-600 mt-1">evaluación actual</div>
+                    </div>
+                    <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
+                        <div class="text-lg font-bold text-purple-600" id="leadershipStyle">Transformacional</div>
+                        <div class="text-sm text-purple-700 font-medium">Estilo Predominante</div>
+                        <div class="text-xs text-purple-600 mt-1">según feedback</div>
+                    </div>
+                </div>
+
+                <!-- Performance Breakdown -->
+                <div class="bg-gray-50 rounded-xl p-4 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Desglose por Área</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+                        <div class="bg-white p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">No cumple</div>
+                            <div class="text-lg font-bold text-red-500" id="noCumple">0</div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">Parcial</div>
+                            <div class="text-lg font-bold text-orange-500" id="parcial">1</div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">Cumple</div>
+                            <div class="text-lg font-bold text-green-500" id="cumple">3</div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">Supera</div>
+                            <div class="text-lg font-bold text-blue-500" id="supera">1</div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">Excepcional</div>
+                            <div class="text-lg font-bold text-purple-500" id="excepcional">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Insights -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                        <h4 class="font-semibold text-green-800 mb-2 flex items-center">
+                            <span class="text-green-500 mr-2">⭐</span> Mis Fortalezas
+                        </h4>
+                        <ul class="text-sm text-green-700 space-y-1">
+                            <li>• Comunicación efectiva</li>
+                            <li>• Trabajo en equipo</li>
+                            <li>• Orientación a resultados</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                        <h4 class="font-semibold text-orange-800 mb-2 flex items-center">
+                            <span class="text-orange-500 mr-2">🎯</span> Áreas de Mejora
+                        </h4>
+                        <ul class="text-sm text-orange-700 space-y-1">
+                            <li>• Gestión del tiempo</li>
+                            <li>• Liderazgo de proyectos</li>
+                            <li>• Pensamiento estratégico</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Evaluation State -->
+        <div id="noEvaluation" class="text-center py-12">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 mb-6">
+                <div class="text-6xl mb-4">📋</div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">¡Bienvenido al proceso de evaluación!</h2>
+                <p class="text-gray-600 mb-8 max-w-md mx-auto">
+                    Aún no tienes evaluaciones completadas. Comienza tu proceso de desarrollo profesional.
+                </p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+                    <a href="paso-2.html" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center">
+                        <span class="text-2xl mr-3">📊</span>
+                        <div>
+                            <div class="font-bold">Mi Evaluación</div>
+                            <div class="text-sm text-green-100">Completar autoevaluación</div>
+                        </div>
+                    </a>
+                    <a href="paso-3.html" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center">
+                        <span class="text-2xl mr-3">💬</span>
+                        <div>
+                            <div class="font-bold">Dar Feedback</div>
+                            <div class="text-sm text-blue-100">Evaluación 360°</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Access -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-blue-500 mr-2">🔗</span> Herramientas disponibles
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="paso-1.html" class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <span class="text-orange-500 mr-3 text-2xl">🎯</span>
+                        <div>
+                            <div class="font-medium text-gray-800">Definir Objetivos</div>
+                            <div class="text-sm text-gray-600">Establecer metas claras</div>
+                        </div>
+                    </a>
+                    <a href="paso-4.html" class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <span class="text-blue-500 mr-3 text-2xl">📈</span>
+                        <div>
+                            <div class="font-medium text-gray-800">Dashboard de Equipo</div>
+                            <div class="text-sm text-gray-600">Ver estadísticas generales</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Nine Box -->
+        <div id="personalNineBox" class="hidden mb-8">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-purple-500 mr-2">🎯</span> Mi Posición en la Matriz Nine Box
+                </h2>
+                <p class="text-gray-600 text-sm mb-6">Tu ubicación en la matriz de potencial vs desempeño organizacional</p>
+                
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <div class="grid grid-cols-3 gap-1 aspect-square max-w-md mx-auto">
+                        <!-- Row 3 (Alto Potencial) -->
+                        <div id="box-7" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-green-600 font-bold">Alto Potencial</div>
+                                <div>Bajo Desempeño</div>
+                            </div>
+                        </div>
+                        <div id="box-8" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-green-600 font-bold">Alto Potencial</div>
+                                <div>Medio Desempeño</div>
+                            </div>
+                        </div>
+                        <div id="box-9" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-green-600 font-bold">Alto Potencial</div>
+                                <div>Alto Desempeño</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Row 2 (Medio Potencial) -->
+                        <div id="box-4" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-yellow-600 font-bold">Medio Potencial</div>
+                                <div>Bajo Desempeño</div>
+                            </div>
+                        </div>
+                        <div id="box-5" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-yellow-600 font-bold">Medio Potencial</div>
+                                <div>Medio Desempeño</div>
+                            </div>
+                        </div>
+                        <div id="box-6" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-yellow-600 font-bold">Medio Potencial</div>
+                                <div>Alto Desempeño</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Row 1 (Bajo Potencial) -->
+                        <div id="box-1" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-red-600 font-bold">Bajo Potencial</div>
+                                <div>Bajo Desempeño</div>
+                            </div>
+                        </div>
+                        <div id="box-2" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-red-600 font-bold">Bajo Potencial</div>
+                                <div>Medio Desempeño</div>
+                            </div>
+                        </div>
+                        <div id="box-3" class="bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600 h-20">
+                            <div class="text-center">
+                                <div class="text-red-600 font-bold">Bajo Potencial</div>
+                                <div>Alto Desempeño</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Labels -->
+                    <div class="mt-4 text-center">
+                        <div class="text-sm text-gray-600 mb-2">Desempeño →</div>
+                        <div class="text-xs text-gray-500">Bajo → Medio → Alto</div>
+                    </div>
+                    <div class="absolute left-4 top-1/2 transform -rotate-90 text-sm text-gray-600">
+                        Potencial ↑
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-blue-500 mr-2">💡</span>
+                        <span class="text-sm text-blue-700 font-medium" id="nineBoxMessage">Tu posición se determina basándose en tu evaluación de desempeño y potencial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-xs text-gray-400 mt-8 p-4">
+            <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+            <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize default evaluation data
+            const defaultEvalData = {
+                "legajo": 1001,
+                "promedio": 3.6,
+                "desempeno": {"no_cumple": 0, "parcial": 1, "cumple": 3, "supera": 1, "excepcional": 0},
+                "potencial": "desarrollo",
+                "liderazgo_predominante": "transformacional"
+            };
+
+            // Check if evaluation data exists
+            let evalData = localStorage.getItem('eva:last-eval');
+            
+            if (!evalData) {
+                // Initialize with default data
+                localStorage.setItem('eva:last-eval', JSON.stringify(defaultEvalData));
+                evalData = defaultEvalData;
+            } else {
+                evalData = JSON.parse(evalData);
+            }
+
+            // Show appropriate section
+            if (evalData && evalData.promedio) {
+                document.getElementById('hasEvaluation').classList.remove('hidden');
+                document.getElementById('noEvaluation').classList.add('hidden');
+                document.getElementById('personalNineBox').classList.remove('hidden');
+                
+                // Populate data
+                document.getElementById('avgScore').textContent = evalData.promedio;
+                document.getElementById('potentialLevel').textContent = 
+                    evalData.potencial === 'desarrollo' ? 'En desarrollo' :
+                    evalData.potencial === 'promocion' ? 'Promoción' : 'En puesto';
+                document.getElementById('leadershipStyle').textContent = 
+                    evalData.liderazgo_predominante.charAt(0).toUpperCase() + evalData.liderazgo_predominante.slice(1);
+                
+                // Performance breakdown
+                document.getElementById('noCumple').textContent = evalData.desempeno.no_cumple;
+                document.getElementById('parcial').textContent = evalData.desempeno.parcial;
+                document.getElementById('cumple').textContent = evalData.desempeno.cumple;
+                document.getElementById('supera').textContent = evalData.desempeno.supera;
+                document.getElementById('excepcional').textContent = evalData.desempeno.excepcional;
+                
+                // Nine Box positioning
+                const performance = evalData.promedio;
+                const potential = evalData.potencial;
+                
+                // Determine box position (1-9)
+                let boxPosition = 5; // default middle
+                if (potential === 'promocion') {
+                    if (performance >= 4.5) boxPosition = 9;
+                    else if (performance >= 3.5) boxPosition = 8;
+                    else boxPosition = 7;
+                } else if (potential === 'desarrollo') {
+                    if (performance >= 4.5) boxPosition = 6;
+                    else if (performance >= 3.5) boxPosition = 5;
+                    else boxPosition = 4;
+                } else {
+                    if (performance >= 4.5) boxPosition = 3;
+                    else if (performance >= 3.5) boxPosition = 2;
+                    else boxPosition = 1;
+                }
+                
+                // Highlight the user's position
+                document.getElementById(`box-${boxPosition}`).style.backgroundColor = '#3b82f6';
+                document.getElementById(`box-${boxPosition}`).style.color = 'white';
+                document.getElementById(`box-${boxPosition}`).innerHTML = `
+                    <div class="text-center">
+                        <div class="text-2xl mb-1">👤</div>
+                        <div class="font-bold">Tú estás aquí</div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('hasEvaluation').classList.add('hidden');
+                document.getElementById('noEvaluation').classList.remove('hidden');
+                document.getElementById('personalNineBox').classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

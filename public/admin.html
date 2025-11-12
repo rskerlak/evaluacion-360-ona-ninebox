@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de RR.HH. - Evaluación 360°</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/apple.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <!-- Header -->
+    <div class="p-4 sm:p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+        <div class="relative z-10">
+
+            <div class="text-center">
+                <h1 class="text-lg sm:text-xl md:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Panel de Administración RR.HH.
+                </h1>
+                <p class="text-xs sm:text-sm text-white/80 mt-2 max-w-3xl mx-auto px-2 sm:px-0">
+                    Métricas organizacionales y herramientas de gestión para el seguimiento integral del proceso de evaluación
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto p-4 sm:p-6">
+        <!-- Featured ONA + 9-Box Card -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl shadow-2xl border border-purple-200 overflow-hidden">
+                <div class="p-6 sm:p-8 text-white">
+                    <div class="flex flex-col lg:flex-row items-center justify-between">
+                        <div class="text-center lg:text-left mb-6 lg:mb-0">
+                            <div class="flex items-center justify-center lg:justify-start mb-4">
+                                <span class="text-4xl mr-3">🕸️</span>
+                                <h2 class="text-2xl sm:text-3xl font-bold">Análisis de Redes (Sociograma) + 9-Box</h2>
+                            </div>
+                            <p class="text-purple-100 text-lg mb-4">
+                                Visualización integral de redes organizacionales y matriz de talento
+                            </p>
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
+                                <div class="flex items-center">
+                                    <span class="text-purple-200 mr-2">✓</span>
+                                    <span>Mapeo de influencia</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-purple-200 mr-2">✓</span>
+                                    <span>Análisis de colaboración</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-purple-200 mr-2">✓</span>
+                                    <span>Matriz potencial vs desempeño</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <a href="sociograma.html" 
+                               class="bg-white text-purple-600 hover:bg-purple-50 font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center text-lg">
+                                <span class="text-2xl mr-3">🎯</span>
+                                Ver Redes + 9-Box
+                                <span class="ml-3">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Evaluaciones -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-blue-500 mr-2">📋</span> Estado de Evaluaciones
+                </h3>
+                <div class="h-64">
+                    <canvas id="adminPendingCompletedChart"></canvas>
+                </div>
+                <div class="mt-4">
+                    <button id="sendReminders" class="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        📧 Enviar notificación a evaluadores pendientes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-green-500 mr-2">💬</span> Relevamiento de Feedback
+                </h3>
+                <div class="h-64">
+                    <canvas id="adminFeedbackChart"></canvas>
+                </div>
+                <div class="mt-4">
+                    <button id="claimFeedback" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        📞 Reclamar feedback pendiente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Distribución de Desempeño -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-purple-500 mr-2">📊</span> Distribución de Desempeño
+                </h3>
+                <div class="h-64">
+                    <canvas id="adminPerformanceDistChart"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-600 bg-purple-50 p-3 rounded-lg">
+                    <span class="text-purple-500 mr-2">💡</span>
+                    <span>Resultados de toda la dotación por promedio</span>
+                </div>
+            </div>
+
+            <!-- Potencial -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-orange-500 mr-2">🎯</span> Potencial por Promedio
+                </h3>
+                <div class="h-64">
+                    <canvas id="adminPotentialDonut"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-600 bg-orange-50 p-3 rounded-lg">
+                    <span class="text-orange-500 mr-2">💡</span>
+                    <span>Población evaluada por nivel de potencial</span>
+                </div>
+            </div>
+
+            <!-- Liderazgo -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-red-500 mr-2">👑</span> Estilo de Liderazgo Predominante
+                </h3>
+                <div class="h-64">
+                    <canvas id="adminLeadershipStyleChart"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-600 bg-red-50 p-3 rounded-lg">
+                    <span class="text-red-500 mr-2">💡</span>
+                    <span>Predominancia de estilos en la institución</span>
+                </div>
+            </div>
+
+            <!-- Planes de Desarrollo -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-green-500 mr-2">📋</span> Planes de Desarrollo
+                </h3>
+                <div class="h-64 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">🚀</div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">Generar Planes</h4>
+                        <p class="text-gray-600 text-sm mb-4">Crea planes personalizados basados en evaluaciones</p>
+                        <button onclick="alert('🚀 Funcionalidad en desarrollo. Próximamente disponible para generar planes automáticos.')" 
+                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            Generar Planes
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4 text-sm text-gray-600 bg-green-50 p-3 rounded-lg">
+                    <span class="text-green-500 mr-2">💡</span>
+                    <span>Desarrollo personalizado por equipo</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-xs text-gray-400 mt-8 p-4">
+            <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+            <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics</span>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data
+        function initializeData() {
+            const defaultData = {
+                "evaluaciones": {"pendientes": 14, "realizadas": 36},
+                "feedback": {"respondidas": 28, "pendientes": 12},
+                "desempeno": {"no_cumple": 3, "parcial": 9, "cumple": 26, "supera": 9, "excepcional": 3},
+                "potencial": {"puesto": 45, "desarrollo": 18, "promocion": 7},
+                "liderazgo": {"transaccional": 17, "transformacional": 36, "delegador": 17}
+            };
+            
+            if (!localStorage.getItem('eva:admin-metrics')) {
+                localStorage.setItem('eva:admin-metrics', JSON.stringify(defaultData));
+            }
+            return JSON.parse(localStorage.getItem('eva:admin-metrics'));
+        }
+
+        function updateData(data) {
+            localStorage.setItem('eva:admin-metrics', JSON.stringify(data));
+        }
+
+        function renderCharts(data) {
+            // Evaluaciones Chart
+            new Chart(document.getElementById('adminPendingCompletedChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Pendientes', 'Realizadas'],
+                    datasets: [{
+                        data: [data.evaluaciones.pendientes, data.evaluaciones.realizadas],
+                        backgroundColor: ['#f59e0b', '#10b981']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Feedback Chart
+            new Chart(document.getElementById('adminFeedbackChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Respondidas', 'Pendientes'],
+                    datasets: [{
+                        data: [data.feedback.respondidas, data.feedback.pendientes],
+                        backgroundColor: ['#10b981', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Performance Distribution Chart
+            new Chart(document.getElementById('adminPerformanceDistChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['No cumple expectativas', 'Cumple algunas expectativas', 'Cumple expectativas', 'Supera expectativas', 'Excepcional'],
+                    datasets: [{
+                        data: [data.desempeno.no_cumple, data.desempeno.parcial, data.desempeno.cumple, data.desempeno.supera, data.desempeno.excepcional],
+                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, minRotation: 45 } }
+                    }
+                }
+            });
+
+            // Potential Donut Chart
+            new Chart(document.getElementById('adminPotentialDonut'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Potencial en su puesto', 'Potencial en desarrollo', 'Potencial de promoción'],
+                    datasets: [{
+                        data: [data.potencial.puesto, data.potencial.desarrollo, data.potencial.promocion],
+                        backgroundColor: ['#6b7280', '#f59e0b', '#10b981']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Leadership Style Chart
+            new Chart(document.getElementById('adminLeadershipStyleChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Transaccional', 'Transformacional', 'Delegador'],
+                    datasets: [{
+                        data: [data.liderazgo.transaccional, data.liderazgo.transformacional, data.liderazgo.delegador],
+                        backgroundColor: ['#ef4444', '#10b981', '#3b82f6']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Event listeners
+        document.getElementById('sendReminders').addEventListener('click', function() {
+            const data = JSON.parse(localStorage.getItem('eva:admin-metrics'));
+            if (data.evaluaciones.pendientes > 0) {
+                data.evaluaciones.pendientes = Math.max(0, data.evaluaciones.pendientes - 3);
+                data.evaluaciones.realizadas += 3;
+                updateData(data);
+                alert('✅ Recordatorios enviados. 3 evaluaciones completadas.');
+                location.reload();
+            } else {
+                alert('ℹ️ No hay evaluaciones pendientes.');
+            }
+        });
+
+        document.getElementById('claimFeedback').addEventListener('click', function() {
+            const data = JSON.parse(localStorage.getItem('eva:admin-metrics'));
+            if (data.feedback.pendientes > 0) {
+                data.feedback.pendientes = Math.max(0, data.feedback.pendientes - 2);
+                data.feedback.respondidas += 2;
+                updateData(data);
+                alert('✅ Feedback reclamado. 2 respuestas adicionales recibidas.');
+                location.reload();
+            } else {
+                alert('ℹ️ No hay feedback pendiente.');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = initializeData();
+            renderCharts(data);
+        });
+    </script>
+</body>
+</html>

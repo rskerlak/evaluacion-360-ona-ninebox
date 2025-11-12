@@ -3,271 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluación 360° + ONA</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #000000;
-            min-height: 100vh;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 80px 20px 60px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, #ffffff 0%, #86868b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero p {
-            font-size: 1.25rem;
-            color: #a1a1a6;
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.4;
-        }
-        
-        .timeline {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-        }
-        
-        .step {
-            margin-bottom: 32px;
-            position: relative;
-        }
-        
-        .step-content {
-            width: 100%;
-        }
-        
-        .step-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .step-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #0071e3, #005bb5);
-            border-radius: 50%;
-            color: white;
-            font-weight: 700;
-            font-size: 0.875rem;
-            margin-bottom: 12px;
-        }
-        
-        .step-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
-        
-        .step-description {
-            font-size: 0.95rem;
-            color: #a1a1a6;
-            line-height: 1.4;
-            margin-bottom: 12px;
-        }
-        
-        .step-label {
-            display: inline-block;
-            background: linear-gradient(135deg, #0071e3, #005bb5);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .network-step {
-            margin-top: 60px;
-            text-align: center;
-        }
-        
-        .network-card {
-            background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(0, 91, 181, 0.05));
-            border: 2px solid rgba(0, 113, 227, 0.2);
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .footer a {
-            color: #0071e3;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 12px 24px;
-            border-radius: 12px;
-            background: rgba(0, 113, 227, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .footer a:hover {
-            background: rgba(0, 113, 227, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        @media (min-width: 768px) {
-            .timeline {
-                padding: 80px 20px;
-            }
-            
-            .timeline::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 0;
-                bottom: 0;
-                width: 2px;
-                background: linear-gradient(to bottom, transparent, #0071e3, transparent);
-                transform: translateX(-50%);
-            }
-            
-            .step {
-                display: flex;
-                align-items: center;
-                margin-bottom: 80px;
-            }
-            
-            .step:nth-child(even) {
-                flex-direction: row-reverse;
-            }
-            
-            .step-content {
-                flex: 1;
-                max-width: 480px;
-                margin: 0 60px;
-            }
-            
-            .step-number {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 60px;
-                height: 60px;
-                font-size: 1.25rem;
-                margin-bottom: 0;
-                box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3);
-                z-index: 2;
-            }
-        }
-    </style>
+    <title>Evaluación 360° + ONA + Nine Box</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/apple.css">
 </head>
-<body>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <!-- Header -->
+    <div class="p-4 sm:p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Evaluación 360° + ONA + Nine Box
+            </h1>
+            <p class="text-sm sm:text-base text-white/80 max-w-2xl mx-auto">
+                Simula la experiencia completa de RR.HH., Líder y Colaborador en un sistema integrado de evaluación de desempeño y análisis organizacional.
+            </p>
+        </div>
+    </div>
 
-    <div class="hero">
-        <h1>Evaluación 360° + ONA</h1>
-        <p>Proceso escalable y flexible que alinea incentivos con trazabilidad completa y análisis de redes organizacionales</p>
-    </div>
-    
-    <div class="timeline">
-        <div class="step">
-            <div class="step-number">1</div>
-            <div class="step-content">
-                <a href="paso-1.html" class="step-card">
-                    <div class="step-label">Inicio</div>
-                    <h2 class="step-title">Fijación de Objetivos</h2>
-                    <p class="step-description">Alineación inicial entre líder y colaborador para establecer metas claras y medibles</p>
-                </a>
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto p-4 sm:p-8">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Selecciona tu rol para probar la experiencia</h2>
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:p-8 mb-8">
+                <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                    Este prototipo simula un <strong>sistema integral de evaluación 360°</strong> que combina análisis de desempeño, 
+                    mapeo de redes organizacionales (ONA) y matriz Nine Box para la gestión estratégica del talento.
+                </p>
+                <p class="text-gray-600">
+                    Explora las diferentes perspectivas: desde la vista ejecutiva de RR.HH. hasta la experiencia personal del colaborador.
+                </p>
             </div>
         </div>
-        
-        <div class="step">
-            <div class="step-number">2</div>
-            <div class="step-content">
-                <a href="paso-2.html" class="step-card">
-                    <div class="step-label">Evaluación</div>
-                    <h2 class="step-title">Revisión Semestral</h2>
-                    <p class="step-description">Evaluación integral de desempeño con evidencias y retroalimentación estructurada</p>
-                </a>
+
+        <!-- Role Selection -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <!-- Admin RR.HH. -->
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">👥</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Administrador de RR.HH.</h3>
+                    <p class="text-blue-100 text-sm">Panel ejecutivo organizacional</p>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 text-sm mb-6 h-16 leading-relaxed">
+                        Métricas organizacionales, distribuciones de desempeño y herramientas de gestión integral
+                    </p>
+                    <a href="admin.html" 
+                       class="w-full bg-white hover:bg-gray-50 text-blue-600 border-2 border-blue-500 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
+                       role="button"
+                       aria-label="Acceder como Administrador de RR.HH.">
+                        Acceder como RR.HH.
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Líder -->
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">👔</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Líder</h3>
+                    <p class="text-emerald-100 text-sm">Panel de gestión de equipo</p>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 text-sm mb-6 h-16 leading-relaxed">
+                        Herramientas para definir objetivos, evaluar colaboradores y analizar estadísticas de tu equipo
+                    </p>
+                    <a href="lider.html" 
+                       class="w-full bg-white hover:bg-gray-50 text-emerald-600 border-2 border-emerald-500 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
+                       role="button"
+                       aria-label="Acceder como Líder">
+                        Acceder como Líder
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Colaborador -->
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">👤</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Colaborador</h3>
+                    <p class="text-purple-100 text-sm">Vista personal de desarrollo</p>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 text-sm mb-6 h-16 leading-relaxed">
+                        Herramientas para completar tu evaluación, relevar feedback y acceder a tu desarrollo profesional
+                    </p>
+                    <a href="colaborador.html" 
+                       class="w-full bg-white hover:bg-gray-50 text-purple-600 border-2 border-purple-500 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center"
+                       role="button"
+                       aria-label="Acceder como Colaborador">
+                        Acceder como Colaborador
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
             </div>
         </div>
-        
-        <div class="step">
-            <div class="step-number">3</div>
-            <div class="step-content">
-                <a href="paso-3.html" class="step-card">
-                    <div class="step-label">Feedback</div>
-                    <h2 class="step-title">Encuesta 360° + Red</h2>
-                    <p class="step-description">Captura de feedback multidireccional y mapeo de vínculos organizacionales</p>
-                </a>
-            </div>
-        </div>
-        
-        <div class="step">
-            <div class="step-number">4</div>
-            <div class="step-content">
-                <a href="paso-4.html" class="step-card">
-                    <div class="step-label">Insights</div>
-                    <h2 class="step-title">Dashboard del Líder</h2>
-                    <p class="step-description">Panel ejecutivo con insights accionables y análisis de red organizacional</p>
-                </a>
-            </div>
-        </div>
-        
-        <div class="step network-step">
-            <div class="step-content">
-                <a href="sociograma.html" class="step-card network-card">
-                    <div class="step-label">Análisis</div>
-                    <h2 class="step-title">Visualización de Red</h2>
-                    <p class="step-description">Herramienta interactiva para análisis visual de la red organizacional y métricas avanzadas</p>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="footer">
-        <a href="docs/Fundamentos-ONA.pdf">📖 Fundamentos de ONA</a>
-        <div class="text-xs text-gray-400 mt-6 font-mono">
-            © 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science
+
+
+
+        <!-- Footer -->
+        <div class="text-center text-sm text-gray-500">
+            <p class="mb-2">
+                <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
+                <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics</span>
+            </p>
+            <p class="text-xs text-gray-400">
+                Prototipo con datos sintéticos - No subir información real de personas
+            </p>
         </div>
     </div>
 </body>

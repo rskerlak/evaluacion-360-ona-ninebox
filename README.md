@@ -35,11 +35,43 @@ Plataforma integral de **evaluación de desempeño y análisis organizacional** 
 
 ---
 
+## Navegación por Roles
+
+```
+index.html              # Portal principal - Selección de rol
+├── admin.html          # 👥 Administrador RR.HH. - Panel ejecutivo
+├── paso-4.html         # 👔 Líder - Dashboard de equipo
+└── colaborador.html    # 👤 Colaborador - Mi evaluación
+
+Flujo de evaluación:
+paso-1.html → paso-2.html → paso-3.html → paso-4.html
+sociograma.html         # Análisis ONA + Nine Box integrado
+```
+
+### Cómo probar los 3 roles:
+
+1. **Administrador RR.HH.** (`admin.html`)
+   - Métricas organizacionales con 5 gráficos Chart.js
+   - Botones de simulación (recordatorios, feedback)
+   - Acceso directo a ONA + Nine Box
+
+2. **Líder** (`paso-4.html`)
+   - Dashboard con insights del equipo
+   - Análisis de red organizacional
+   - Perfil de liderazgo predominante
+
+3. **Colaborador** (`colaborador.html`)
+   - Resumen de última evaluación
+   - Plan de desarrollo personal
+   - Acceso a feedback 360°
+
 ## Estructura
 
 ```
 public/                  # Demo estática (GitHub Pages)
-  index.html             # Menú principal con navegación
+  index.html             # Portal por roles (NUEVO)
+  admin.html             # Panel RR.HH. (NUEVO)
+  colaborador.html       # Vista colaborador (NUEVO)
   paso-1.html            # Configuración inicial de evaluación
   paso-2.html            # Evaluación de desempeño completa (MBO-OKR, FODA, rendimiento, potencial)
   paso-3.html            # Captura de relaciones organizacionales + exportación
@@ -84,13 +116,19 @@ npm run dev
 
 ### Flujo de Uso Recomendado
 
-1. **Configuración:** Inicia en `index.html` y navega a `paso-1.html` para configurar la evaluación
-2. **Evaluación:** Completa la evaluación de desempeño en `paso-2.html` con todos los criterios
-3. **Relaciones:** Captura vínculos organizacionales en `paso-3.html` y exporta `edges.json`
-4. **Análisis:** Visualiza resultados en `sociograma.html` (ONA + Nine Box) o `paso-4.html` (dashboard)
-5. **Importación:** Usa "Cargar LocalStorage" o importa archivos CSV/JSON externos
+**Opción A - Por Rol (Recomendado):**
+1. **Portal:** Inicia en `index.html` y selecciona tu rol
+2. **RR.HH.:** Explora métricas organizacionales en `admin.html`
+3. **Líder:** Revisa insights de tu equipo en `paso-4.html`
+4. **Colaborador:** Ve tu evaluación en `colaborador.html`
 
-> **Tip:** El `sociograma.html` combina análisis de redes y matriz de talento en una vista unificada.
+**Opción B - Flujo Completo:**
+1. **Configuración:** `paso-1.html` para establecer objetivos
+2. **Evaluación:** `paso-2.html` para completar desempeño
+3. **Feedback:** `paso-3.html` para capturar relaciones organizacionales
+4. **Análisis:** `paso-4.html` (dashboard) o `sociograma.html` (ONA + Nine Box)
+
+> **Tip:** Todas las vistas mantienen datos sintéticos en localStorage para simular un sistema real.
 
 ---
 
@@ -135,21 +173,27 @@ legajo,nombre,apellido,area,sector,rol
 }
 ```
 
-**Evaluación Completa (Paso 2):**
+**Métricas Admin (eva:admin-metrics):**
+
+```json
+{
+  "evaluaciones": {"pendientes": 14, "realizadas": 36},
+  "feedback": {"respondidas": 28, "pendientes": 12},
+  "desempeno": {"no_cumple": 3, "parcial": 9, "cumple": 26, "supera": 9, "excepcional": 3},
+  "potencial": {"puesto": 45, "desarrollo": 18, "promocion": 7},
+  "liderazgo": {"transaccional": 17, "transformacional": 36, "delegador": 17}
+}
+```
+
+**Evaluación Colaborador (eva:last-eval):**
 
 ```json
 {
   "legajo": 1001,
-  "objetivos": [{"nodo": "procesos", "cumplimiento": 4}],
-  "competencias": {
-    "fortaleza": "LIDERAZGO", "desarrollo": "COMUNICACIÓN",
-    "oportunidad": "INNOVACIÓN", "reto": "ADAPTACIÓN AL CAMBIO"
-  },
-  "rendimiento": {"calidad": 4, "cantidad": 3, "jornada": 5, "tiempo": 4},
-  "potencial": {
-    "conocimiento": "Promoción", "flexibilidad": "Potencial conforme",
-    "interes": "Promoción", "compromiso": "Promoción", "transmision": "Promoción"
-  }
+  "promedio": 3.6,
+  "desempeno": {"no_cumple": 0, "parcial": 1, "cumple": 3, "supera": 1, "excepcional": 0},
+  "potencial": "desarrollo",
+  "liderazgo_predominante": "transformacional"
 }
 ```
 
