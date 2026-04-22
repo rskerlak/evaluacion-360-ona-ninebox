@@ -160,24 +160,24 @@ const NetworkGraph = () => {
       <div ref={containerRef} className="glass-panel p-0 rounded-2xl overflow-hidden relative w-full h-[450px] sm:h-[550px] xl:w-2/3 xl:h-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
         
         {/* Floating Filter Panel */}
-        <div className="absolute top-6 left-6 z-10 bg-dark-900/80 backdrop-blur-md p-4 rounded-xl border border-white/10 shadow-lg">
-          <h3 className="text-white font-medium mb-3 text-sm flex items-center gap-2">
-            <Layers size={16} className="text-gold-500" /> Constelaciones por Área
+        <div className="absolute top-2 left-2 right-2 md:top-6 md:left-6 md:right-auto md:w-auto z-10 bg-dark-900/80 backdrop-blur-md p-2 md:p-4 rounded-xl border border-white/10 shadow-lg flex flex-col">
+          <h3 className="text-white font-medium mb-2 md:mb-3 text-xs md:text-sm flex items-center gap-2">
+            <Layers size={14} className="text-gold-500" /> <span className="hidden sm:inline">Constelaciones por Área</span><span className="sm:hidden">Constelaciones</span>
           </h3>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-row md:flex-col gap-1.5 md:gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-hide">
             <button 
               onClick={() => handleFilterClick('Todas')}
-              className={`text-xs text-left px-3 py-2 rounded-lg transition-colors ${activeFilter === 'Todas' ? 'bg-white/20 text-white font-bold' : 'text-text-muted hover:bg-white/5'}`}
+              className={`text-[10px] md:text-xs text-left px-2 md:px-3 py-1.5 md:py-2 rounded-lg transition-colors whitespace-nowrap flex-shrink-0 ${activeFilter === 'Todas' ? 'bg-white/20 text-white font-bold' : 'text-text-muted hover:bg-white/5'}`}
             >
-              🌐 Ver Todas
+              🌐 Todas
             </button>
             {AREAS.map(area => (
               <button 
                 key={area}
                 onClick={() => handleFilterClick(area)}
-                className={`text-xs text-left px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${activeFilter === area ? 'bg-white/20 text-white font-bold' : 'text-text-muted hover:bg-white/5'}`}
+                className={`text-[10px] md:text-xs text-left px-2 md:px-3 py-1.5 md:py-2 rounded-lg transition-colors flex items-center gap-1.5 whitespace-nowrap flex-shrink-0 ${activeFilter === area ? 'bg-white/20 text-white font-bold' : 'text-text-muted hover:bg-white/5'}`}
               >
-                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: (AREA_COLORS as any)[area] }}></span>
+                <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full" style={{ backgroundColor: (AREA_COLORS as any)[area] }}></span>
                 {area}
               </button>
             ))}

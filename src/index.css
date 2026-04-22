@@ -65,3 +65,12 @@ body {
   border: 1px solid rgba(212, 175, 55, 0.3);
   box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.7);
 }
+
+/* Scrollbar Hide Utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
