@@ -12,7 +12,7 @@ const AREA_COLORS = {
 };
 
 const NetworkGraph = () => {
-  const fgRef = useRef<any>();
+  const fgRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedNode, setSelectedNode] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState<string>('Todas');

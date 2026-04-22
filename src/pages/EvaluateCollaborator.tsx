@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Target, Shield, Zap, CheckCircle2, User, Save } from 'lucide-react';
+import { useState } from 'react';
+import { Target, Shield, Zap, CheckCircle2, User } from 'lucide-react';
 
 const EvaluateCollaborator = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<string>('');

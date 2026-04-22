@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 
 const Metrics = () => {
@@ -61,7 +61,7 @@ const Metrics = () => {
               <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} content={<CustomTooltip />} />
               <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                 {evaluacionesData.map((entry, index) => (
-                  <Cell key={`cell-\${index}`} fill={entry.color} />
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>
@@ -83,7 +83,7 @@ const Metrics = () => {
               <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} content={<CustomTooltip />} />
               <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                 {feedbackData.map((entry, index) => (
-                  <Cell key={`cell-\${index}`} fill={entry.color} />
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>
@@ -105,7 +105,7 @@ const Metrics = () => {
               <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} content={<CustomTooltip />} />
               <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                 {desempenoData.map((entry, index) => (
-                  <Cell key={`cell-\${index}`} fill={entry.color} />
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>
@@ -133,7 +133,7 @@ const Metrics = () => {
                 stroke="none"
               >
                 {potencialData.map((entry, index) => (
-                  <Cell key={`cell-\${index}`} fill={entry.color} />
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
@@ -160,7 +160,7 @@ const Metrics = () => {
               <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} content={<CustomTooltip />} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={30}>
                 {liderazgoData.map((entry, index) => (
-                  <Cell key={`cell-\${index}`} fill={entry.color} />
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>

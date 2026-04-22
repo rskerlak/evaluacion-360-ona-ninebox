@@ -7,7 +7,7 @@ import EvaluateCollaborator from './pages/EvaluateCollaborator';
 import Colaborador from './pages/Colaborador';
 import Feedback from './pages/Feedback';
 import LiderDashboard from './pages/LiderDashboard';
-import { Shield } from 'lucide-react';
+
 
 function App() {
   return (

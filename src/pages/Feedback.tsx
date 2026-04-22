@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Send, Users, MessageSquare, TrendingUp, BookOpen, AlertCircle, Share2, Target, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
+import { Send, Users, BookOpen, Share2, Target, CheckCircle2 } from 'lucide-react';
 
 const Feedback = () => {
   const [submitted, setSubmitted] = useState(false);

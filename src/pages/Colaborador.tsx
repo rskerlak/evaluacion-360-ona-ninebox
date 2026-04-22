@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Target, TrendingUp, MessageSquare, Star, Award, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

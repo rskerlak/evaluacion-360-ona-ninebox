@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Target, TrendingUp, Users, Zap, Award, Share2, Activity, Star } from 'lucide-react';
 
 const LiderDashboard = () => {

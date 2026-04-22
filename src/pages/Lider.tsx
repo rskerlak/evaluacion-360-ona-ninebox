@@ -1,5 +1,4 @@
-import React from 'react';
-import { Target, BarChart2, TrendingUp, Users, CheckSquare, Clock, ArrowRight } from 'lucide-react';
+import { BarChart2, TrendingUp, Users, CheckSquare, Clock, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Lider = () => {
