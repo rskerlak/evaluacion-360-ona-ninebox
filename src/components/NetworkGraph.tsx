@@ -94,21 +94,21 @@ const NetworkGraph = () => {
         }}
         nodeLabel={(node) => {
           // @ts-ignore
-          return \`
+          return `
             <div style="background: rgba(18, 18, 22, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(212, 175, 55, 0.3); padding: 14px 18px; border-radius: 12px; font-family: 'Outfit', sans-serif; box-shadow: 0 8px 32px rgba(0,0,0,0.6); min-width: 220px; text-align: left;">
-              <div style="font-weight: 600; font-size: 16px; color: #ffffff; margin-bottom: 2px;">\${node.nombre}</div>
-              <div style="font-size: 12px; color: #d4af37; margin-bottom: 12px; letter-spacing: 0.5px; font-weight: 500;">\${node.cargo} • \${node.area}</div>
+              <div style="font-weight: 600; font-size: 16px; color: #ffffff; margin-bottom: 2px;">${node.nombre}</div>
+              <div style="font-size: 12px; color: #d4af37; margin-bottom: 12px; letter-spacing: 0.5px; font-weight: 500;">${node.cargo} • ${node.area}</div>
               
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span style="font-size: 12px; color: #a3a3a3;">Evaluación de desempeño</span>
-                <span style="font-size: 13px; font-weight: 600; color: #e5c158;">\${node.evaluacion}/5.0</span>
+                <span style="font-size: 13px; font-weight: 600; color: #e5c158;">${node.evaluacion}/5.0</span>
               </div>
               
               <div style="font-size: 12px; color: #cccccc; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px; margin-top: 6px;">
-                Fue reconocido por <strong>\${node.reconocimientos}</strong> colaboradores
+                Fue reconocido por <strong>${node.reconocimientos}</strong> colaboradores
               </div>
             </div>
-          \`;
+          `;
         }}
         enableNodeDrag={false}
         enableNavigationControls={true}
