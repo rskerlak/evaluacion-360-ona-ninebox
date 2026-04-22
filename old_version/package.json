@@ -1,0 +1,13 @@
+{
+"name": "evaluacion-360-ona",
+"version": "0.1.0",
+"private": true,
+"license": "MIT",
+"scripts": {
+"dev": "python3 -m http.server 5173 -d public || python -m http.server 5173 -d public",
+"check:files": "bash -lc 'for f in public/index.html public/paso-1.html public/paso-2.html public/paso-3.html public/paso-4.html public/sociograma.html; do test -f $f || (echo Missing $f; exit 1); done'",
+"check:csv": "bash -lc 'h1=$(head -n1 src/data/sample-edges.csv | sed s/[[:space:]]//g); test \"$h1\" = \"pregunta,from_legajo,to_legajo,weight\" || (echo Bad\\ edges\\ header:\\ $h1; exit 1); h2=$(head -n1 src/data/sample-people.csv | sed s/[[:space:]]//g); test \"$h2\" = \"legajo,nombre,apellido,area,sector,rol\" || (echo Bad\\ people\\ header:\\ $h2; exit 1)'",
+"check:json": "bash -lc 'jq -e type src/data/sample-responses.json >/dev/null && jq -e \"all(.[]; has(\\\"id\\\") and has(\\\"legajo\\\") and has(\\\"edges\\\"))\" src/data/sample-responses.json >/dev/null'",
+"validate": "npm run check:files && npm run check:csv && npm run check:json"
+}
+}

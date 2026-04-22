@@ -67,13 +67,14 @@
             font-weight: 700;
         }
     </style>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/apple.css">
 </head>
 
-<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+<body style="font-family: 'Outfit', sans-serif; background-color: #0a0a0c;" class="bg-network text-gray-100 min-h-screen bg-network text-[#e5e5e5]">
     <div class="min-h-screen flex items-center justify-center p-4">
         <!-- Contenedor principal -->
-        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-5xl border border-white/20 overflow-hidden">
+        <div class="bg-[#121216]/80 backdrop-blur-xl rounded-3xl shadow-[0_12px_48px_rgba(0,0,0,0.8)] w-full max-w-5xl border border-white/20 overflow-hidden">
             <!-- Header Section -->
             <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
                 <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
@@ -87,13 +88,13 @@
                         </a>
                     </div>
                     <div class="text-center">
-                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                             Encuesta de Retroalimentación del Empleado
                         </h1>
                         <p class="text-sm opacity-70">
                             Tu opinión es clave para nuestro crecimiento
                         </p>
-                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                        <div class="mt-4 inline-flex items-center bg-[#121216]/10 backdrop-blur-sm px-4 py-2 rounded-full">
                             <span class="text-sm font-medium">Paso 3 de 4</span>
                         </div>
                     </div>
@@ -101,32 +102,32 @@
             </div>
             
             <!-- Form Content -->
-            <div class="p-3 sm:p-4 space-y-4 bg-gray-800">
+            <div class="p-3 sm:p-4 space-y-4 bg-[#1a1a20]">
         <form id="feedback-form" class="space-y-4">
 
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Información de la Evaluación</h2>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Información de la Evaluación</h2>
                 <div class="space-y-4">
                     <div class="flex items-center">
-                        <input id="notificacion-check" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                        <label for="notificacion-check" class="ml-2 block text-sm text-gray-900">
+                        <input id="notificacion-check" type="checkbox" class="h-4 w-4 text-[#d4af37] border-[#3a3a42] rounded focus:ring-[#d4af37]">
+                        <label for="notificacion-check" class="ml-2 block text-sm text-white">
                             He sido notificado/a de mi evaluación.
                         </label>
                     </div>
                     <div class="flex items-center">
-                        <input id="feedback-check" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                        <label for="feedback-check" class="ml-2 block text-sm text-gray-900">
+                        <input id="feedback-check" type="checkbox" class="h-4 w-4 text-[#d4af37] border-[#3a3a42] rounded focus:ring-[#d4af37]">
+                        <label for="feedback-check" class="ml-2 block text-sm text-white">
                             He recibido feedback de mi líder sobre el proceso de revisión.
                         </label>
                     </div>
                 </div>
             </section>
 
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Clima Laboral</h2>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Clima Laboral</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div class="flex flex-col">
-                        <label for="equipo-select" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="equipo-select" class="block text-sm font-medium text-[#cccccc] mb-1">
                             ¿Cómo evalúas el trabajo en equipo?
                         </label>
                         <select id="equipo-select" name="equipo" class="w-full p-2 border rounded-md">
@@ -138,7 +139,7 @@
                         </select>
                     </div>
                     <div class="flex flex-col">
-                        <label for="ambiente-select" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="ambiente-select" class="block text-sm font-medium text-[#cccccc] mb-1">
                             ¿Cómo evalúas el ambiente laboral?
                         </label>
                         <select id="ambiente-select" name="ambiente" class="w-full p-2 border rounded-md">
@@ -153,15 +154,15 @@
             </section>
 
             <!-- ==================== SOCIOGRAMA (modificado a datalist + intensidad) ==================== -->
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Red de trabajo (Sociograma)</h2>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Red de trabajo (Sociograma)</h2>
                 <div class="space-y-3">
-                    <p class="text-sm text-gray-600">Seleccioná la persona desde el desplegable y registrá la intensidad del vínculo (1=Normal, 2=Fundamental).</p>
+                    <p class="text-sm text-[#a3a3a3]">Seleccioná la persona desde el desplegable y registrá la intensidad del vínculo (1=Normal, 2=Fundamental).</p>
 
                     <div class="flex flex-col">
-                        <label for="colaboracion-input" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="colaboracion-input" class="block text-sm font-medium text-[#cccccc] mb-2">
                             1. ¿A quién acudís primero cuando necesitás apoyo o consejo en tu trabajo?
-                            <span class="text-xs text-gray-500 block">(Captura vínculos de trabajo/flujo de información)</span>
+                            <span class="text-xs text-[#808080] block">(Captura vínculos de trabajo/flujo de información)</span>
                         </label>
                         <div class="flex gap-3 items-center">
                             <input id="colaboracion-input" list="person-list" type="text" placeholder="Ej: 1001 - García, Ana María" class="w-full md:w-1/2 p-2 border rounded-md">
@@ -173,9 +174,9 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <label for="consejo-input" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="consejo-input" class="block text-sm font-medium text-[#cccccc] mb-2">
                             2. ¿A quién pedirías ayuda técnica si tuvieras un problema complejo?
-                            <span class="text-xs text-gray-500 block">(Captura vínculos de asesoramiento, mide prestigio)</span>
+                            <span class="text-xs text-[#808080] block">(Captura vínculos de asesoramiento, mide prestigio)</span>
                         </label>
                         <div class="flex gap-3 items-center">
                             <input id="consejo-input" list="person-list" type="text" placeholder="Ej: 1002 - López, Carlos Eduardo" class="w-full md:w-1/2 p-2 border rounded-md">
@@ -187,9 +188,9 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <label for="inspiracion-input" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="inspiracion-input" class="block text-sm font-medium text-[#cccccc] mb-2">
                            3. ¿A quién reconocés como alguien que inspira o motiva dentro del equipo?
-                           <span class="text-xs text-gray-500 block">(Captura influencia/centralidad simbólica)</span>
+                           <span class="text-xs text-[#808080] block">(Captura influencia/centralidad simbólica)</span>
                         </label>
                         <div class="flex gap-3 items-center">
                             <input id="inspiracion-input" list="person-list" type="text" placeholder="Ej: 1003 - Martínez, Laura Sofía" class="w-full md:w-1/2 p-2 border rounded-md">
@@ -200,7 +201,7 @@
                         </div>
                     </div>
 
-                    <p class="text-sm text-gray-600 pt-2 border-t border-gray-200">
+                    <p class="text-sm text-[#a3a3a3] pt-2 border-t border-[#2a2a32]">
                         <strong>Nota:</strong> Puedes nombrar a la misma persona en más de una pregunta o a personas diferentes en cada una.
                     </p>
 
@@ -210,12 +211,12 @@
             </section>
             <!-- ==================== FIN SOCIOGRAMA ==================== -->
 
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Liderazgo de mi Líder Evaluador/a</h2>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Liderazgo de mi Líder Evaluador/a</h2>
                 <div class="space-y-3">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="flex flex-col">
-                            <label for="fortaleza-liderazgo-select" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="fortaleza-liderazgo-select" class="block text-sm font-medium text-[#cccccc] mb-1">
                                 Selecciona una competencia destacada (fortaleza):
                             </label>
                             <select id="fortaleza-liderazgo-select" name="fortaleza_liderazgo" class="w-full p-2 border rounded-md">
@@ -240,7 +241,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label for="desarrollo-liderazgo-select" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="desarrollo-liderazgo-select" class="block text-sm font-medium text-[#cccccc] mb-1">
                                 Selecciona una competencia a desarrollar:
                             </label>
                             <select id="desarrollo-liderazgo-select" name="desarrollo_liderazgo" class="w-full p-2 border rounded-md">
@@ -267,7 +268,7 @@
                     </div>
 
                     <div class="space-y-4">
-                        <p id="behavior-message" class="block text-sm font-medium text-gray-700">
+                        <p id="behavior-message" class="block text-sm font-medium text-[#cccccc]">
                             Selecciona hasta tres comportamientos que describan el liderazgo de tu evaluador/a:
                         </p>
 
@@ -327,11 +328,11 @@
                 </div>
             </section>
 
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Necesidades de Capacitación (para mí)</h2>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Necesidades de Capacitación (para mí)</h2>
                 <div class="space-y-3">
                     <div class="flex flex-col">
-                        <label for="tipo-capacitacion" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="tipo-capacitacion" class="block text-sm font-medium text-[#cccccc] mb-1">
                             Tipo de capacitación:
                         </label>
                         <select id="tipo-capacitacion" name="tipo_capacitacion" class="w-full p-2 border rounded-md">
@@ -341,46 +342,46 @@
                         </select>
                     </div>
                     <div class="flex flex-col">
-                        <label for="detalle-capacitacion" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="detalle-capacitacion" class="block text-sm font-medium text-[#cccccc] mb-1">
                             Detalle de la capacitación necesaria:
                         </label>
                         <textarea id="detalle-capacitacion" name="detalle_capacitacion" maxlength="180" rows="3" placeholder="Describe qué tipo de capacitación necesitas..." class="w-full p-2 border rounded-md resize-none"></textarea>
-                        <div class="text-xs text-gray-500 mt-1">
+                        <div class="text-xs text-[#808080] mt-1">
                             <span id="char-count">0</span>/180 caracteres
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Disponibilidad para hacer carrera</h2>
-                <p class="text-sm text-gray-600 mb-3">¿Estás dispuesto/a a hacer carrera aunque implique moverte a otra área o zonal?</p>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Disponibilidad para hacer carrera</h2>
+                <p class="text-sm text-[#a3a3a3] mb-3">¿Estás dispuesto/a a hacer carrera aunque implique moverte a otra área o zonal?</p>
 
                 <div class="flex items-center gap-6 mb-3">
                     <label class="inline-flex items-center">
-                        <input type="radio" name="movilidad" value="si" class="form-radio h-4 w-4 text-indigo-600" />
-                        <span class="ml-2 text-gray-800 font-medium">Sí</span>
+                        <input type="radio" name="movilidad" value="si" class="form-radio h-4 w-4 text-[#d4af37]" />
+                        <span class="ml-2 text-[#e5e5e5] font-medium">Sí</span>
                     </label>
                     <label class="inline-flex items-center">
-                        <input type="radio" name="movilidad" value="no" class="form-radio h-4 w-4 text-indigo-600" />
-                        <span class="ml-2 text-gray-800 font-medium">No</span>
+                        <input type="radio" name="movilidad" value="no" class="form-radio h-4 w-4 text-[#d4af37]" />
+                        <span class="ml-2 text-[#e5e5e5] font-medium">No</span>
                     </label>
                 </div>
 
-                <label for="movilidad-comentario" class="block text-sm text-gray-700 mb-1">Si querés, podés agregar un comentario (opcional):</label>
+                <label for="movilidad-comentario" class="block text-sm text-[#cccccc] mb-1">Si querés, podés agregar un comentario (opcional):</label>
                 <textarea id="movilidad-comentario" rows="3" placeholder="Ej.: Solo si es dentro de la misma ciudad / Disponible para reubicación nacional" class="w-full p-2 border rounded-md"></textarea>
             </section>
 
             <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
-                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#d4af37]">
                     Enviar Feedback
                 </button>
             </div>
         </form>
 
         <div id="message-box" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white p-8 rounded-lg shadow-lg text-center space-y-4 max-w-md mx-4">
-                <p id="message-text" class="text-lg font-semibold text-gray-800"></p>
+            <div class="bg-[#121216] p-8 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.4)] text-center space-y-4 max-w-md mx-4">
+                <p id="message-text" class="text-lg font-semibold text-[#e5e5e5]"></p>
                 <button id="message-close-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Cerrar</button>
             </div>
         </div>
@@ -492,7 +493,7 @@
             });
 
             if (selected.length === 0) {
-                chipsContainer.innerHTML = '<span class="text-sm text-gray-500">No hay comportamientos seleccionados.</span>';
+                chipsContainer.innerHTML = '<span class="text-sm text-[#808080]">No hay comportamientos seleccionados.</span>';
             }
         }
 
@@ -751,13 +752,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const exportBar = document.createElement('div');
   exportBar.className = 'mt-6';
   exportBar.innerHTML = `
-    <button id="toggle-export" class="text-xs text-gray-500 hover:text-gray-700 underline mb-2">⚙️ Opciones avanzadas</button>
-    <div id="export-content" class="hidden bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+    <button id="toggle-export" class="text-xs text-[#808080] hover:text-[#cccccc] underline mb-2">⚙️ Opciones avanzadas</button>
+    <div id="export-content" class="hidden bg-indigo-50 border border-[#d4af37]/30 rounded-lg p-4">
       <div class="flex flex-wrap gap-3 items-center">
         <strong class="text-indigo-800">Sociograma (Salida):</strong>
         <button id="save-ls" class="px-3 py-2 bg-indigo-600 text-white rounded-md">Guardar en LocalStorage</button>
-        <button id="export-json" class="px-3 py-2 bg-gray-800 text-white rounded-md">Descargar edges.json</button>
-        <span class="text-sm text-gray-600">→ Luego cargalo en <em>Sociograma</em> o en el <em>Dashboard del Líder</em>.</span>
+        <button id="export-json" class="px-3 py-2 bg-[#1a1a20] text-white rounded-md">Descargar edges.json</button>
+        <span class="text-sm text-[#a3a3a3]">→ Luego cargalo en <em>Sociograma</em> o en el <em>Dashboard del Líder</em>.</span>
       </div>
     </div>`;
   form.appendChild(exportBar);
@@ -783,7 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
     </div>
-    <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+    <div class="fixed bottom-2 right-2 text-xs text-[#cccccc] font-mono z-50 bg-[#2a2a32] px-2 py-1 rounded">
         <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
         <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
     </div>

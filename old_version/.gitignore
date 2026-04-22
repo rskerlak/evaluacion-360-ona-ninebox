@@ -1,0 +1,56 @@
+# Datos sensibles y personales
+*.csv
+*.xlsx
+*.xls
+*.json
+!src/data/sample-*.csv
+!src/data/sample-*.json
+!package.json
+
+# Archivos de configuración con credenciales
+.env
+.env.local
+.env.production
+config.json
+secrets.json
+
+# Directorios de dependencias
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de backup
+*.bak
+*.backup
+*~
+
+# Datos reales de empleados (protección adicional)
+*empleados*
+*personal*
+*staff*
+*colaboradores*
+*real-data*
+*production-data*
+
+# Archivos de exportación con datos reales
+exports/
+downloads/
+reports/

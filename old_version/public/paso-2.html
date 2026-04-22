@@ -46,13 +46,14 @@
             white-space: pre-wrap;
         }
     </style>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/apple.css">
 </head>
 
-<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+<body style="font-family: 'Outfit', sans-serif; background-color: #0a0a0c;" class="bg-network text-gray-100 min-h-screen bg-network text-[#e5e5e5]">
     <div class="min-h-screen flex items-center justify-center p-4">
         <!-- Contenedor principal -->
-        <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-5xl border border-white/20 overflow-hidden">
+        <div class="bg-[#121216]/80 backdrop-blur-xl rounded-3xl shadow-[0_12px_48px_rgba(0,0,0,0.8)] w-full max-w-5xl border border-white/20 overflow-hidden">
             <!-- Header Section -->
             <div class="p-8 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);">
                 <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-gray-900/30"></div>
@@ -67,13 +68,13 @@
                     </div>
                     <div class="text-center">
 
-                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        <h1 class="text-xl sm:text-2xl font-bold mb-1" style="background: linear-gradient(135deg, #ffffff 0%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                             Evaluación de Desempeño
                         </h1>
                         <p class="text-sm opacity-70">
                             Segunda Revisión Semestral
                         </p>
-                        <div class="mt-4 inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                        <div class="mt-4 inline-flex items-center bg-[#121216]/10 backdrop-blur-sm px-4 py-2 rounded-full">
                             <span class="text-sm font-medium">Paso 2 de 4</span>
                         </div>
                     </div>
@@ -81,20 +82,20 @@
             </div>
             
             <!-- Form Content -->
-            <div class="p-3 sm:p-4 space-y-4 bg-gray-800">
+            <div class="p-3 sm:p-4 space-y-4 bg-[#1a1a20]">
 
         <!-- Evaluation Form -->
         <form id="evaluation-form" class="space-y-4">
 
             <!-- Unified Objectives Section -->
-            <section class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-1">Pilar I: Gestión por Objetivos (MBO-OKR)</h2>
-                <p class="text-xs text-gray-600 mb-3">Los objetivos mostrados corresponden a los definidos al inicio del semestre. Puede editarlos si es necesario, pero cualquier modificación quedará registrada en el sistema.</p>
+            <section class="bg-[#121216] p-4 rounded-lg shadow-sm border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-1">Pilar I: Gestión por Objetivos (MBO-OKR)</h2>
+                <p class="text-xs text-[#a3a3a3] mb-3">Los objetivos mostrados corresponden a los definidos al inicio del semestre. Puede editarlos si es necesario, pero cualquier modificación quedará registrada en el sistema.</p>
                 
                 <!-- Employee Selection -->
                 <div class="mb-4">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Empleado</label>
-                    <select id="employee-select" class="w-full p-2 border border-gray-300 rounded-md text-xs">
+                    <label class="block text-xs font-medium text-[#cccccc] mb-1">Empleado</label>
+                    <select id="employee-select" class="w-full p-2 border border-[#3a3a42] rounded-md text-xs">
                         <option value="" disabled selected>Seleccione un empleado</option>
                         <option value="12345|Martínez, Ana|Analista de Desempeño|Analista SR">Martínez, Ana - Analista de Desempeño</option>
                         <option value="12346|Rodríguez, Carlos|Especialista en RRHH|Especialista SR">Rodríguez, Carlos - Especialista en RRHH</option>
@@ -105,7 +106,7 @@
                 </div>
 
                 <!-- Employee Info -->
-                <div id="employee-info" class="hidden mb-4 p-2 bg-gray-50 rounded border">
+                <div id="employee-info" class="hidden mb-4 p-2 bg-[#0a0a0c] rounded border">
                     <div class="grid grid-cols-4 gap-2 text-xs">
                         <div><span class="font-semibold">Legajo:</span> <span id="employee-legajo">-</span></div>
                         <div><span class="font-semibold">Nombre:</span> <span id="employee-nombre">-</span></div>
@@ -117,16 +118,16 @@
                 <!-- Objectives Container -->
                 <div class="space-y-3">
                     <!-- Objective 1 -->
-                    <div class="border border-gray-200 rounded p-3">
+                    <div class="border border-[#2a2a32] rounded p-3">
                         <div class="grid grid-cols-2 gap-3 mb-2">
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Nodo</label>
                                 <select name="nodo_1" class="w-full p-1 text-xs border rounded">
                                     <option value="procesos">Procesos</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Cumplimiento (1-5)</label>
                                 <select name="cumplimiento_1" class="w-full p-1 text-xs border rounded">
                                     <option value="" disabled selected>Seleccione</option>
                                     <option value="1">1 - No cumple</option>
@@ -137,15 +138,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="objectives-placeholder-1" class="text-center text-gray-500 text-xs py-4">
+                        <div id="objectives-placeholder-1" class="text-center text-[#808080] text-xs py-4">
                             Seleccione un empleado para ver sus objetivos
                         </div>
                         <div id="objectives-content-1" class="hidden">
                             <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-medium text-gray-700">Objetivo 1</label>
-                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(1)">seleccione para editar</button>
+                                <label class="block text-xs font-medium text-[#cccccc]">Objetivo 1</label>
+                                <button type="button" class="text-xs text-[#808080] hover:text-[#cccccc] underline" onclick="toggleEdit(1)">seleccione para editar</button>
                             </div>
-                            <p id="objective-1-text" class="text-xs p-2 bg-gray-100 rounded border">Generar reportes estadísticos semanales de los procesos de evaluación para identificar tendencias y áreas de mejora.</p>
+                            <p id="objective-1-text" class="text-xs p-2 bg-[#1a1a20] rounded border">Generar reportes estadísticos semanales de los procesos de evaluación para identificar tendencias y áreas de mejora.</p>
                             <div id="objective-1-edit" class="hidden mt-2">
                                 <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
                                 <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(1)">Guardar</button>
@@ -154,16 +155,16 @@
                     </div>
 
                     <!-- Objective 2 -->
-                    <div class="border border-gray-200 rounded p-3">
+                    <div class="border border-[#2a2a32] rounded p-3">
                         <div class="grid grid-cols-2 gap-3 mb-2">
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Nodo</label>
                                 <select name="nodo_2" class="w-full p-1 text-xs border rounded">
                                     <option value="equipo">Equipo</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Cumplimiento (1-5)</label>
                                 <select name="cumplimiento_2" class="w-full p-1 text-xs border rounded">
                                     <option value="" disabled selected>Seleccione</option>
                                     <option value="1">1 - No cumple</option>
@@ -174,15 +175,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="objectives-placeholder-2" class="text-center text-gray-500 text-xs py-4">
+                        <div id="objectives-placeholder-2" class="text-center text-[#808080] text-xs py-4">
                             Seleccione un empleado para ver sus objetivos
                         </div>
                         <div id="objectives-content-2" class="hidden">
                             <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-medium text-gray-700">Objetivo 2</label>
-                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(2)">seleccione para editar</button>
+                                <label class="block text-xs font-medium text-[#cccccc]">Objetivo 2</label>
+                                <button type="button" class="text-xs text-[#808080] hover:text-[#cccccc] underline" onclick="toggleEdit(2)">seleccione para editar</button>
                             </div>
-                            <p id="objective-2-text" class="text-xs p-2 bg-gray-100 rounded border">Completar al menos una certificación en análisis de datos o plataformas de gestión de talento.</p>
+                            <p id="objective-2-text" class="text-xs p-2 bg-[#1a1a20] rounded border">Completar al menos una certificación en análisis de datos o plataformas de gestión de talento.</p>
                             <div id="objective-2-edit" class="hidden mt-2">
                                 <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
                                 <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(2)">Guardar</button>
@@ -191,16 +192,16 @@
                     </div>
 
                     <!-- Objective 3 -->
-                    <div class="border border-gray-200 rounded p-3">
+                    <div class="border border-[#2a2a32] rounded p-3">
                         <div class="grid grid-cols-2 gap-3 mb-2">
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Nodo</label>
                                 <select name="nodo_3" class="w-full p-1 text-xs border rounded">
                                     <option value="cliente">Cliente</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Cumplimiento (1-5)</label>
                                 <select name="cumplimiento_3" class="w-full p-1 text-xs border rounded">
                                     <option value="" disabled selected>Seleccione</option>
                                     <option value="1">1 - No cumple</option>
@@ -211,15 +212,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="objectives-placeholder-3" class="text-center text-gray-500 text-xs py-4">
+                        <div id="objectives-placeholder-3" class="text-center text-[#808080] text-xs py-4">
                             Seleccione un empleado para ver sus objetivos
                         </div>
                         <div id="objectives-content-3" class="hidden">
                             <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-medium text-gray-700">Objetivo 3</label>
-                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(3)">seleccione para editar</button>
+                                <label class="block text-xs font-medium text-[#cccccc]">Objetivo 3</label>
+                                <button type="button" class="text-xs text-[#808080] hover:text-[#cccccc] underline" onclick="toggleEdit(3)">seleccione para editar</button>
                             </div>
-                            <p id="objective-3-text" class="text-xs p-2 bg-gray-100 rounded border">Colaborar activamente en el diseño e implementación de un nuevo sistema de reconocimiento.</p>
+                            <p id="objective-3-text" class="text-xs p-2 bg-[#1a1a20] rounded border">Colaborar activamente en el diseño e implementación de un nuevo sistema de reconocimiento.</p>
                             <div id="objective-3-edit" class="hidden mt-2">
                                 <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
                                 <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(3)">Guardar</button>
@@ -228,16 +229,16 @@
                     </div>
 
                     <!-- Objective 4 -->
-                    <div class="border border-gray-200 rounded p-3">
+                    <div class="border border-[#2a2a32] rounded p-3">
                         <div class="grid grid-cols-2 gap-3 mb-2">
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Nodo</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Nodo</label>
                                 <select name="nodo_4" class="w-full p-1 text-xs border rounded">
                                     <option value="autosuperacion">Autosuperación</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Cumplimiento (1-5)</label>
+                                <label class="block text-xs font-medium text-[#cccccc] mb-1">Cumplimiento (1-5)</label>
                                 <select name="cumplimiento_4" class="w-full p-1 text-xs border rounded">
                                     <option value="" disabled selected>Seleccione</option>
                                     <option value="1">1 - No cumple</option>
@@ -248,15 +249,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="objectives-placeholder-4" class="text-center text-gray-500 text-xs py-4">
+                        <div id="objectives-placeholder-4" class="text-center text-[#808080] text-xs py-4">
                             Seleccione un empleado para ver sus objetivos
                         </div>
                         <div id="objectives-content-4" class="hidden">
                             <div class="flex items-center justify-between mb-1">
-                                <label class="block text-xs font-medium text-gray-700">Objetivo 4</label>
-                                <button type="button" class="text-xs text-gray-500 hover:text-gray-700 underline" onclick="toggleEdit(4)">seleccione para editar</button>
+                                <label class="block text-xs font-medium text-[#cccccc]">Objetivo 4</label>
+                                <button type="button" class="text-xs text-[#808080] hover:text-[#cccccc] underline" onclick="toggleEdit(4)">seleccione para editar</button>
                             </div>
-                            <p id="objective-4-text" class="text-xs p-2 bg-gray-100 rounded border">Brindar soporte y capacitación a los líderes de equipo sobre herramientas de evaluación.</p>
+                            <p id="objective-4-text" class="text-xs p-2 bg-[#1a1a20] rounded border">Brindar soporte y capacitación a los líderes de equipo sobre herramientas de evaluación.</p>
                             <div id="objective-4-edit" class="hidden mt-2">
                                 <textarea class="w-full p-2 text-xs border rounded" rows="3" placeholder="Edite el objetivo..."></textarea>
                                 <button type="button" class="mt-1 px-2 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700" onclick="saveEdit(4)">Guardar</button>
@@ -271,11 +272,11 @@
                 <h2 class="text-sm font-bold text-white">Pilar II: Evaluación de Competencias y Rendimiento</h2>
 
                 <!-- Competencies Sub-section -->
-                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                    <h3 class="text-sm font-bold text-gray-800 mb-2">Competencias (FODA)</h3>
+                <div class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                    <h3 class="text-sm font-bold text-[#e5e5e5] mb-2">Competencias (FODA)</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Área de desarrollo:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">Área de desarrollo:</label>
                             <select name="area_desarrollo" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una competencia</option>
                                 <option>ADAPTACIÓN AL CAMBIO</option>
@@ -298,7 +299,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Fortaleza:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">Fortaleza:</label>
                             <select name="fortaleza" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una competencia</option>
                                 <option>ADAPTACIÓN AL CAMBIO</option>
@@ -321,7 +322,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Oportunidad de crecimiento:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">Oportunidad de crecimiento:</label>
                             <select name="oportunidad" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una competencia</option>
                                 <option>ADAPTACIÓN AL CAMBIO</option>
@@ -344,7 +345,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Reto futuro:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">Reto futuro:</label>
                             <select name="reto_futuro" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una competencia</option>
                                 <option>ADAPTACIÓN AL CAMBIO</option>
@@ -370,11 +371,11 @@
                 </div>
 
                 <!-- Work Performance Sub-section (Rendimiento con nueva escala solicitada) -->
-                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                    <h3 class="text-sm font-bold text-gray-800 mb-2">Rendimiento laboral</h3>
+                <div class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                    <h3 class="text-sm font-bold text-[#e5e5e5] mb-2">Rendimiento laboral</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">RENDIMIENTO EN CALIDAD:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">RENDIMIENTO EN CALIDAD:</label>
                             <select name="rendimiento_calidad" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="1">no cumple las expectativas</option>
@@ -385,7 +386,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">RENDIMIENTO EN CANTIDAD:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">RENDIMIENTO EN CANTIDAD:</label>
                             <select name="rendimiento_cantidad" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="1">no cumple las expectativas</option>
@@ -396,7 +397,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">COMPROMISO CON LA JORNADA LABORAL:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">COMPROMISO CON LA JORNADA LABORAL:</label>
                             <select name="compromiso_jornada" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="1">no cumple las expectativas</option>
@@ -407,7 +408,7 @@
                             </select>
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">RENDIMIENTO EN TIEMPO:</label>
+                            <label class="block text-sm font-medium text-[#cccccc] mb-1">RENDIMIENTO EN TIEMPO:</label>
                             <select name="rendimiento_tiempo" class="w-full p-2">
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="1">no cumple las expectativas</option>
@@ -425,10 +426,10 @@
             <!-- Pillar III: Potential Assessment Section -->
             <section class="section">
                 <h2 class="text-sm font-bold text-white">Pilar III: Valoración de Potencial</h2>
-                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                    <h3 class="text-sm font-bold text-gray-800 mb-2">Valoración de potencial</h3>
+                <div class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                    <h3 class="text-sm font-bold text-[#e5e5e5] mb-2">Valoración de potencial</h3>
 
-                    <p class="text-sm text-gray-600 mb-4">Complete la valoración (instancia evaluadora) para cada descripción.</p>
+                    <p class="text-sm text-[#a3a3a3] mb-4">Complete la valoración (instancia evaluadora) para cada descripción.</p>
 
                     <div class="overflow-x-auto">
                         <table class="table">
@@ -520,27 +521,27 @@
             </section>
 
             <!-- Evaluator Data Section -->
-            <section class="bg-gray-50 p-3 rounded-lg border border-gray-200">
-                <h2 class="text-sm font-bold text-gray-800 mb-2">Datos de los Evaluadores</h2>
+            <section class="bg-[#0a0a0c] p-3 rounded-lg border border-[#2a2a32]">
+                <h2 class="text-sm font-bold text-[#e5e5e5] mb-2">Datos de los Evaluadores</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="flex flex-col">
-                        <span class="text-sm font-semibold text-gray-600">Legajo:</span>
-                        <p class="text-base text-gray-800">________</p>
+                        <span class="text-sm font-semibold text-[#a3a3a3]">Legajo:</span>
+                        <p class="text-base text-[#e5e5e5]">________</p>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-sm font-semibold text-gray-600">Apellido y Nombre:</span>
-                        <p class="text-base text-gray-800">________</p>
+                        <span class="text-sm font-semibold text-[#a3a3a3]">Apellido y Nombre:</span>
+                        <p class="text-base text-[#e5e5e5]">________</p>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-sm font-semibold text-gray-600">ID de Documento:</span>
-                        <p class="text-base text-gray-800">________</p>
+                        <span class="text-sm font-semibold text-[#a3a3a3]">ID de Documento:</span>
+                        <p class="text-base text-[#e5e5e5]">________</p>
                     </div>
                 </div>
             </section>
 
             <!-- Action Button -->
             <div class="flex flex-col sm:flex-row justify-end gap-4 mt-6">
-                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#d4af37]">
                     Confirmar Revisión
                 </button>
             </div>
@@ -551,8 +552,8 @@
 
     <!-- Success or error message box (hidden by default) -->
     <div id="message-box" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-lg shadow-lg text-center space-y-4">
-            <p id="message-text" class="text-sm font-semibold text-gray-800"></p>
+        <div class="bg-[#121216] p-8 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.4)] text-center space-y-4">
+            <p id="message-text" class="text-sm font-semibold text-[#e5e5e5]"></p>
             <button id="message-close-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Cerrar</button>
         </div>
     </div>
@@ -697,7 +698,7 @@
         };
     </script>
   </div>
-    <div class="fixed bottom-2 right-2 text-xs text-gray-700 font-mono z-50 bg-gray-200 px-2 py-1 rounded">
+    <div class="fixed bottom-2 right-2 text-xs text-[#cccccc] font-mono z-50 bg-[#2a2a32] px-2 py-1 rounded">
         <span class="hidden sm:inline">© 2025 Rodrigo E. Skerlak — People Analytics Manager / HR Data Scientist · Lic. en Psicología / Behaviour Science</span>
         <span class="sm:hidden">© 2025 R. E. Skerlak — People Analytics · Behaviour Science</span>
     </div>

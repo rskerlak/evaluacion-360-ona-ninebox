@@ -1,0 +1,13 @@
+pregunta,from_legajo,to_legajo,weight
+colaboracion,1001,1002,3
+colaboracion,1002,1008,2
+colaboracion,1008,1007,2
+colaboracion,1007,1006,1
+consejo,1003,1002,2
+consejo,1004,1001,1
+consejo,1006,1007,2
+inspiracion,1005,1006,3
+inspiracion,1002,1001,1
+inspiracion,1008,1010,2
+colaboracion,1010,1009,2
+consejo,1009,1008,1

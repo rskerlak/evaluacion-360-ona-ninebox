@@ -1,0 +1,51 @@
+[
+{
+"id": 1,
+"legajo": 1001,
+"recibioFeedback": true,
+"behaviors": [
+"Aumenta la confianza en mí mismo.",
+"Me motiva a dar más de mí."
+],
+"fortaleza": "COMUNICACIÓN",
+"desarrollo": "NEGOCIACIÓN ASERTIVA",
+"trainings": ["Liderazgo en equipos ágiles"],
+"movilidad": "si",
+"edges": [
+{ "pregunta": "colaboracion", "to": 1002, "weight": 3 },
+{ "pregunta": "consejo", "to": 1002, "weight": 2 },
+{ "pregunta": "inspiracion", "to": 1006, "weight": 1 }
+],
+"timestamp": "2025-10-09T12:00:00Z"
+},
+{
+"id": 2,
+"legajo": 1008,
+"recibioFeedback": true,
+"behaviors": ["Me ayuda a priorizar tareas."],
+"fortaleza": "ANÁLISIS",
+"desarrollo": "STORYTELLING CON DATOS",
+"trainings": ["Visualización de redes"],
+"movilidad": "quizas",
+"edges": [
+{ "pregunta": "colaboracion", "to": 1007, "weight": 2 },
+{ "pregunta": "inspiracion", "to": 1010, "weight": 2 }
+],
+"timestamp": "2025-10-09T12:05:00Z"
+},
+{
+"id": 3,
+"legajo": 1010,
+"recibioFeedback": false,
+"behaviors": [],
+"fortaleza": "LIDERAZGO TÉCNICO",
+"desarrollo": "COACHING",
+"trainings": [],
+"movilidad": "no",
+"edges": [
+{ "pregunta": "colaboracion", "to": 1009, "weight": 2 },
+{ "pregunta": "consejo", "to": 1008, "weight": 1 }
+],
+"timestamp": "2025-10-09T12:10:00Z"
+}
+]
