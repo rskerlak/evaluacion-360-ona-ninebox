@@ -4,14 +4,15 @@ import { Network, Users, UserCircle } from 'lucide-react';
 const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
-      <div className="mb-12 max-w-3xl">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">
-          Gestión del Talento
-          <span className="block mt-2 bg-gradient-to-r from-white via-gold-400 to-gold-600 bg-clip-text text-transparent">
-            Impulsada por Datos
-          </span>
-        </h1>
-        <p className="text-lg text-text-main font-light leading-relaxed">
+      <div className="mb-12 max-w-3xl flex flex-col items-center">
+        <div className="mb-10 transform transition-transform hover:scale-105 filter drop-shadow-[0_0_30px_rgba(212,175,55,0.4)]">
+          <img src="/logo.png" alt="SAGE Logo" className="h-48 sm:h-64 md:h-80 object-contain" />
+        </div>
+        
+        <p className="text-xl sm:text-2xl text-white font-light leading-relaxed mb-4">
+          Gestión del Talento <span className="text-gold-500 font-semibold">Impulsada por Datos</span>
+        </p>
+        <p className="text-base text-text-muted max-w-2xl">
           Plataforma integral de evaluación 360°, mapeo de redes organizacionales (ONA) y matriz Nine Box para un análisis predictivo y estratégico del capital humano.
         </p>
       </div>
