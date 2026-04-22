@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Network, Users, UserCircle } from 'lucide-react';
+import logoUrl from '../assets/logo.png';
 
 const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
       <div className="mb-12 max-w-3xl flex flex-col items-center">
         <div className="mb-10 transform transition-transform hover:scale-105 filter drop-shadow-[0_0_30px_rgba(212,175,55,0.4)]">
-          <img src="/logo.png" alt="SAGE Logo" className="h-48 sm:h-64 md:h-80 object-contain" />
+          <img src={logoUrl} alt="SAGE Logo" className="h-48 sm:h-64 md:h-80 object-contain" />
         </div>
         
         <p className="text-xl sm:text-2xl text-white font-light leading-relaxed mb-4">

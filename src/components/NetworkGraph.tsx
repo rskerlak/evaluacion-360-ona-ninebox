@@ -154,10 +154,10 @@ const NetworkGraph = () => {
   };
 
   return (
-    <div className="flex flex-col xl:flex-row gap-6 w-full h-[600px] xl:h-[700px]">
+    <div className="flex flex-col xl:flex-row gap-6 w-full min-h-[500px] xl:h-[700px]">
       
       {/* ONA 3D Graph Container */}
-      <div ref={containerRef} className="glass-panel p-0 rounded-2xl overflow-hidden relative w-full xl:w-2/3 h-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
+      <div ref={containerRef} className="glass-panel p-0 rounded-2xl overflow-hidden relative w-full h-[450px] sm:h-[550px] xl:w-2/3 xl:h-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
         
         {/* Floating Filter Panel */}
         <div className="absolute top-6 left-6 z-10 bg-dark-900/80 backdrop-blur-md p-4 rounded-xl border border-white/10 shadow-lg">
@@ -247,7 +247,7 @@ const NetworkGraph = () => {
       </div>
 
       {/* Info Panel */}
-      <div className="glass-panel p-6 rounded-2xl w-full xl:w-1/3 flex flex-col h-full border-t-4" style={{ borderTopColor: selectedNode ? (AREA_COLORS as any)[selectedNode.area] : 'transparent' }}>
+      <div className="glass-panel p-6 rounded-2xl w-full xl:w-1/3 flex flex-col h-auto xl:h-full border-t-4" style={{ borderTopColor: selectedNode ? (AREA_COLORS as any)[selectedNode.area] : 'transparent' }}>
         <h3 className="text-lg font-bold text-white mb-6 flex items-center border-b border-white/10 pb-4">
           <User className="text-gold-500 mr-2" size={20} />
           Perfil de Influencia (ONA)
